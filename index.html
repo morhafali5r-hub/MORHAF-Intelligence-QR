@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MORHAF QR System | Ultra Premium</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & DESIGN TOKENS
+           ========================================================================== */
+        :root {
+            --color-black: #000000;
+            --color-navy: #0A0F1C;
+            --color-cream: #DEDBC8;
+            --color-cream-dim: rgba(222, 219, 200, 0.7);
+            --color-cream-glow: rgba(222, 219, 200, 0.15);
+            
+            --text-primary: #E1E0CC;
+            --text-secondary: rgba(225, 224, 204, 0.5);
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --glow-cyan: rgba(0, 212, 255, 0.3);
+            --glow-blue: rgba(24, 90, 255, 0.3);
+            
+            --glass-bg: rgba(10, 15, 28, 0.4);
+            --glass-border: rgba(222, 219, 200, 0.1);
+            --glass-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            --glass-blur: blur(20px);
+            
+            --radius-xl: 32px; --radius-lg: 24px; --radius-md: 16px; --radius-sm: 8px;
+            --transition-normal: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* ==========================================================================
+           2. GLOBAL RESET & BASE
+           ========================================================================== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-sans); background-color: var(--color-black); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
+        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--color-black); } ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+        /* ==========================================================================
+           3. BACKGROUND AMBIANCE
+           ========================================================================== */
+        .ambient-environment { position: fixed; inset: 0; z-index: -10; background: radial-gradient(circle at 100% 0%, var(--glow-blue), transparent 60%), radial-gradient(circle at 0% 100%, var(--glow-cyan), transparent 60%); background-color: var(--color-navy); opacity: 0.8; }
+        .noise-texture { position: fixed; inset: 0; z-index: -9; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); opacity: 0.05; pointer-events: none; }
+
+        /* ==========================================================================
+           4. LAYOUT
+           ========================================================================== */
+        .app-shell { display: flex; flex-direction: column; min-height: 100vh; max-width: 1600px; margin: 0 auto; padding: 2rem; }
+        header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); }
+        .brand-identity { display: flex; align-items: center; gap: 16px; }
+        .brand-orb { width: 16px; height: 16px; background: var(--color-cream); border-radius: 50%; box-shadow: 0 0 20px var(--color-cream); animation: pulseOrb 4s infinite alternate; }
+        @keyframes pulseOrb { 0% { transform: scale(0.9); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
+        .brand-text { font-size: 1.5rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+        .brand-text span { font-weight: 300; color: var(--text-secondary); }
+
+        .nav-switcher { display: inline-flex; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); border-radius: 100px; padding: 8px; backdrop-filter: var(--glass-blur); }
+        .nav-btn { background: transparent; border: none; color: var(--text-secondary); padding: 10px 32px; border-radius: 100px; font-family: inherit; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: var(--transition-normal); display: flex; align-items: center; gap: 8px; }
+        .nav-btn svg { width: 18px; height: 18px; fill: currentColor; }
+        .nav-btn.active { background: var(--color-cream); color: var(--color-black); box-shadow: 0 0 20px var(--color-cream-glow); font-weight: 600; }
+        .workspace { display: grid; grid-template-columns: 1fr 1.3fr; gap: 3rem; flex: 1; }
+
+        /* ==========================================================================
+           5. UI COMPONENTS
+           ========================================================================== */
+        .glass-panel { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-xl); padding: 3rem; backdrop-filter: var(--glass-blur); box-shadow: var(--glass-shadow); position: relative; overflow: hidden; }
+        .section-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 2rem; display: flex; align-items: center; gap: 12px; }
+        .section-title svg { width: 24px; height: 24px; fill: var(--color-cream); }
+
+        .input-group { margin-bottom: 1.5rem; }
+        .input-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .input-control { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--glass-border); color: var(--text-primary); padding: 16px 20px; border-radius: var(--radius-md); font-family: inherit; font-size: 1rem; outline: none; transition: var(--transition-normal); }
+        textarea.input-control { resize: vertical; min-height: 100px; }
+        .input-control:focus { border-color: var(--color-cream); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 0 3px var(--color-cream-glow); }
+        select.input-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23DEDBC8'%3E%3Cpath d='M12 15L7 10H17L12 15Z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; background-size: 20px; cursor: pointer; }
+
+        .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .color-picker-wrapper { display: flex; align-items: center; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 8px 12px; gap: 12px; transition: var(--transition-normal); }
+        .color-picker-wrapper:focus-within { border-color: var(--color-cream); box-shadow: 0 0 0 3px var(--color-cream-glow); }
+        .color-picker-wrapper input[type="color"] { -webkit-appearance: none; border: none; width: 36px; height: 36px; border-radius: var(--radius-sm); cursor: pointer; background: none; }
+        .color-picker-wrapper input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        .color-picker-wrapper input[type="color"]::-webkit-color-swatch { border: none; border-radius: 6px; }
+        .hex-input { background: transparent; border: none; color: var(--text-primary); font-family: var(--font-mono); font-size: 1rem; width: 100%; outline: none; text-transform: uppercase; }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; margin-top: 2rem; }
+        .btn { padding: 18px 24px; border-radius: var(--radius-md); border: none; font-family: inherit; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: var(--transition-normal); text-decoration: none; text-align: center; }
+        .btn svg { width: 20px; height: 20px; fill: currentColor; }
+        .btn-primary { background: var(--color-cream); color: var(--color-black); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--color-cream-glow); }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid var(--glass-border); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--color-cream); }
+
+        .gen-upload-zone { border: 2px dashed var(--glass-border); border-radius: var(--radius-md); padding: 2rem; text-align: center; cursor: pointer; transition: var(--transition-normal); background: rgba(0, 0, 0, 0.3); position: relative; overflow: hidden; margin-bottom: 1rem;}
+        .gen-upload-zone:hover { border-color: var(--color-cream); background: rgba(222, 219, 200, 0.05); }
+        .gen-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 10; }
+        .data-size-badge { font-family: var(--font-mono); font-size: 0.8rem; background: rgba(0,230,118,0.1); color: #00E676; padding: 4px 10px; border-radius: 100px; display: inline-block; margin-top: 10px;}
+
+        /* ==========================================================================
+           6. RIGHT PANEL (PREVIEW FRAME)
+           ========================================================================== */
+        .preview-area { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; height: 100%; min-height: 500px; }
+        .qr-frame { position: relative; background: rgba(0, 0, 0, 0.5); padding: 24px; border-radius: var(--radius-xl); border: 1px solid rgba(222, 219, 200, 0.2); box-shadow: 0 40px 80px rgba(0,0,0,0.8); transition: var(--transition-normal); z-index: 2; overflow: hidden; }
+        .qr-frame:hover { border-color: rgba(222, 219, 200, 0.4); box-shadow: 0 50px 100px rgba(0,0,0,0.9), 0 0 40px var(--color-cream-glow); }
+        
+        #qr-canvas-container { width: 340px; height: 340px; background: #fff; border-radius: var(--radius-sm); overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; }
+        #qr-canvas-container canvas { max-width: 100% !important; max-height: 100% !important; object-fit: contain; }
+
+        .preview-label { margin-top: 2rem; display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-cream); letter-spacing: 0.1em; text-transform: uppercase; }
+        .status-dot { width: 8px; height: 8px; background: #00E676; border-radius: 50%; box-shadow: 0 0 10px #00E676; }
+        .radar-scan { position: absolute; top: -10%; left: 0; width: 100%; height: 20%; background: linear-gradient(to bottom, transparent, rgba(222, 219, 200, 0.5), transparent); border-bottom: 2px solid var(--color-cream); box-shadow: 0 10px 30px var(--color-cream-glow); z-index: 10; opacity: 0; pointer-events: none; }
+
+        /* ==========================================================================
+           7. UPLOAD & PRO CAMERA SYSTEM (DECODER)
+           ========================================================================== */
+        #decode-workspace { display: none; }
+        .decode-tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+        .dec-tab { flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-md); color: var(--text-secondary); cursor: pointer; text-align: center; font-weight: 600; transition: var(--transition-normal); }
+        .dec-tab.active { background: rgba(222,219,200,0.1); color: var(--color-cream); border-color: var(--color-cream); }
+
+        .upload-zone { border: 2px dashed var(--glass-border); border-radius: var(--radius-lg); padding: 3rem 1.5rem; text-align: center; cursor: pointer; transition: var(--transition-normal); background: rgba(0, 0, 0, 0.2); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px; }
+        .upload-zone:hover { border-color: var(--color-cream); background: rgba(222, 219, 200, 0.05); }
+        .upload-zone svg { width: 64px; height: 64px; fill: var(--text-secondary); margin-bottom: 1rem; transition: var(--transition-normal); }
+        .upload-zone:hover svg { fill: var(--color-cream); transform: translateY(-5px); }
+        .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 10; }
+
+        #camera-zone { display: none; width: 100%; position: relative; }
+        #reader { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--color-cream); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 0 30px var(--color-cream-glow); margin-bottom: 1rem;}
+        #reader video { width: 100% !important; object-fit: cover; border-radius: var(--radius-lg); }
+        
+        .flash-btn { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.6); border: 1px solid var(--color-cream); color: var(--color-cream); width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 20; backdrop-filter: blur(5px); transition: var(--transition-normal); }
+        .flash-btn.active { background: var(--color-cream); color: var(--color-black); box-shadow: 0 0 15px var(--color-cream); }
+        .flash-btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .pro-controls { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 16px; display: none; flex-direction: column; gap: 12px; margin-bottom: 1rem; }
+        .control-row { display: flex; align-items: center; gap: 12px; }
+        .control-row svg { width: 20px; height: 20px; fill: var(--text-secondary); }
+        .pro-slider { flex: 1; -webkit-appearance: none; background: transparent; height: 4px; border-radius: 2px; }
+        .pro-slider::-webkit-slider-runnable-track { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
+        .pro-slider::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--color-cream); margin-top: -6px; cursor: pointer; box-shadow: 0 0 10px var(--color-cream-glow); transition: 0.2s; }
+        .control-label { font-size: 0.75rem; color: var(--text-secondary); width: 60px; text-transform: uppercase; font-family: var(--font-mono);}
+
+        .scan-result-card { margin-top: 1rem; padding: 1.5rem; background: rgba(10, 15, 28, 0.8); border: 1px solid var(--glow-cyan); border-radius: var(--radius-lg); display: none; flex-direction: column; }
+        .scan-result-card h3 { font-size: 1rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .result-payload { font-family: var(--font-mono); font-size: 1.1rem; color: var(--color-cream); word-break: break-all; background: rgba(0,0,0,0.5); padding: 16px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); max-height: 200px; overflow-y: auto;}
+
+        /* Network card for WIFI */
+        .network-card { background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; border: 1px solid var(--glass-border); margin-bottom: 10px; font-family: var(--font-sans); }
+        .network-card div { margin-bottom: 6px; font-size: 1.1rem; font-weight: 600; color: var(--color-cream); }
+        .network-card span { color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; display: block;}
+
+        @media (max-width: 1024px) {
+            .workspace { grid-template-columns: 1fr; }
+            .preview-area { order: -1; min-height: 400px; padding-bottom: 2rem; }
+            header { flex-direction: column; gap: 1.5rem; }
+            .color-grid { grid-template-columns: 1fr; }
+            .action-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-environment"></div>
+    <div class="noise-texture"></div>
+
+    <div class="app-shell">
+        <header>
+            <div class="brand-identity">
+                <div class="brand-orb"></div>
+                <div class="brand-text">MORHAF <span>Intelligence</span></div>
+            </div>
+            <div class="nav-switcher">
+                <button class="nav-btn active" id="tab-generator">Studio Generator</button>
+                <button class="nav-btn" id="tab-decoder">Smart Decoder</button>
+            </div>
+        </header>
+
+        <main class="workspace">
+            <!-- LEFT PANEL -->
+            <div class="left-panel glass-panel" id="controls-panel">
+                
+                <!-- === GENERATOR WORKSPACE === -->
+                <div id="generate-workspace">
+                    <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4l6.5 13h-13L12 6z"/></svg> Payload Configuration</div>
+                    <div class="input-group">
+                        <label>Data Protocol</label>
+                        <select class="input-control" id="data-type">
+                            <option value="text">Universal (URL / Text)</option>
+                            <option value="wifi">WiFi Network Protocol</option>
+                            <option value="vcard">Digital Contact (vCard)</option>
+                            <option value="email">Secure Email</option>
+                            <!-- Image option moved to the very end -->
+                            <option value="image">Image Vault Upload (Smart Link) 🔥</option>
+                        </select>
+                    </div>
+                    <div id="dynamic-inputs-container">
+                        <div class="input-group">
+                            <label>Content Payload</label>
+                            <textarea class="input-control" id="qr-input" placeholder="Enter highly classified text or URL..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="section-title" style="margin-top: 3rem"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.41 2.26-4.39C12.92 3.04 12.46 3 12 3z"/></svg> Aesthetic Matrix</div>
+                    <div class="color-grid">
+                        <div class="input-group">
+                            <label>Foreground Color</label>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="color-dots" value="#000000">
+                                <input type="text" id="hex-dots" class="hex-input" value="#000000" maxlength="7">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Background Color</label>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="color-bg" value="#ffffff">
+                                <input type="text" id="hex-bg" class="hex-input" value="#FFFFFF" maxlength="7">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="color-grid">
+                        <div class="input-group">
+                            <label>Module Style</label>
+                            <select class="input-control" id="style-dots">
+                                <option value="rounded">Premium Rounded</option>
+                                <option value="dots">Modern Dots</option>
+                                <option value="square">Classic Sharp</option>
+                                <option value="classy">Classy Edge</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Engine Resolution</label>
+                            <select class="input-control" id="export-res">
+                                <option value="720">720p (Standard HQ)</option>
+                                <option value="1080">1080p (Ultra HD)</option>
+                                <option value="2048">2K (Print Quality)</option>
+                                <option value="4096">4K (Billboard Master)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="action-grid">
+                        <button class="btn btn-secondary" id="btn-preview">Live Preview</button>
+                        <button class="btn btn-primary" id="btn-export">Render Asset</button>
+                    </div>
+                </div>
+
+                <!-- === DECODER WORKSPACE === -->
+                <div id="decode-workspace">
+                    <div class="section-title"><svg viewBox="0 0 24 24"><path d="M3 3h6v6H3V3zm12 0h6v6h-6V3zM3 15h6v6H3v-6zm16 0v6h-2v-6h2zM9 15v2h2v-2H9zm4 0h2v2h-2v-2z"/></svg> Neural Image Analysis</div>
+                    <div class="decode-tabs">
+                        <div class="dec-tab active" id="tab-upload">Upload File</div>
+                        <div class="dec-tab" id="tab-camera">Live Camera Scan</div>
+                    </div>
+
+                    <div class="upload-zone" id="drop-zone">
+                        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.36 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                        <p style="font-weight:600; margin-bottom: 8px;">Drag & Drop Secure Image</p>
+                        <p style="color:var(--color-cream); font-size: 0.85rem;">or click to browse local files</p>
+                        <input type="file" id="file-input" accept="image/*">
+                    </div>
+
+                    <div id="camera-zone">
+                        <button class="flash-btn" id="btn-flash" title="Toggle Flashlight"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></button>
+                        <div id="reader"></div>
+                        
+                        <div class="pro-controls" id="pro-controls">
+                            <div class="control-row" id="row-exposure" style="display:none;">
+                                <svg viewBox="0 0 24 24"><path d="M12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm6.1-5.6l1.4 1.4-1.4 1.4-1.4-1.4 1.4-1.4zM4.5 7.9l-1.4-1.4 1.4-1.4 1.4 1.4-1.4 1.4zm15 11.6l-1.4-1.4 1.4-1.4 1.4 1.4-1.4 1.4zM4.5 16.1l1.4-1.4 1.4 1.4-1.4 1.4-1.4-1.4zM12 2v3h-2V2h2zm0 17v3h-2v-3h2zM2 11h3v2H2v-2zm17 0h3v2h-3v-2z"/></svg>
+                                <input type="range" class="pro-slider" id="slider-exposure">
+                                <span class="control-label">EXPOSURE</span>
+                            </div>
+                            <div class="control-row" id="row-focus" style="display:none;">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                                <input type="range" class="pro-slider" id="slider-focus">
+                                <span class="control-label">FOCUS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scan-result-card" id="scan-result-card">
+                        <h3>Smart Detection Result:</h3>
+                        <div id="scan-result-content"></div>
+                        <div id="scan-result-actions" style="margin-top: 1rem; width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: PREVIEW -->
+            <div class="right-panel preview-area">
+                <div class="qr-frame" id="qr-frame">
+                    <div class="radar-scan" id="radar-scan"></div>
+                    <div id="qr-canvas-container"></div>
+                </div>
+                <div class="preview-label">
+                    <div class="status-dot"></div> <span id="res-indicator">System Engine: Live (1080p)</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const DOM = {
+                tabs: { gen: document.getElementById('tab-generator'), dec: document.getElementById('tab-decoder') },
+                workspaces: { gen: document.getElementById('generate-workspace'), dec: document.getElementById('decode-workspace') },
+                inputs: { type: document.getElementById('data-type'), container: document.getElementById('dynamic-inputs-container'), colorDots: document.getElementById('color-dots'), colorBg: document.getElementById('color-bg'), hexDots: document.getElementById('hex-dots'), hexBg: document.getElementById('hex-bg'), styleDots: document.getElementById('style-dots'), resolution: document.getElementById('export-res') },
+                actions: { preview: document.getElementById('btn-preview'), export: document.getElementById('btn-export'), fileInput: document.getElementById('file-input'), dropZone: document.getElementById('drop-zone'), tabUpload: document.getElementById('tab-upload'), tabCamera: document.getElementById('tab-camera'), btnFlash: document.getElementById('btn-flash') },
+                display: { qrContainer: document.getElementById('qr-canvas-container'), scanCard: document.getElementById('scan-result-card'), scanContent: document.getElementById('scan-result-content'), scanActions: document.getElementById('scan-result-actions'), radarScan: document.getElementById('radar-scan'), qrFrame: document.getElementById('qr-frame'), cameraZone: document.getElementById('camera-zone'), resIndicator: document.getElementById('res-indicator') },
+                cameraPro: { panel: document.getElementById('pro-controls'), rowExp: document.getElementById('row-exposure'), rowFoc: document.getElementById('row-focus'), sliderExp: document.getElementById('slider-exposure'), sliderFoc: document.getElementById('slider-focus') }
+            };
+
+            let currentMode = 'generate';
+            let html5QrCode = null; 
+            let isFlashOn = false;
+            let activeVideoTrack = null;
+            let cloudVaultUrl = ""; // Stores the smart URL link
+            
+            // Core Generation Engine
+            const uiEngine = new QRCodeStyling({ width: 1080, height: 1080, type: "canvas", data: "https://morhafali5r-hub.github.io/MORHAF-Portfolio/", margin: 20, qrOptions: {errorCorrectionLevel: 'Q'}, dotsOptions: { color: "#000000", type: "rounded" }, backgroundOptions: { color: "#ffffff" }, cornersSquareOptions: { type: "extra-rounded", color: "#000000" }, cornersDotOptions: { type: "dot", color: "#000000" } });
+            uiEngine.append(DOM.display.qrContainer);
+            gsap.from(".glass-panel", { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" });
+
+            /* TAB SWITCHING */
+            function switchTab(mode) {
+                if (currentMode === mode) return;
+                currentMode = mode;
+                const isGen = mode === 'generate';
+                DOM.tabs.gen.classList.toggle('active', isGen); DOM.tabs.dec.classList.toggle('active', !isGen);
+                const hideWS = isGen ? DOM.workspaces.dec : DOM.workspaces.gen;
+                const showWS = isGen ? DOM.workspaces.gen : DOM.workspaces.dec;
+                if(isGen) stopCamera(); 
+                gsap.to(hideWS, { opacity: 0, duration: 0.2, onComplete: () => {
+                    hideWS.style.display = 'none'; showWS.style.display = 'block';
+                    gsap.fromTo(showWS, {opacity: 0, y: 10}, {opacity: 1, y: 0, duration: 0.3});
+                    if (isGen) updateQR(false); 
+                    else DOM.display.qrContainer.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0A0F1C;"><svg viewBox="0 0 24 24" style="width:80px;height:80px;fill:var(--glass-border)"><path d="M4 4h4v2H6v2H4V4zm16 0h-4v2h2v2h2V4zM4 20h4v-2H6v-2H4v4zm16 0h-4v-2h2v-2h2v4z"/></svg></div>`;
+                }});
+            }
+            DOM.tabs.gen.addEventListener('click', () => switchTab('generate')); DOM.tabs.dec.addEventListener('click', () => switchTab('decode'));
+
+            /* HEX COLOR SYNC */
+            function syncColors(source, target, isHexToColor = false) {
+                if (isHexToColor) { let val = source.value; if (!val.startsWith('#')) val = '#' + val; if (val.match(/^#[0-9A-Fa-f]{6}$/)) { target.value = val; updateQR(false); }
+                } else { target.value = source.value.toUpperCase(); updateQR(false); }
+            }
+            DOM.inputs.colorDots.addEventListener('input', () => syncColors(DOM.inputs.colorDots, DOM.inputs.hexDots)); DOM.inputs.colorBg.addEventListener('input', () => syncColors(DOM.inputs.colorBg, DOM.inputs.hexBg));
+            DOM.inputs.hexDots.addEventListener('input', () => syncColors(DOM.inputs.hexDots, DOM.inputs.colorDots, true)); DOM.inputs.hexBg.addEventListener('input', () => syncColors(DOM.inputs.hexBg, DOM.inputs.colorBg, true));
+
+            /* DYNAMIC FORM BUILDER */
+            DOM.inputs.type.addEventListener('change', (e) => {
+                const type = e.target.value; let html = '';
+                if (type === 'text') html = `<div class="input-group"><label>Content Payload</label><textarea class="input-control" id="qr-input" placeholder="Enter text or URL..."></textarea></div>`;
+                else if (type === 'wifi') html = `<div class="input-group"><label>SSID</label><input type="text" class="input-control" id="wifi-ssid"></div><div class="input-group"><label>Password</label><input type="password" class="input-control" id="wifi-pass"></div><div class="input-group"><label>Encryption</label><select class="input-control" id="wifi-enc"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">None</option></select></div>`;
+                else if (type === 'vcard') html = `<div class="input-group"><label>Name</label><input type="text" class="input-control" id="vc-name"></div><div class="input-group"><label>Phone</label><input type="tel" class="input-control" id="vc-phone"></div><div class="input-group"><label>Email</label><input type="email" class="input-control" id="vc-email"></div>`;
+                else if (type === 'email') html = `<div class="input-group"><label>To</label><input type="email" class="input-control" id="em-to"></div><div class="input-group"><label>Subject</label><input type="text" class="input-control" id="em-sub"></div>`;
+                else if (type === 'image') {
+                    html = `
+                        <div class="gen-upload-zone" id="img-to-qr-zone">
+                            <p style="font-weight:600; margin-bottom: 5px;">Upload HD Image to MORHAF Cloud</p>
+                            <p style="color:var(--text-secondary); font-size:0.8rem; margin-bottom:10px;">The HD image will be securely saved in your local browser vault. The QR will generate a smart link to retrieve it.</p>
+                            <input type="file" id="img-to-qr-input" accept="image/jpeg, image/png, image/webp">
+                            <div id="compression-status"></div>
+                        </div>`;
+                }
+                
+                DOM.inputs.container.innerHTML = html;
+                
+                if (type === 'image') {
+                    document.getElementById('img-to-qr-input').addEventListener('change', handleImageUploadToVault);
+                } else {
+                    DOM.inputs.container.querySelectorAll('input, textarea').forEach(el => { el.addEventListener('input', () => { clearTimeout(window.typingTimer); window.typingTimer = setTimeout(() => updateQR(false), 350); }); });
+                    updateQR(false);
+                }
+            });
+
+            // MORHAF Vault Local Upload
+            function handleImageUploadToVault(e) {
+                const file = e.target.files[0]; if (!file) return;
+                const statusDiv = document.getElementById('compression-status');
+                statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FFB300; background: rgba(255, 179, 0, 0.1);">Securing in Vault...</span>`;
+                
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        // Keep HD resolution (e.g., max 1920x1080) for great quality
+                        const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+                        let w = img.width, h = img.height;
+                        const maxDim = 1920;
+                        if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; } 
+                        else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
+                        canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h);
+                        
+                        // Save High Quality Image
+                        let hqDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                        const imageId = Date.now().toString(36);
+                        
+                        try {
+                            localStorage.setItem('morhaf_img_' + imageId, hqDataUrl);
+                            cloudVaultUrl = `https://morhaf.cloud/vault/${imageId}`;
+                            statusDiv.innerHTML = `<span class="data-size-badge">HQ Image Secured in Vault!</span>`;
+                            updateQR(true); 
+                        } catch(err) {
+                            // LocalStorage limit reached (usually 5MB)
+                            statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FF5252; background: rgba(255, 82, 82, 0.1);">Error: Storage Full. Clear browser cache.</span>`;
+                        }
+                    }; img.src = event.target.result;
+                }; reader.readAsDataURL(file);
+            }
+
+            function getPayload() {
+                const type = DOM.inputs.type.value;
+                if (type === 'image') return cloudVaultUrl || "https://morhafali5r-hub.github.io/MORHAF-Portfolio/";
+                if (type === 'text') { const el = document.getElementById('qr-input'); return el && el.value ? el.value : "https://morhafali5r-hub.github.io/MORHAF-Portfolio/"; }
+                if (type === 'wifi') return `WIFI:T:${document.getElementById('wifi-enc').value};S:${document.getElementById('wifi-ssid').value};P:${document.getElementById('wifi-pass').value};;`;
+                if (type === 'vcard') return `BEGIN:VCARD\nVERSION:3.0\nFN:${document.getElementById('vc-name').value}\nTEL:${document.getElementById('vc-phone').value}\nEMAIL:${document.getElementById('vc-email').value}\nEND:VCARD`;
+                if (type === 'email') return `mailto:${document.getElementById('em-to').value}?subject=${encodeURIComponent(document.getElementById('em-sub').value)}`;
+                return "";
+            }
+
+            function updateQR(applyTrueResolution = true) {
+                const style = DOM.inputs.styleDots.value; const fg = DOM.inputs.colorDots.value; const bg = DOM.inputs.colorBg.value;
+                const res = applyTrueResolution ? parseInt(DOM.inputs.resolution.value) : 1080;
+                let cornersType = style === 'rounded' || style === 'classy' ? 'extra-rounded' : (style === 'dots' ? 'dot' : 'square');
+                let dotsType = style === 'classy' ? 'classy-rounded' : style;
+                
+                uiEngine.update({ width: res, height: res, margin: res * 0.05, data: getPayload(), qrOptions: {errorCorrectionLevel: 'Q'}, dotsOptions: { color: fg, type: dotsType }, backgroundOptions: { color: bg }, cornersSquareOptions: { type: cornersType, color: fg }, cornersDotOptions: { type: style === 'rounded' ? 'dot' : 'square', color: fg } });
+                DOM.display.qrContainer.innerHTML = ''; uiEngine.append(DOM.display.qrContainer);
+                if(applyTrueResolution) DOM.display.resIndicator.textContent = `System Engine: Live (${res}p)`;
+            }
+            DOM.inputs.styleDots.addEventListener('change', () => updateQR(true)); DOM.inputs.resolution.addEventListener('change', () => updateQR(true));
+            DOM.actions.preview.addEventListener('click', () => { updateQR(true); gsap.fromTo(DOM.display.radarScan, {top: "-20%", opacity: 1}, {top: "100%", opacity: 0, duration: 1.5, ease: "power1.inOut"}); gsap.fromTo(DOM.display.qrFrame, {scale: 0.95, filter: "brightness(1.5)"}, {scale: 1, filter: "brightness(1)", duration: 0.5, ease: "back.out(1.5)"}); });
+            DOM.actions.export.addEventListener('click', () => { const res = parseInt(DOM.inputs.resolution.value); const originalText = DOM.actions.export.innerHTML; DOM.actions.export.innerHTML = `Rendering ${res}p...`; updateQR(true); setTimeout(() => { uiEngine.download({ name: `MORHAF_Asset_${res}p`, extension: "png" }); DOM.actions.export.innerHTML = originalText; }, 800); });
+
+            /* ==================================================================
+               DECODER & SMART DETECTION LOGIC
+               ================================================================== */
+            DOM.actions.tabUpload.addEventListener('click', () => { DOM.actions.tabUpload.classList.add('active'); DOM.actions.tabCamera.classList.remove('active'); DOM.actions.dropZone.style.display = 'flex'; DOM.display.cameraZone.style.display = 'none'; stopCamera(); });
+            DOM.actions.tabCamera.addEventListener('click', () => { DOM.actions.tabCamera.classList.add('active'); DOM.actions.tabUpload.classList.remove('active'); DOM.actions.dropZone.style.display = 'none'; DOM.display.cameraZone.style.display = 'block'; startCamera(); });
+
+            function startCamera() {
+                if(!html5QrCode) html5QrCode = new Html5Qrcode("reader");
+                html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } },
+                  (decodedText) => { stopCamera(); showScanResult(decodedText, false); }, (err) => {}
+                ).then(() => {
+                    const videoEl = document.querySelector('#reader video');
+                    if(videoEl && videoEl.srcObject) { activeVideoTrack = videoEl.srcObject.getVideoTracks()[0]; if (activeVideoTrack) setTimeout(() => checkCameraCapabilities(activeVideoTrack), 500); }
+                }).catch(() => { showScanResult("Error accessing camera.", true); });
+            }
+
+            function checkCameraCapabilities(track) {
+                if(!track) return; let showProPanel = false; const capabilities = track.getCapabilities(); const settings = track.getSettings();
+                if (capabilities.torch) DOM.actions.btnFlash.style.display = 'flex';
+                if (capabilities.exposureCompensation || capabilities.exposureMode) { DOM.cameraPro.rowExp.style.display = 'flex'; if(capabilities.exposureCompensation) { DOM.cameraPro.sliderExp.min = capabilities.exposureCompensation.min; DOM.cameraPro.sliderExp.max = capabilities.exposureCompensation.max; DOM.cameraPro.sliderExp.step = capabilities.exposureCompensation.step || 0.1; DOM.cameraPro.sliderExp.value = settings.exposureCompensation || 0; } showProPanel = true; }
+                if (capabilities.focusDistance || (capabilities.focusMode && capabilities.focusMode.includes('manual'))) { DOM.cameraPro.rowFoc.style.display = 'flex'; if (capabilities.focusMode && capabilities.focusMode.includes('manual')) track.applyConstraints({ advanced: [{ focusMode: 'manual' }] }).catch(e=>{}); if(capabilities.focusDistance) { DOM.cameraPro.sliderFoc.min = capabilities.focusDistance.min; DOM.cameraPro.sliderFoc.max = capabilities.focusDistance.max; DOM.cameraPro.sliderFoc.step = capabilities.focusDistance.step || 0.1; DOM.cameraPro.sliderFoc.value = settings.focusDistance || capabilities.focusDistance.min; } showProPanel = true; }
+                if(showProPanel) DOM.cameraPro.panel.style.display = 'flex';
+            }
+
+            function applyProConstraint(setting, value) { if(activeVideoTrack) activeVideoTrack.applyConstraints({ advanced: [{ [setting]: parseFloat(value) }] }).catch(e=>{}); }
+            DOM.cameraPro.sliderExp.addEventListener('input', (e) => applyProConstraint('exposureCompensation', e.target.value)); DOM.cameraPro.sliderFoc.addEventListener('input', (e) => applyProConstraint('focusDistance', e.target.value));
+
+            function stopCamera() {
+                if (html5QrCode && html5QrCode.isScanning) {
+                    html5QrCode.stop().then(() => { html5QrCode.clear(); DOM.actions.btnFlash.style.display = 'none'; DOM.cameraPro.panel.style.display = 'none'; DOM.cameraPro.rowExp.style.display = 'none'; DOM.cameraPro.rowFoc.style.display = 'none'; isFlashOn = false; activeVideoTrack = null; DOM.actions.btnFlash.classList.remove('active'); }).catch(e=>{});
+                }
+            }
+
+            DOM.actions.btnFlash.addEventListener('click', () => { if (activeVideoTrack) { isFlashOn = !isFlashOn; activeVideoTrack.applyConstraints({ advanced: [{ torch: isFlashOn }] }).then(() => DOM.actions.btnFlash.classList.toggle('active', isFlashOn)).catch(() => { isFlashOn = !isFlashOn; }); } });
+
+            function handleDecodeUpload(file) {
+                if (!file || !file.type.startsWith('image/')) { showScanResult("Invalid image file.", true); return; }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    DOM.display.qrContainer.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:contain; border-radius:8px;">`;
+                    if(!html5QrCode) html5QrCode = new Html5Qrcode("reader"); 
+                    html5QrCode.scanFile(file, true).then(decodedText => showScanResult(decodedText, false)).catch(err => showScanResult("No QR Code detected.", true));
+                }; reader.readAsDataURL(file);
+            }
+
+            DOM.actions.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); DOM.actions.dropZone.style.borderColor = "var(--color-cream)"; }); DOM.actions.dropZone.addEventListener('dragleave', () => DOM.actions.dropZone.style.borderColor = ""); DOM.actions.dropZone.addEventListener('drop', (e) => { e.preventDefault(); DOM.actions.dropZone.style.borderColor = ""; if (e.dataTransfer.files.length) handleDecodeUpload(e.dataTransfer.files[0]); }); DOM.actions.fileInput.addEventListener('change', (e) => { if (e.target.files.length) handleDecodeUpload(e.target.files[0]); });
+
+            // SMART DETECTION ACTIONS
+            window.copyToClipboard = function(text, btnElement) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = btnElement.innerHTML;
+                    btnElement.innerHTML = `Copied!`; btnElement.style.color = "#00E676"; btnElement.style.borderColor = "#00E676";
+                    setTimeout(() => { btnElement.innerHTML = original; btnElement.style.color = ""; btnElement.style.borderColor = ""; }, 2000);
+                });
+            };
+
+            function showScanResult(text, isError) {
+                DOM.display.scanCard.style.display = 'flex';
+                DOM.display.scanContent.innerHTML = '';
+                DOM.display.scanActions.innerHTML = '';
+                
+                if (isError) {
+                    DOM.display.scanContent.innerHTML = `<div class="result-payload" style="color: #FF5252;">${text}</div>`;
+                } else {
+                    let displayHTML = '';
+                    let actionHTML = '';
+
+                    // 1. MORHAF Vault Image Detection
+                    if (text.startsWith('https://morhaf.cloud/vault/')) {
+                        const id = text.split('/').pop();
+                        const imgData = localStorage.getItem('morhaf_img_' + id);
+                        if (imgData) {
+                            displayHTML = `<div style="margin-bottom:10px; font-size:0.8rem; color:var(--text-secondary);">Retrieved from MORHAF Vault:</div><img src="${imgData}" style="width:100%; max-width:300px; border-radius:8px; display:block; margin:0 auto; border: 1px solid var(--color-cream);">`;
+                            actionHTML = `<a href="${imgData}" download="MORHAF_Vault_Image.jpg" class="btn btn-primary">Download HQ Image</a>`;
+                        } else {
+                            displayHTML = `<div class="result-payload" style="color:#FF5252">Image expired or not found in your local vault.</div>`;
+                            actionHTML = `<a href="${text}" target="_blank" class="btn btn-secondary">Visit Link Anyway</a>`;
+                        }
+                    }
+                    // 2. Direct Image Link Detection
+                    else if (text.match(/\.(jpeg|jpg|gif|png|webp)(\?.*)?$/i)) {
+                        displayHTML = `<div style="margin-bottom:10px; font-size:0.8rem; color:var(--text-secondary);">Direct External Image:</div><img src="${text}" style="width:100%; max-width:300px; border-radius:8px; display:block; margin:0 auto; border: 1px solid var(--color-cream);">`;
+                        actionHTML = `<a href="${text}" target="_blank" class="btn btn-primary">Open Full Image</a>`;
+                    }
+                    // 3. Regular URL Detection
+                    else if (text.match(/^https?:\/\//i)) {
+                        displayHTML = `<div class="result-payload">${text}</div>`;
+                        actionHTML = `<a href="${text}" target="_blank" class="btn btn-primary">Visit Link</a>`;
+                    } 
+                    // 4. WIFI Detection
+                    else if (text.startsWith('WIFI:')) {
+                        const ssidMatch = text.match(/S:([^;]+)/);
+                        const passMatch = text.match(/P:([^;]+)/);
+                        const ssid = ssidMatch ? ssidMatch[1] : 'Unknown Network';
+                        const pass = passMatch ? passMatch[1] : 'No Password';
+                        
+                        displayHTML = `
+                            <div class="network-card">
+                                <span>Network Name (SSID)</span>
+                                <div>${ssid}</div>
+                                <span style="margin-top:10px;">Password</span>
+                                <div style="font-family:var(--font-mono); color:var(--color-cream);">${pass}</div>
+                            </div>
+                        `;
+                        actionHTML = `<button class="btn btn-primary" onclick="window.copyToClipboard('${pass}', this)">Copy WiFi Password</button>`;
+                    } 
+                    // 5. Phone Detection
+                    else if (text.startsWith('tel:')) {
+                        const phone = text.replace('tel:', '');
+                        displayHTML = `<div class="result-payload" style="text-align:center; font-size:1.5rem; font-weight:600;">${phone}</div>`;
+                        actionHTML = `<a href="${text}" class="btn btn-primary">Call Now</a>`;
+                    } 
+                    // 6. vCard Detection
+                    else if (text.startsWith('BEGIN:VCARD')) {
+                        displayHTML = `<div class="result-payload" style="font-size:0.9rem;">${text.replace(/\n/g, '<br>')}</div>`;
+                        const blob = new Blob([text], {type: 'text/vcard'});
+                        const url = URL.createObjectURL(blob);
+                        actionHTML = `<a href="${url}" download="contact.vcf" class="btn btn-primary">Save Contact</a>`;
+                    } 
+                    // 7. Email Detection
+                    else if (text.startsWith('mailto:')) {
+                        const email = text.replace('mailto:', '').split('?')[0];
+                        displayHTML = `<div class="result-payload">${email}</div>`;
+                        actionHTML = `<a href="${text}" class="btn btn-primary">Send Email</a>`;
+                    } 
+                    // 8. Default Text
+                    else {
+                        displayHTML = `<div class="result-payload">${text}</div>`;
+                        actionHTML = `<button class="btn btn-secondary" style="width:100%" onclick="window.copyToClipboard(\`${text}\`, this)">Copy to Clipboard</button>`;
+                    }
+
+                    DOM.display.scanContent.innerHTML = displayHTML;
+                    DOM.display.scanActions.innerHTML = actionHTML;
+                }
+                
+                gsap.fromTo(DOM.display.scanCard, {y: 20, opacity: 0}, {y: 0, opacity: 1, duration: 0.4}); 
+            }
+        });
+    </script>
+</body>
+</html>
