@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MORHAF QR System | Ultra Premium</title>
+    <title>MORHAF QR System</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -128,6 +128,7 @@
            ========================================================================== */
         #decode-workspace { display: none; }
         .decode-tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+        .nav-btn a { color: inherit; text-decoration: none; }
         .dec-tab { flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-md); color: var(--text-secondary); cursor: pointer; text-align: center; font-weight: 600; transition: var(--transition-normal); }
         .dec-tab.active { background: rgba(222,219,200,0.1); color: var(--color-cream); border-color: var(--color-cream); }
 
@@ -157,7 +158,6 @@
         .scan-result-card h3 { font-size: 1rem; color: var(--text-secondary); margin-bottom: 1rem; }
         .result-payload { font-family: var(--font-mono); font-size: 1.1rem; color: var(--color-cream); word-break: break-all; background: rgba(0,0,0,0.5); padding: 16px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); max-height: 200px; overflow-y: auto;}
 
-        /* Network card for WIFI */
         .network-card { background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; border: 1px solid var(--glass-border); margin-bottom: 10px; font-family: var(--font-sans); }
         .network-card div { margin-bottom: 6px; font-size: 1.1rem; font-weight: 600; color: var(--color-cream); }
         .network-card span { color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; display: block;}
@@ -202,8 +202,7 @@
                             <option value="wifi">WiFi Network Protocol</option>
                             <option value="vcard">Digital Contact (vCard)</option>
                             <option value="email">Secure Email</option>
-                            <!-- Image option moved to the very end -->
-                            <option value="image">Image Vault Upload (Smart Link) 🔥</option>
+                            <option value="image">Image Vault Upload (Permanent Cloud Link) 🔥</option>
                         </select>
                     </div>
                     <div id="dynamic-inputs-container">
@@ -326,7 +325,7 @@
             let html5QrCode = null; 
             let isFlashOn = false;
             let activeVideoTrack = null;
-            let cloudVaultUrl = ""; // Stores the smart URL link
+            let cloudVaultUrl = ""; 
             
             // Core Generation Engine
             const uiEngine = new QRCodeStyling({ width: 1080, height: 1080, type: "canvas", data: "https://morhafali5r-hub.github.io/MORHAF-Portfolio/", margin: 20, qrOptions: {errorCorrectionLevel: 'Q'}, dotsOptions: { color: "#000000", type: "rounded" }, backgroundOptions: { color: "#ffffff" }, cornersSquareOptions: { type: "extra-rounded", color: "#000000" }, cornersDotOptions: { type: "dot", color: "#000000" } });
@@ -369,8 +368,8 @@
                 else if (type === 'image') {
                     html = `
                         <div class="gen-upload-zone" id="img-to-qr-zone">
-                            <p style="font-weight:600; margin-bottom: 5px;">Upload HD Image to MORHAF Cloud</p>
-                            <p style="color:var(--text-secondary); font-size:0.8rem; margin-bottom:10px;">The HD image will be securely saved in your local browser vault. The QR will generate a smart link to retrieve it.</p>
+                            <p style="font-weight:600; margin-bottom: 5px;">Upload HD Image to MORHAF Cloud Vault</p>
+                            <p style="color:var(--text-secondary); font-size:0.8rem; margin-bottom:10px;">The image will be securely hosted online for an infinite duration on your master account, accessible by any phone anywhere.</p>
                             <input type="file" id="img-to-qr-input" accept="image/jpeg, image/png, image/webp">
                             <div id="compression-status"></div>
                         </div>`;
@@ -379,46 +378,41 @@
                 DOM.inputs.container.innerHTML = html;
                 
                 if (type === 'image') {
-                    document.getElementById('img-to-qr-input').addEventListener('change', handleImageUploadToVault);
+                    document.getElementById('img-to-qr-input').addEventListener('change', handleImageUploadToCloud);
                 } else {
                     DOM.inputs.container.querySelectorAll('input, textarea').forEach(el => { el.addEventListener('input', () => { clearTimeout(window.typingTimer); window.typingTimer = setTimeout(() => updateQR(false), 350); }); });
                     updateQR(false);
                 }
             });
 
-            // MORHAF Vault Local Upload
-            function handleImageUploadToVault(e) {
+            // Master Cloud Upload System (Hardcoded Universal Account)
+            function handleImageUploadToCloud(e) {
                 const file = e.target.files[0]; if (!file) return;
                 const statusDiv = document.getElementById('compression-status');
-                statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FFB300; background: rgba(255, 179, 0, 0.1);">Securing in Vault...</span>`;
+                const apiKey = "B7c17ef10a7c74bdf5e3624d7d669410"; // Your master universal api token
                 
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        // Keep HD resolution (e.g., max 1920x1080) for great quality
-                        const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
-                        let w = img.width, h = img.height;
-                        const maxDim = 1920;
-                        if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; } 
-                        else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
-                        canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h);
-                        
-                        // Save High Quality Image
-                        let hqDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-                        const imageId = Date.now().toString(36);
-                        
-                        try {
-                            localStorage.setItem('morhaf_img_' + imageId, hqDataUrl);
-                            cloudVaultUrl = `https://morhaf.cloud/vault/${imageId}`;
-                            statusDiv.innerHTML = `<span class="data-size-badge">HQ Image Secured in Vault!</span>`;
-                            updateQR(true); 
-                        } catch(err) {
-                            // LocalStorage limit reached (usually 5MB)
-                            statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FF5252; background: rgba(255, 82, 82, 0.1);">Error: Storage Full. Clear browser cache.</span>`;
-                        }
-                    }; img.src = event.target.result;
-                }; reader.readAsDataURL(file);
+                statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FFB300; background: rgba(255, 179, 0, 0.1);">Streaming Asset to Master Vault...</span>`;
+                
+                const formData = new FormData();
+                formData.append('image', file);
+                
+                fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        cloudVaultUrl = data.data.url; 
+                        statusDiv.innerHTML = `<span class="data-size-badge" style="color: #00E676; background: rgba(0, 230, 118, 0.1);">Asset Live on Master Cloud! Infinite Duration.</span>`;
+                        updateQR(true); 
+                    } else {
+                        statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FF5252; background: rgba(255, 82, 82, 0.1);">Cloud Rejection: ${data.error.message}</span>`;
+                    }
+                })
+                .catch(err => {
+                    statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FF5252; background: rgba(255, 82, 82, 0.1);">Network Interruption.</span>`;
+                });
             }
 
             function getPayload() {
@@ -512,29 +506,17 @@
                     let displayHTML = '';
                     let actionHTML = '';
 
-                    // 1. MORHAF Vault Image Detection
-                    if (text.startsWith('https://morhaf.cloud/vault/')) {
-                        const id = text.split('/').pop();
-                        const imgData = localStorage.getItem('morhaf_img_' + id);
-                        if (imgData) {
-                            displayHTML = `<div style="margin-bottom:10px; font-size:0.8rem; color:var(--text-secondary);">Retrieved from MORHAF Vault:</div><img src="${imgData}" style="width:100%; max-width:300px; border-radius:8px; display:block; margin:0 auto; border: 1px solid var(--color-cream);">`;
-                            actionHTML = `<a href="${imgData}" download="MORHAF_Vault_Image.jpg" class="btn btn-primary">Download HQ Image</a>`;
-                        } else {
-                            displayHTML = `<div class="result-payload" style="color:#FF5252">Image expired or not found in your local vault.</div>`;
-                            actionHTML = `<a href="${text}" target="_blank" class="btn btn-secondary">Visit Link Anyway</a>`;
-                        }
+                    // Direct Web Image Rendering Check (Includes ImgBB and Global links)
+                    if (text.match(/\.(jpeg|jpg|gif|png|webp)(\?.*)?$/i) || text.includes('ibb.co')) {
+                        displayHTML = `<div style="margin-bottom:10px; font-size:0.8rem; color:var(--text-secondary);">Retrieved Live Cloud Image:</div><img src="${text}" style="width:100%; max-width:300px; border-radius:8px; display:block; margin:0 auto; border: 1px solid var(--color-cream);">`;
+                        actionHTML = `<a href="${text}" target="_blank" class="btn btn-primary">Open Full Resolution</a>`;
                     }
-                    // 2. Direct Image Link Detection
-                    else if (text.match(/\.(jpeg|jpg|gif|png|webp)(\?.*)?$/i)) {
-                        displayHTML = `<div style="margin-bottom:10px; font-size:0.8rem; color:var(--text-secondary);">Direct External Image:</div><img src="${text}" style="width:100%; max-width:300px; border-radius:8px; display:block; margin:0 auto; border: 1px solid var(--color-cream);">`;
-                        actionHTML = `<a href="${text}" target="_blank" class="btn btn-primary">Open Full Image</a>`;
-                    }
-                    // 3. Regular URL Detection
+                    // Regular URL Detection
                     else if (text.match(/^https?:\/\//i)) {
                         displayHTML = `<div class="result-payload">${text}</div>`;
                         actionHTML = `<a href="${text}" target="_blank" class="btn btn-primary">Visit Link</a>`;
                     } 
-                    // 4. WIFI Detection
+                    // WIFI Detection
                     else if (text.startsWith('WIFI:')) {
                         const ssidMatch = text.match(/S:([^;]+)/);
                         const passMatch = text.match(/P:([^;]+)/);
@@ -551,26 +533,26 @@
                         `;
                         actionHTML = `<button class="btn btn-primary" onclick="window.copyToClipboard('${pass}', this)">Copy WiFi Password</button>`;
                     } 
-                    // 5. Phone Detection
+                    // Phone Detection
                     else if (text.startsWith('tel:')) {
                         const phone = text.replace('tel:', '');
                         displayHTML = `<div class="result-payload" style="text-align:center; font-size:1.5rem; font-weight:600;">${phone}</div>`;
                         actionHTML = `<a href="${text}" class="btn btn-primary">Call Now</a>`;
                     } 
-                    // 6. vCard Detection
+                    // vCard Detection
                     else if (text.startsWith('BEGIN:VCARD')) {
                         displayHTML = `<div class="result-payload" style="font-size:0.9rem;">${text.replace(/\n/g, '<br>')}</div>`;
                         const blob = new Blob([text], {type: 'text/vcard'});
                         const url = URL.createObjectURL(blob);
                         actionHTML = `<a href="${url}" download="contact.vcf" class="btn btn-primary">Save Contact</a>`;
                     } 
-                    // 7. Email Detection
+                    // Email Detection
                     else if (text.startsWith('mailto:')) {
                         const email = text.replace('mailto:', '').split('?')[0];
                         displayHTML = `<div class="result-payload">${email}</div>`;
                         actionHTML = `<a href="${text}" class="btn btn-primary">Send Email</a>`;
                     } 
-                    // 8. Default Text
+                    // Default Text
                     else {
                         displayHTML = `<div class="result-payload">${text}</div>`;
                         actionHTML = `<button class="btn btn-secondary" style="width:100%" onclick="window.copyToClipboard(\`${text}\`, this)">Copy to Clipboard</button>`;
