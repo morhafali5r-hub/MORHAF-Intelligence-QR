@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MORHAF QR System</title>
+    <title>MORHAF QR Studio | V2 PRO</title>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts & Custom Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -17,14 +17,20 @@
 
     <style>
         /* ==========================================================================
-           1. CSS VARIABLES & DESIGN TOKENS
+           1. CSS VARIABLES & TYPOGRAPHY
            ========================================================================== */
+        @font-face { font-family: 'V1'; src: url('https://cdn.jsdelivr.net/gh/morhafali5r-hub/M.F.L@main/MORHAF-Fonts/kalem/eKalemDuz-Regular.ttf'); font-display: swap; }
+        @font-face { font-family: 'Kaswa-Modern'; src: url('https://cdn.jsdelivr.net/gh/morhafali5r-hub/M.F.L@main/MORHAF-Fonts/kaswa/Kaswa-Modern.ttf'); font-display: swap; }
+        @font-face { font-family: 'Thmanyah-Medium'; src: url('https://cdn.jsdelivr.net/gh/morhafali5r-hub/M.F.L@main/MORHAF-Fonts/thmanyah-family/thmanyahserifdisplay-Medium.otf'); font-display: swap; }
+
         :root {
             --color-black: #000000;
             --color-navy: #0A0F1C;
             --color-cream: #DEDBC8;
-            --color-cream-dim: rgba(222, 219, 200, 0.7);
-            --color-cream-glow: rgba(222, 219, 200, 0.15);
+            --color-gold: #FFD700;
+            --color-gold-glow: rgba(255, 215, 0, 0.3);
+            --color-stealth: #B026FF; 
+            --color-morse: #FF8C00;
             
             --text-primary: #E1E0CC;
             --text-secondary: rgba(225, 224, 204, 0.5);
@@ -43,144 +49,248 @@
             --transition-normal: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* ==========================================================================
-           2. GLOBAL RESET & BASE
-           ========================================================================== */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { font-family: var(--font-sans); background-color: var(--color-black); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--color-black); } ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
 
         /* ==========================================================================
-           3. BACKGROUND AMBIANCE
+           2. AMBIENT BACKGROUND & EFFECTS
            ========================================================================== */
         .ambient-environment { position: fixed; inset: 0; z-index: -10; background: radial-gradient(circle at 100% 0%, var(--glow-blue), transparent 60%), radial-gradient(circle at 0% 100%, var(--glow-cyan), transparent 60%); background-color: var(--color-navy); opacity: 0.8; }
         .noise-texture { position: fixed; inset: 0; z-index: -9; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); opacity: 0.05; pointer-events: none; }
+        .blur-active { filter: blur(15px); pointer-events: none; transition: filter 0.5s ease; }
 
         /* ==========================================================================
-           4. LAYOUT
+           3. LAYOUT & HEADER
            ========================================================================== */
-        .app-shell { display: flex; flex-direction: column; min-height: 100vh; max-width: 1600px; margin: 0 auto; padding: 2rem; }
-        header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); }
-        .brand-identity { display: flex; align-items: center; gap: 16px; }
+        .app-shell { display: flex; flex-direction: column; min-height: 100vh; max-width: 1600px; margin: 0 auto; padding: 2rem; transition: filter 0.5s ease; }
+        header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); flex-wrap: wrap; gap: 20px;}
+        .brand-identity { display: flex; align-items: center; gap: 16px; position: relative; flex-wrap: wrap;}
         .brand-orb { width: 16px; height: 16px; background: var(--color-cream); border-radius: 50%; box-shadow: 0 0 20px var(--color-cream); animation: pulseOrb 4s infinite alternate; }
         @keyframes pulseOrb { 0% { transform: scale(0.9); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
         .brand-text { font-size: 1.5rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
         .brand-text span { font-weight: 300; color: var(--text-secondary); }
+        
+        #pro-badge { display: none; background: linear-gradient(45deg, #FFD700, #FFA500); color: #000; font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 12px; margin-left: 10px; box-shadow: 0 0 15px var(--color-gold-glow); }
+        #btn-subscribe-pro { font-size: 0.85rem; padding: 8px 16px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        #btn-logout-pro { display: none; background: rgba(255, 82, 82, 0.1); color: #FF5252; border: 1px solid #FF5252; font-size: 0.75rem; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-left: 10px; transition: var(--transition-normal); }
+        #btn-logout-pro:hover { background: #FF5252; color: #000; box-shadow: 0 0 15px rgba(255, 82, 82, 0.4); }
 
         .nav-switcher { display: inline-flex; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); border-radius: 100px; padding: 8px; backdrop-filter: var(--glass-blur); }
-        .nav-btn { background: transparent; border: none; color: var(--text-secondary); padding: 10px 32px; border-radius: 100px; font-family: inherit; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: var(--transition-normal); display: flex; align-items: center; gap: 8px; }
-        .nav-btn svg { width: 18px; height: 18px; fill: currentColor; }
-        .nav-btn.active { background: var(--color-cream); color: var(--color-black); box-shadow: 0 0 20px var(--color-cream-glow); font-weight: 600; }
+        .nav-btn { background: transparent; border: none; color: var(--text-secondary); padding: 10px 24px; border-radius: 100px; font-family: inherit; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: var(--transition-normal); display: flex; align-items: center; gap: 8px; }
+        .nav-btn.active { background: var(--color-cream); color: var(--color-black); box-shadow: 0 0 20px rgba(222, 219, 200, 0.15); font-weight: 600; }
         .workspace { display: grid; grid-template-columns: 1fr 1.3fr; gap: 3rem; flex: 1; }
 
         /* ==========================================================================
-           5. UI COMPONENTS
+           4. UI COMPONENTS & PRO SYSTEM
            ========================================================================== */
         .glass-panel { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-xl); padding: 3rem; backdrop-filter: var(--glass-blur); box-shadow: var(--glass-shadow); position: relative; overflow: hidden; }
         .section-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 2rem; display: flex; align-items: center; gap: 12px; }
         .section-title svg { width: 24px; height: 24px; fill: var(--color-cream); }
 
-        .input-group { margin-bottom: 1.5rem; }
+        .input-group { margin-bottom: 1.5rem; position: relative; }
         .input-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
         .input-control { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--glass-border); color: var(--text-primary); padding: 16px 20px; border-radius: var(--radius-md); font-family: inherit; font-size: 1rem; outline: none; transition: var(--transition-normal); }
         textarea.input-control { resize: vertical; min-height: 100px; }
-        .input-control:focus { border-color: var(--color-cream); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 0 3px var(--color-cream-glow); }
+        .input-control:focus { border-color: var(--color-cream); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 0 3px rgba(222, 219, 200, 0.15); }
         select.input-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23DEDBC8'%3E%3Cpath d='M12 15L7 10H17L12 15Z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; background-size: 20px; cursor: pointer; }
+        select.input-control:disabled { opacity: 0.7; cursor: not-allowed; }
 
+        /* --- PRO LOCKED EFFECT (TEASING UI) --- */
+        .pro-locked { position: relative; transition: 0.3s; border-radius: var(--radius-md); user-select: none; }
+        .pro-locked::after { 
+            content: "PRO ONLY"; position: absolute; inset: 0; background: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; 
+            color: var(--color-gold); font-size: 1.3rem; font-weight: 800; border-radius: inherit; 
+            letter-spacing: 3px; border: 2px dashed var(--color-gold); z-index: 10; cursor: pointer; 
+        }
+        
         .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         .color-picker-wrapper { display: flex; align-items: center; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 8px 12px; gap: 12px; transition: var(--transition-normal); }
-        .color-picker-wrapper:focus-within { border-color: var(--color-cream); box-shadow: 0 0 0 3px var(--color-cream-glow); }
         .color-picker-wrapper input[type="color"] { -webkit-appearance: none; border: none; width: 36px; height: 36px; border-radius: var(--radius-sm); cursor: pointer; background: none; }
         .color-picker-wrapper input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
         .color-picker-wrapper input[type="color"]::-webkit-color-swatch { border: none; border-radius: 6px; }
         .hex-input { background: transparent; border: none; color: var(--text-primary); font-family: var(--font-mono); font-size: 1rem; width: 100%; outline: none; text-transform: uppercase; }
 
-        .action-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; margin-top: 2rem; }
-        .btn { padding: 18px 24px; border-radius: var(--radius-md); border: none; font-family: inherit; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: var(--transition-normal); text-decoration: none; text-align: center; }
-        .btn svg { width: 20px; height: 20px; fill: currentColor; }
+        /* Stealth UI Styles */
+        .stealth-matrix { border: 1px dashed var(--color-stealth); background: rgba(176, 38, 255, 0.05); border-radius: var(--radius-md); padding: 20px; margin-top: 1.5rem; margin-bottom: 2rem; display: none; box-shadow: inset 0 0 20px rgba(176, 38, 255, 0.1); }
+        .stealth-matrix.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .stealth-label { color: var(--color-stealth) !important; font-family: var(--font-mono); }
+        .stealth-input { border-color: rgba(176, 38, 255, 0.3) !important; }
+        .stealth-input:focus { border-color: var(--color-stealth) !important; box-shadow: 0 0 0 3px rgba(176, 38, 255, 0.2) !important; }
+
+        /* Morse UI Styles */
+        .morse-matrix { border: 1px dashed var(--color-morse); background: rgba(255, 140, 0, 0.05); border-radius: var(--radius-md); padding: 20px; margin-bottom: 2rem; display: block; box-shadow: inset 0 0 20px rgba(255, 140, 0, 0.1); }
+        .morse-label { color: var(--color-morse) !important; font-family: var(--font-mono); }
+        .morse-input { border-color: rgba(255, 140, 0, 0.3) !important; }
+        .morse-input:focus { border-color: var(--color-morse) !important; box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.2) !important; }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        .btn { padding: 16px 20px; border-radius: var(--radius-md); border: none; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: var(--transition-normal); text-decoration: none; text-align: center; }
         .btn-primary { background: var(--color-cream); color: var(--color-black); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--color-cream-glow); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(222, 219, 200, 0.15); }
+        .btn-gold { background: linear-gradient(45deg, #FFD700, #FFA500); color: #000; box-shadow: 0 5px 20px var(--color-gold-glow); }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4); }
         .btn-secondary { background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid var(--glass-border); }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--color-cream); }
+        .btn-morse { background: var(--color-morse); color: #000; }
+        .btn-morse:hover { box-shadow: 0 5px 20px rgba(255,140,0,0.4); transform: translateY(-2px);}
 
         .gen-upload-zone { border: 2px dashed var(--glass-border); border-radius: var(--radius-md); padding: 2rem; text-align: center; cursor: pointer; transition: var(--transition-normal); background: rgba(0, 0, 0, 0.3); position: relative; overflow: hidden; margin-bottom: 1rem;}
         .gen-upload-zone:hover { border-color: var(--color-cream); background: rgba(222, 219, 200, 0.05); }
         .gen-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 10; }
-        .data-size-badge { font-family: var(--font-mono); font-size: 0.8rem; background: rgba(0,230,118,0.1); color: #00E676; padding: 4px 10px; border-radius: 100px; display: inline-block; margin-top: 10px;}
+        .data-size-badge { font-family: var(--font-mono); font-size: 0.8rem; padding: 4px 10px; border-radius: 100px; display: inline-block; margin-top: 10px;}
+
+        /* ==========================================================================
+           5. SMART DECODER COMPONENTS 
+           ========================================================================== */
+        #decode-workspace { display: none; }
+        .decode-tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;}
+        .dec-tab { flex: 1; min-width: 150px; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-md); color: var(--text-secondary); cursor: pointer; text-align: center; font-weight: 600; transition: var(--transition-normal); }
+        .dec-tab.active { background: rgba(222,219,200,0.1); color: var(--color-cream); border-color: var(--color-cream); }
+        .dec-tab.active-morse { background: rgba(255,140,0,0.1); color: var(--color-morse); border-color: var(--color-morse); }
+        
+        .upload-zone { border: 2px dashed var(--glass-border); border-radius: var(--radius-lg); padding: 3rem 1.5rem; text-align: center; cursor: pointer; transition: var(--transition-normal); background: rgba(0, 0, 0, 0.2); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px; }
+        .upload-zone:hover { border-color: var(--color-cream); background: rgba(222, 219, 200, 0.05); }
+        .upload-zone.morse-zone { border-color: rgba(255,140,0,0.3); }
+        .upload-zone.morse-zone:hover { border-color: var(--color-morse); background: rgba(255,140,0,0.05); }
+        .upload-zone svg { width: 64px; height: 64px; fill: var(--text-secondary); margin-bottom: 1rem; transition: var(--transition-normal); }
+        .upload-zone:hover svg { fill: var(--color-cream); transform: translateY(-5px); }
+        .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 10; }
+
+        #camera-zone, #morse-audio-zone { display: none; width: 100%; position: relative; }
+        #reader { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--color-cream); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 0 30px rgba(222, 219, 200, 0.15); margin-bottom: 1rem;}
+        #reader video { width: 100% !important; object-fit: cover; border-radius: var(--radius-lg); }
+        
+        .scan-result-card { margin-top: 1rem; padding: 1.5rem; background: rgba(10, 15, 28, 0.8); border: 1px solid var(--glow-cyan); border-radius: var(--radius-lg); display: none; flex-direction: column; }
+        .scan-result-card.stealth-result { border-color: var(--color-stealth); box-shadow: 0 0 20px rgba(176, 38, 255, 0.2); }
+        .scan-result-card.morse-result { border-color: var(--color-morse); box-shadow: 0 0 20px rgba(255, 140, 0, 0.2); }
+        .scan-result-card h3 { font-size: 1rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .result-payload { font-family: var(--font-mono); font-size: 1.1rem; color: var(--color-cream); word-break: break-all; background: rgba(0,0,0,0.5); padding: 16px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); max-height: 200px; overflow-y: auto;}
 
         /* ==========================================================================
            6. RIGHT PANEL (PREVIEW FRAME)
            ========================================================================== */
         .preview-area { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; height: 100%; min-height: 500px; }
         .qr-frame { position: relative; background: rgba(0, 0, 0, 0.5); padding: 24px; border-radius: var(--radius-xl); border: 1px solid rgba(222, 219, 200, 0.2); box-shadow: 0 40px 80px rgba(0,0,0,0.8); transition: var(--transition-normal); z-index: 2; overflow: hidden; }
-        .qr-frame:hover { border-color: rgba(222, 219, 200, 0.4); box-shadow: 0 50px 100px rgba(0,0,0,0.9), 0 0 40px var(--color-cream-glow); }
+        .qr-frame:hover { border-color: rgba(222, 219, 200, 0.4); box-shadow: 0 50px 100px rgba(0,0,0,0.9), 0 0 40px rgba(222, 219, 200, 0.15); }
         
         #qr-canvas-container { width: 340px; height: 340px; background: #fff; border-radius: var(--radius-sm); overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; }
-        #qr-canvas-container canvas { max-width: 100% !important; max-height: 100% !important; object-fit: contain; }
+        #qr-canvas-container canvas, #qr-canvas-container img { width: 100% !important; height: 100% !important; object-fit: contain; }
 
         .preview-label { margin-top: 2rem; display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-cream); letter-spacing: 0.1em; text-transform: uppercase; }
         .status-dot { width: 8px; height: 8px; background: #00E676; border-radius: 50%; box-shadow: 0 0 10px #00E676; }
-        .radar-scan { position: absolute; top: -10%; left: 0; width: 100%; height: 20%; background: linear-gradient(to bottom, transparent, rgba(222, 219, 200, 0.5), transparent); border-bottom: 2px solid var(--color-cream); box-shadow: 0 10px 30px var(--color-cream-glow); z-index: 10; opacity: 0; pointer-events: none; }
+        .radar-scan { position: absolute; top: -10%; left: 0; width: 100%; height: 20%; background: linear-gradient(to bottom, transparent, rgba(222, 219, 200, 0.5), transparent); border-bottom: 2px solid var(--color-cream); box-shadow: 0 10px 30px rgba(222, 219, 200, 0.15); z-index: 10; opacity: 0; pointer-events: none; }
 
         /* ==========================================================================
-           7. UPLOAD & PRO CAMERA SYSTEM (DECODER)
+           7. MODALS (ACTIVATION & LOGOUT)
            ========================================================================== */
-        #decode-workspace { display: none; }
-        .decode-tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-        .nav-btn a { color: inherit; text-decoration: none; }
-        .dec-tab { flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-md); color: var(--text-secondary); cursor: pointer; text-align: center; font-weight: 600; transition: var(--transition-normal); }
-        .dec-tab.active { background: rgba(222,219,200,0.1); color: var(--color-cream); border-color: var(--color-cream); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; z-index: 999; opacity: 0; visibility: hidden; transition: 0.3s ease; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--color-navy); border: 1px solid var(--color-gold); border-radius: var(--radius-xl); padding: 2.5rem; width: 90%; max-width: 450px; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 50px rgba(255,215,0,0.2); transform: scale(0.9); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-content.danger-theme { border-color: #FF5252; box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 50px rgba(255,82,82,0.2); }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-close { position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
 
-        .upload-zone { border: 2px dashed var(--glass-border); border-radius: var(--radius-lg); padding: 3rem 1.5rem; text-align: center; cursor: pointer; transition: var(--transition-normal); background: rgba(0, 0, 0, 0.2); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px; }
-        .upload-zone:hover { border-color: var(--color-cream); background: rgba(222, 219, 200, 0.05); }
-        .upload-zone svg { width: 64px; height: 64px; fill: var(--text-secondary); margin-bottom: 1rem; transition: var(--transition-normal); }
-        .upload-zone:hover svg { fill: var(--color-cream); transform: translateY(-5px); }
-        .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 10; }
-
-        #camera-zone { display: none; width: 100%; position: relative; }
-        #reader { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--color-cream); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 0 30px var(--color-cream-glow); margin-bottom: 1rem;}
-        #reader video { width: 100% !important; object-fit: cover; border-radius: var(--radius-lg); }
+        .welcome-screen { position: fixed; inset: 0; background: transparent; z-index: 1000; display: flex; align-items: center; justify-content: center; flex-direction: column; transform: translateY(-100%); pointer-events: none; }
+        .welcome-screen.active { pointer-events: auto; }
         
-        .flash-btn { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.6); border: 1px solid var(--color-cream); color: var(--color-cream); width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 20; backdrop-filter: blur(5px); transition: var(--transition-normal); }
-        .flash-btn.active { background: var(--color-cream); color: var(--color-black); box-shadow: 0 0 15px var(--color-cream); }
-        .flash-btn svg { width: 20px; height: 20px; fill: currentColor; }
+        .my-custom-text { font-family: 'V1', sans-serif; font-size: 5rem; color: var(--color-gold); text-shadow: 0 0 40px rgba(255, 215, 0, 0.5); direction: rtl; }
+        .english-text { font-family: var(--font-sans); font-size: 4rem; font-weight: 800; color: var(--color-gold); text-shadow: 0 0 30px var(--color-gold-glow); }
 
-        .pro-controls { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 16px; display: none; flex-direction: column; gap: 12px; margin-bottom: 1rem; }
-        .control-row { display: flex; align-items: center; gap: 12px; }
-        .control-row svg { width: 20px; height: 20px; fill: var(--text-secondary); }
-        .pro-slider { flex: 1; -webkit-appearance: none; background: transparent; height: 4px; border-radius: 2px; }
-        .pro-slider::-webkit-slider-runnable-track { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
-        .pro-slider::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--color-cream); margin-top: -6px; cursor: pointer; box-shadow: 0 0 10px var(--color-cream-glow); transition: 0.2s; }
-        .control-label { font-size: 0.75rem; color: var(--text-secondary); width: 60px; text-transform: uppercase; font-family: var(--font-mono);}
+        .token-box { margin-top: 30px; background: rgba(0,0,0,0.6); border: 1px dashed var(--color-gold); padding: 20px 40px; border-radius: 16px; text-align: center; display: none; }
+        .token-box div:first-child { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 10px; }
+        .token-value { font-size: 2rem; color: var(--color-gold); font-family: var(--font-mono); letter-spacing: 3px; user-select: all; }
 
-        .scan-result-card { margin-top: 1rem; padding: 1.5rem; background: rgba(10, 15, 28, 0.8); border: 1px solid var(--glow-cyan); border-radius: var(--radius-lg); display: none; flex-direction: column; }
-        .scan-result-card h3 { font-size: 1rem; color: var(--text-secondary); margin-bottom: 1rem; }
-        .result-payload { font-family: var(--font-mono); font-size: 1.1rem; color: var(--color-cream); word-break: break-all; background: rgba(0,0,0,0.5); padding: 16px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); max-height: 200px; overflow-y: auto;}
+        .btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: #25D366; color: white; padding: 12px 24px; border-radius: var(--radius-md); text-decoration: none; font-weight: 600; font-size: 1rem; transition: var(--transition-normal); animation: pulse-whatsapp 2s infinite; width: 100%; margin-top: 15px;}
+        .btn-whatsapp:hover { background: #128C7E; transform: translateY(-2px); animation: none; }
+        @keyframes pulse-whatsapp { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
 
-        .network-card { background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; border: 1px solid var(--glass-border); margin-bottom: 10px; font-family: var(--font-sans); }
-        .network-card div { margin-bottom: 6px; font-size: 1.1rem; font-weight: 600; color: var(--color-cream); }
-        .network-card span { color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; display: block;}
+        /* Toasts */
+        #toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 9000; display: flex; flex-direction: column; gap: 15px; pointer-events: none; }
+        .toast { background: rgba(10,15,28,0.98); border-left: 4px solid var(--color-cream); color: var(--text-primary); padding: 15px 25px; border-radius: 8px; font-family: var(--font-sans); font-size: 1rem; box-shadow: 0 0 20px rgba(0,0,0,0.9); opacity: 0; transform: translateX(50px); transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); backdrop-filter: blur(10px); pointer-events: all; }
+        .toast.show { opacity: 1; transform: translateX(0); }
+        .toast.error { border-color: #FF5252; color: #FF5252; }
+        .toast.success { border-color: #00E676; color: #00E676; }
 
-        @media (max-width: 1024px) {
-            .workspace { grid-template-columns: 1fr; }
-            .preview-area { order: -1; min-height: 400px; padding-bottom: 2rem; }
-            header { flex-direction: column; gap: 1.5rem; }
-            .color-grid { grid-template-columns: 1fr; }
-            .action-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 1024px) { .workspace { grid-template-columns: 1fr; } .preview-area { order: -1; min-height: 400px; padding-bottom: 2rem; } .action-grid { grid-template-columns: 1fr; } .decode-tabs { flex-direction: column; } }
     </style>
 </head>
 <body>
 
     <div class="ambient-environment"></div>
     <div class="noise-texture"></div>
+    <div id="toast-container"></div>
 
-    <div class="app-shell">
+    <!-- شاشة الترحيب الديناميكية -->
+    <div class="welcome-screen" id="welcome-screen">
+        <div id="welcome-text"></div>
+        <div style="margin-top: 10px; color: var(--text-secondary); font-family: var(--font-mono);">MORHAF PRO SYSTEM ACTIVATED</div>
+        <div class="token-box" id="recovery-token-display">
+            <div>كود الاسترجاع الخاص بك (يرجى حفظه للوصول من أي جهاز):</div>
+            <div class="token-value" id="token-value"></div>
+        </div>
+        <button id="btn-close-welcome" class="btn btn-gold" style="margin-top: 40px; display: none; font-size: 1.2rem; padding: 15px 40px;">Launch Studio</button>
+    </div>
+
+    <!-- نافذة التفعيل PRO Modal -->
+    <div class="modal-overlay" id="pro-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="close-modal">&times;</button>
+            <h2 style="color: var(--color-gold); margin-bottom: 20px; text-align: center;">Unlock PRO Studio</h2>
+            <div class="input-group">
+                <label>Activation Code / أدخل كود التفعيل أو الاسترجاع</label>
+                <input type="text" class="input-control" id="pro-code-input" placeholder="أدخل الكود هنا لاستدعاء بياناتك...">
+            </div>
+            <button class="btn btn-gold" style="width: 100%; font-size: 1.1rem; padding: 18px;" id="btn-activate-pro">Activate PRO Now</button>
+            <div id="pro-error-msg" style="color: #FF5252; margin-top: 15px; text-align: center; display: none; font-size: 0.9rem;"></div>
+            <div style="margin-top: 25px; text-align: center; border-top: 1px solid rgba(222, 219, 200, 0.1); padding-top: 20px;">
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">If you don't have a code, contact the admin to get one.</p>
+                <a href="https://wa.me/963932296769?text=Hello,%20I%20want%20to%20request%20a%20subscription%20to%20the%20PRO%20QR%20System:%20https://morhafali5r-hub.github.io/MORHAF-Intelligence-QR/" target="_blank" class="btn-whatsapp">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    طلب الكود من الأدمن
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تسجيل الخروج (Logout Modal) -->
+    <div class="modal-overlay" id="logout-modal">
+        <div class="modal-content danger-theme">
+            <button class="modal-close" id="close-logout-modal">&times;</button>
+            <h2 style="color: #FF5252; margin-bottom: 20px; text-align: center;">System Logout</h2>
+            <div class="input-group">
+                <label>أدخل كود الاسترجاع (Token) للتأكيد</label>
+                <input type="text" class="input-control" id="logout-token-input" placeholder="MORHAF_XXXXXXXX">
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" id="btn-confirm-logout">تسجيل خروج آمن</button>
+            <div id="logout-error-msg" style="color: #FF5252; margin-top: 10px; text-align: center; display: none; font-size: 0.9rem;"></div>
+            
+            <div style="margin-top: 25px; text-align: center;">
+                <p style="color: var(--text-secondary); font-size: 0.85rem;">هل نسيت كود الاسترجاع؟ تواصل مع الأدمن</p>
+                <a href="https://wa.me/963932296769?text=مرحبا،%20لقد%20نسيت%20كود%20الـ%20Token%20الخاص%20بي%20وأريد%20الخروج%20من%20حسابي%20في%20نظام%20QR" target="_blank" class="btn-whatsapp" style="padding: 10px 16px; font-size: 0.9rem; margin-top: 8px;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    طلب الكود من الأدمن
+                </a>
+            </div>
+            <div style="margin-top: 25px; border-top: 1px dashed rgba(255, 82, 82, 0.3); padding-top: 20px;">
+                <button class="btn" style="width: 100%; background: rgba(255, 82, 82, 0.1); color: #FF5252; border: 1px solid #FF5252;" id="btn-force-logout">تسجيل خروج قسري (إتلاف الحساب)</button>
+                <p style="color: #FF5252; font-size: 0.75rem; text-align: center; margin-top: 10px; font-weight: bold;">تحذير: سيتم مسح وإتلاف الحساب نهائياً، ولن تتمكن من استرجاعه إطلاقاً.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-shell" id="app-shell">
         <header>
             <div class="brand-identity">
                 <div class="brand-orb"></div>
                 <div class="brand-text">MORHAF <span>Intelligence</span></div>
+                <div id="pro-badge">PRO ACTIVE</div>
+                <button id="btn-logout-pro">تسجيل خروج</button>
+                <button id="btn-subscribe-pro" class="btn btn-gold">اشتراك PRO</button>
             </div>
             <div class="nav-switcher">
                 <button class="nav-btn active" id="tab-generator">Studio Generator</button>
@@ -189,30 +299,81 @@
         </header>
 
         <main class="workspace">
-            <!-- LEFT PANEL -->
+            <!-- LEFT PANEL: GENERATOR -->
             <div class="left-panel glass-panel" id="controls-panel">
                 
-                <!-- === GENERATOR WORKSPACE === -->
                 <div id="generate-workspace">
-                    <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4l6.5 13h-13L12 6z"/></svg> Payload Configuration</div>
+                    <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4l6.5 13h-13L12 6z"/></svg> Public Payload Configuration</div>
                     <div class="input-group">
-                        <label>Data Protocol</label>
+                        <label>Data Protocol (What normal cameras see)</label>
                         <select class="input-control" id="data-type">
-                            <option value="text">Universal (URL / Text)</option>
-                            <option value="wifi">WiFi Network Protocol</option>
-                            <option value="vcard">Digital Contact (vCard)</option>
-                            <option value="email">Secure Email</option>
-                            <option value="image">Image Vault Upload (Permanent Cloud Link) 🔥</option>
+                            <option value="text">Universal (URL / Text) - FREE</option>
+                            <option value="wifi">WiFi Network Protocol - FREE</option>
+                            <option value="vcard">Digital Contact (vCard) - FREE</option>
+                            <option value="email">Secure Email - FREE</option>
+                            <option value="image">Cloud Image Vault 🔥 - PRO</option>
+                            <option value="morse" style="color: var(--color-morse); font-weight:bold;">Radio Morse Audio 📻 - PRO</option>
                         </select>
                     </div>
-                    <div id="dynamic-inputs-container">
-                        <div class="input-group">
-                            <label>Content Payload</label>
-                            <textarea class="input-control" id="qr-input" placeholder="Enter highly classified text or URL..."></textarea>
+                    <div id="dynamic-inputs-container"></div>
+
+                    <!-- PRO: STEALTH MATRIX -->
+                    <div class="section-title" id="stealth-title" style="margin-top: 3rem; color: var(--color-stealth);"><svg viewBox="0 0 24 24" fill="var(--color-stealth)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg> Stealth Matrix (PRO)</div>
+                    
+                    <div id="stealth-wrapper" style="border-radius: var(--radius-md); padding: 1px;">
+                        <div class="input-group" id="stealth-mode-group">
+                            <label>Enable Deep LSB Steganography Protocol</label>
+                            <select class="input-control stealth-input" id="stealth-mode" disabled>
+                                <option value="none">Disabled (Normal QR Generation)</option>
+                                <option value="active">Enabled (Hide Secret Data within Pixels)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="stealth-matrix" id="stealth-matrix-container">
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 15px;">Data entered below will be encrypted and hidden inside the pixels. Invisible to normal cameras.</p>
+                            <div class="input-group">
+                                <label class="stealth-label">1. Encryption Password (Required)</label>
+                                <input type="password" class="input-control stealth-input" id="stealth-pass" placeholder="Enter secure key...">
+                            </div>
+                            <div class="input-group">
+                                <label class="stealth-label">2. Classified Text Payload</label>
+                                <textarea class="input-control stealth-input" id="stealth-text" placeholder="Type secret message..."></textarea>
+                            </div>
+                            <div class="input-group">
+                                <label class="stealth-label">3. Secret File Attachment (Any Format)</label>
+                                <div class="gen-upload-zone" style="border-color: rgba(176,38,255,0.3); padding: 1rem;">
+                                    <span id="stealth-file-text" style="font-weight: 600; color: var(--color-stealth);">Drop classified file here</span>
+                                    <input type="file" id="stealth-file-input">
+                                </div>
+                                <div id="stealth-file-status" style="font-size: 0.8rem; margin-top: 5px; color: var(--color-stealth); font-family: var(--font-mono);"></div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="section-title" style="margin-top: 3rem"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.41 2.26-4.39C12.92 3.04 12.46 3 12 3z"/></svg> Aesthetic Matrix</div>
+                    <div class="color-grid">
+                        <div class="input-group">
+                            <label>Module Style</label>
+                            <select class="input-control" id="style-dots">
+                                <option value="square">Classic Sharp (FREE)</option>
+                                <option value="dots">Modern Dots (FREE)</option>
+                                <option value="rounded">Premium Rounded (PRO)</option>
+                                <option value="extra-rounded">Extra Rounded (PRO)</option>
+                                <option value="classy">Classy Edge (PRO)</option>
+                                <option value="classy-rounded">Fluid Classy (PRO)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Engine Resolution</label>
+                            <select class="input-control" id="export-res">
+                                <option value="720">720p (Standard HQ)</option>
+                                <option value="1080">1080p (Ultra HD)</option>
+                                <option value="2048">2K (Print Quality)</option>
+                                <option value="4096">4K (Billboard Master)</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="color-grid">
                         <div class="input-group">
                             <label>Foreground Color</label>
@@ -229,68 +390,68 @@
                             </div>
                         </div>
                     </div>
-                    <div class="color-grid">
-                        <div class="input-group">
-                            <label>Module Style</label>
-                            <select class="input-control" id="style-dots">
-                                <option value="rounded">Premium Rounded</option>
-                                <option value="dots">Modern Dots</option>
-                                <option value="square">Classic Sharp</option>
-                                <option value="classy">Classy Edge</option>
-                            </select>
+
+                    <div class="input-group" id="logo-section">
+                        <label>Brand Logo (Auto-Clears QR Dots) - PRO</label>
+                        <div class="gen-upload-zone" style="padding: 1.5rem;">
+                            <span id="logo-text-status" style="font-weight: 600;">Drop logo image or click to browse</span>
+                            <input type="file" id="logo-input" accept="image/png, image/jpeg, image/svg+xml">
                         </div>
-                        <div class="input-group">
-                            <label>Engine Resolution</label>
-                            <select class="input-control" id="export-res">
-                                <option value="720">720p (Standard HQ)</option>
-                                <option value="1080">1080p (Ultra HD)</option>
-                                <option value="2048">2K (Print Quality)</option>
-                                <option value="4096">4K (Billboard Master)</option>
-                            </select>
-                        </div>
+                        <button id="btn-clear-logo" style="background:none; border:none; color:#FF5252; cursor:pointer; font-size:0.8rem; display:none; margin-top: -10px;">Clear Logo</button>
                     </div>
 
                     <div class="action-grid">
-                        <button class="btn btn-secondary" id="btn-preview">Live Preview</button>
-                        <button class="btn btn-primary" id="btn-export">Render Asset</button>
+                        <button class="btn btn-secondary" id="btn-preview">Preview Render</button>
+                        <button class="btn btn-primary" id="btn-export-png">Export PNG</button>
+                        <button class="btn btn-gold" id="btn-export-svg">Export Vector</button>
                     </div>
                 </div>
 
                 <!-- === DECODER WORKSPACE === -->
                 <div id="decode-workspace">
                     <div class="section-title"><svg viewBox="0 0 24 24"><path d="M3 3h6v6H3V3zm12 0h6v6h-6V3zM3 15h6v6H3v-6zm16 0v6h-2v-6h2zM9 15v2h2v-2H9zm4 0h2v2h-2v-2z"/></svg> Neural Image Analysis</div>
+                    
                     <div class="decode-tabs">
                         <div class="dec-tab active" id="tab-upload">Upload File</div>
-                        <div class="dec-tab" id="tab-camera">Live Camera Scan</div>
+                        <div class="dec-tab" id="tab-camera">Live Scan</div>
+                        <div class="dec-tab" id="tab-morse-audio" style="color:var(--color-morse); border-color:var(--color-morse); display:none;">Morse Audio Analyzer</div>
                     </div>
-
+                    
                     <div class="upload-zone" id="drop-zone">
                         <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.36 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
                         <p style="font-weight:600; margin-bottom: 8px;">Drag & Drop Secure Image</p>
                         <p style="color:var(--color-cream); font-size: 0.85rem;">or click to browse local files</p>
                         <input type="file" id="file-input" accept="image/*">
                     </div>
-
+                    
                     <div id="camera-zone">
-                        <button class="flash-btn" id="btn-flash" title="Toggle Flashlight"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></button>
                         <div id="reader"></div>
-                        
-                        <div class="pro-controls" id="pro-controls">
-                            <div class="control-row" id="row-exposure" style="display:none;">
-                                <svg viewBox="0 0 24 24"><path d="M12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm6.1-5.6l1.4 1.4-1.4 1.4-1.4-1.4 1.4-1.4zM4.5 7.9l-1.4-1.4 1.4-1.4 1.4 1.4-1.4 1.4zm15 11.6l-1.4-1.4 1.4-1.4 1.4 1.4-1.4 1.4zM4.5 16.1l1.4-1.4 1.4 1.4-1.4 1.4-1.4-1.4zM12 2v3h-2V2h2zm0 17v3h-2v-3h2zM2 11h3v2H2v-2zm17 0h3v2h-3v-2z"/></svg>
-                                <input type="range" class="pro-slider" id="slider-exposure">
-                                <span class="control-label">EXPOSURE</span>
-                            </div>
-                            <div class="control-row" id="row-focus" style="display:none;">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
-                                <input type="range" class="pro-slider" id="slider-focus">
-                                <span class="control-label">FOCUS</span>
-                            </div>
+                    </div>
+
+                    <!-- Morse Audio Dropzone (PRO) -->
+                    <div id="morse-audio-zone">
+                        <div class="input-group">
+                            <label style="color: var(--color-morse);">Signal Dictionary (Language)</label>
+                            <select class="input-control morse-input" id="morse-dec-lang">
+                                <option value="ar">عربي (AR)</option>
+                                <option value="en">English (EN)</option>
+                            </select>
+                        </div>
+                        <div class="upload-zone morse-zone" id="drop-zone-morse">
+                            <svg viewBox="0 0 24 24" fill="var(--color-morse)"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1v-3a2 2 0 012-2h1zM3 19a2 2 0 002 2h1v-3a2 2 0 00-2-2H3z"/></svg>
+                            <p style="font-weight:600; margin-bottom: 8px; color:var(--color-morse);">Drop Morse WAV Audio Here</p>
+                            <p style="color:var(--text-secondary); font-size: 0.85rem;">System will analyze amplitudes to extract text</p>
+                            <input type="file" id="file-input-morse" accept="audio/wav">
                         </div>
                     </div>
 
+                    <div class="input-group" style="margin-top: 25px; display: none;" id="decoder-stealth-group">
+                        <label style="color: var(--color-stealth); font-family: var(--font-mono);"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="vertical-align: middle;"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg> Decryption Key (PRO)</label>
+                        <input type="password" class="input-control stealth-input" id="decoder-pass" placeholder="Leave empty for public scan, or enter key to extract hidden data...">
+                    </div>
+
                     <div class="scan-result-card" id="scan-result-card">
-                        <h3>Smart Detection Result:</h3>
+                        <h3>Detection Result:</h3>
                         <div id="scan-result-content"></div>
                         <div id="scan-result-actions" style="margin-top: 1rem; width: 100%;"></div>
                     </div>
@@ -312,256 +473,543 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            
+            // ==========================================
+            // CRYPTO & AUDIO WORKERS (STEGANOGRAPHY & MORSE)
+            // ==========================================
+            const stegoWorkerCode = `
+            self.onmessage = function(e) {
+                const { action, coverBuf, payloadBytes, key } = e.data;
+                if(action === 'encImg') { 
+                    const data = new Uint8Array(coverBuf); const enc = new Uint8Array(payloadBytes.length); 
+                    for (let i = 0; i < payloadBytes.length; i++) enc[i] = payloadBytes[i] ^ key[i % key.length]; 
+                    const totalBits = 32 + (enc.length * 8); let bIdx = 0; const len = enc.length; 
+                    for (let i = 0; i < data.length && bIdx < totalBits; i++) { 
+                        if (i % 4 === 3) continue; 
+                        let bit; if (bIdx < 32) bit = (len >> (31 - bIdx)) & 1; else bit = (enc[Math.floor((bIdx - 32) / 8)] >> (7 - ((bIdx - 32) % 8))) & 1; 
+                        data[i] = (data[i] & 0xFE) | bit; bIdx++; 
+                    } 
+                    self.postMessage({ result: coverBuf }, [coverBuf]); 
+                } else if (action === 'decImg') { 
+                    const data = new Uint8Array(coverBuf); let l32=0, b=0, i=0; 
+                    while(b<32 && i<data.length){ if(i%4!==3){ l32=(l32<<1)|(data[i]&1); b++; } i++; } 
+                    if(l32<=0 || l32 > ((data.length/4)*3-32)/8) return self.postMessage({ error: 'Corrupt' }); 
+                    const enc = new Uint8Array(l32); let bIdx=0, bitC=0, cB=0; 
+                    while(bIdx<l32 && i<data.length){ if(i%4!==3){ cB=(cB<<1)|(data[i]&1); bitC++; if(bitC===8){ enc[bIdx++]=cB; bitC=0; cB=0; } } i++; } 
+                    const dec = new Uint8Array(l32); for (let j=0; j<l32; j++) dec[j] = enc[j] ^ key[j%key.length]; 
+                    self.postMessage({ payloadDec: dec }); 
+                }
+            };`;
+            const workerBlob = new Blob([stegoWorkerCode], {type: 'application/javascript'}); 
+            const stegoWorker = new Worker(URL.createObjectURL(workerBlob));
+
+            const textEncoder = new TextEncoder(); const textDecoder = new TextDecoder('utf-8', { fatal: true });
+            
+            function generateUltimateKeySync(textPass) { 
+                let keyLen = Math.max(textEncoder.encode(textPass).length, 32); let key = new Uint8Array(keyLen); 
+                const pb = textEncoder.encode(textPass); for(let i=0; i<pb.length; i++) key[i] = pb[i]; 
+                let isZero = true; for(let i=0; i<keyLen; i++) if(key[i] !== 0) isZero = false; 
+                if(isZero) key.fill(170); return key; 
+            }
+
+            // Morse Dictionaries
+            const enMorse = { 'A':'.-', 'B':'-...', 'C':'-.-.', 'D':'-..', 'E':'.', 'F':'..-.', 'G':'--.', 'H':'....', 'I':'..', 'J':'.---', 'K':'-.-', 'L':'.-..', 'M':'--', 'N':'-.', 'O':'---', 'P':'.--.', 'Q':'--.-', 'R':'.-.', 'S':'...', 'T':'-', 'U':'..-', 'V':'...-', 'W':'.--', 'X':'-..-', 'Y':'-.--', 'Z':'--..', '0':'-----', '1':'.----', '2':'..---', '3':'...--', '4':'....-', '5':'.....', '6':'-....', '7':'--...', '8':'---..', '9':'----.' };
+            const arMorse = { 'ا':'.-', 'أ':'.-', 'إ':'.-', 'آ':'.-', 'ب':'-...', 'ت':'-', 'ث':'-.-.', 'ج':'.---', 'ح':'....', 'خ':'---', 'د':'-..', 'ذ':'--..', 'ر':'.-.', 'ز':'---.', 'س':'...', 'ش':'----', 'ص':'-..-', 'ض':'...-', 'ط':'..-', 'ظ':'-.--', 'ع':'.-.-', 'غ':'--.', 'ف':'..-.', 'ق':'--.-', 'ك':'-.-', 'ل':'.-..', 'م':'--', 'ن':'-.', 'ه':'.', 'و':'.--', 'ي':'..', '0':'-----', '1':'.----', '2':'..---', '3':'...--', '4':'....-', '5':'.....', '6':'-....', '7':'--...', '8':'---..', '9':'----.' };
+            const revEn = Object.fromEntries(Object.entries(enMorse).map(([k,v]) => [v,k])); 
+            const revAr = Object.fromEntries(Object.entries(arMorse).map(([k,v]) => [v,k]));
+
+            // Global DOM Map
             const DOM = {
                 tabs: { gen: document.getElementById('tab-generator'), dec: document.getElementById('tab-decoder') },
                 workspaces: { gen: document.getElementById('generate-workspace'), dec: document.getElementById('decode-workspace') },
-                inputs: { type: document.getElementById('data-type'), container: document.getElementById('dynamic-inputs-container'), colorDots: document.getElementById('color-dots'), colorBg: document.getElementById('color-bg'), hexDots: document.getElementById('hex-dots'), hexBg: document.getElementById('hex-bg'), styleDots: document.getElementById('style-dots'), resolution: document.getElementById('export-res') },
-                actions: { preview: document.getElementById('btn-preview'), export: document.getElementById('btn-export'), fileInput: document.getElementById('file-input'), dropZone: document.getElementById('drop-zone'), tabUpload: document.getElementById('tab-upload'), tabCamera: document.getElementById('tab-camera'), btnFlash: document.getElementById('btn-flash') },
-                display: { qrContainer: document.getElementById('qr-canvas-container'), scanCard: document.getElementById('scan-result-card'), scanContent: document.getElementById('scan-result-content'), scanActions: document.getElementById('scan-result-actions'), radarScan: document.getElementById('radar-scan'), qrFrame: document.getElementById('qr-frame'), cameraZone: document.getElementById('camera-zone'), resIndicator: document.getElementById('res-indicator') },
-                cameraPro: { panel: document.getElementById('pro-controls'), rowExp: document.getElementById('row-exposure'), rowFoc: document.getElementById('row-focus'), sliderExp: document.getElementById('slider-exposure'), sliderFoc: document.getElementById('slider-focus') }
+                
+                type: document.getElementById('data-type'), container: document.getElementById('dynamic-inputs-container'),
+                colorDots: document.getElementById('color-dots'), colorBg: document.getElementById('color-bg'), hexDots: document.getElementById('hex-dots'), hexBg: document.getElementById('hex-bg'), styleDots: document.getElementById('style-dots'), resolution: document.getElementById('export-res'),
+                qrContainer: document.getElementById('qr-canvas-container'), resIndicator: document.getElementById('res-indicator'), radarScan: document.getElementById('radar-scan'), qrFrame: document.getElementById('qr-frame'),
+                btnPreview: document.getElementById('btn-preview'), btnExportPng: document.getElementById('btn-export-png'), btnExportSvg: document.getElementById('btn-export-svg'),
+                logoInput: document.getElementById('logo-input'), logoSection: document.getElementById('logo-section'), logoText: document.getElementById('logo-text-status'), btnClearLogo: document.getElementById('btn-clear-logo'),
+                
+                // Stealth Elements
+                stealthWrapper: document.getElementById('stealth-wrapper'), stealthTitle: document.getElementById('stealth-title'), stealthMode: document.getElementById('stealth-mode'), stealthContainer: document.getElementById('stealth-matrix-container'), stealthPass: document.getElementById('stealth-pass'), stealthText: document.getElementById('stealth-text'), stealthFileInput: document.getElementById('stealth-file-input'), stealthFileText: document.getElementById('stealth-file-text'), stealthFileStatus: document.getElementById('stealth-file-status'),
+                
+                // Modals
+                modal: document.getElementById('pro-modal'), btnActivatePro: document.getElementById('btn-activate-pro'), codeInput: document.getElementById('pro-code-input'), proErrorMsg: document.getElementById('pro-error-msg'), welcomeScreen: document.getElementById('welcome-screen'), welcomeText: document.getElementById('welcome-text'), proBadge: document.getElementById('pro-badge'), tokenDisplay: document.getElementById('recovery-token-display'), tokenValue: document.getElementById('token-value'), btnCloseWelcome: document.getElementById('btn-close-welcome'), btnSubscribeTop: document.getElementById('btn-subscribe-pro'), btnLogoutPro: document.getElementById('btn-logout-pro'), appShell: document.getElementById('app-shell'),
+                logoutModal: document.getElementById('logout-modal'), closeLogoutModal: document.getElementById('close-logout-modal'), logoutTokenInput: document.getElementById('logout-token-input'), btnConfirmLogout: document.getElementById('btn-confirm-logout'), logoutErrorMsg: document.getElementById('logout-error-msg'), btnForceLogout: document.getElementById('btn-force-logout'),
+
+                // Decoder
+                actions: { fileInput: document.getElementById('file-input'), dropZone: document.getElementById('drop-zone'), tabUpload: document.getElementById('tab-upload'), tabCamera: document.getElementById('tab-camera'), tabMorse: document.getElementById('tab-morse-audio'), morseZone: document.getElementById('morse-audio-zone'), morseInput: document.getElementById('file-input-morse'), morseDrop: document.getElementById('drop-zone-morse'), morseLang: document.getElementById('morse-dec-lang') },
+                display: { scanCard: document.getElementById('scan-result-card'), scanContent: document.getElementById('scan-result-content'), scanActions: document.getElementById('scan-result-actions'), cameraZone: document.getElementById('camera-zone'), decoderPassGroup: document.getElementById('decoder-stealth-group'), decoderPass: document.getElementById('decoder-pass') }
             };
 
+            let isPro = false;
+            let cloudVaultUrl = ""; 
+            let customLogoData = null;
+            let stealthSecretFile = null;
             let currentMode = 'generate';
             let html5QrCode = null; 
-            let isFlashOn = false;
-            let activeVideoTrack = null;
-            let cloudVaultUrl = ""; 
             
-            // Core Generation Engine
-            const uiEngine = new QRCodeStyling({ width: 1080, height: 1080, type: "canvas", data: "https://morhafali5r-hub.github.io/MORHAF-Portfolio/", margin: 20, qrOptions: {errorCorrectionLevel: 'Q'}, dotsOptions: { color: "#000000", type: "rounded" }, backgroundOptions: { color: "#ffffff" }, cornersSquareOptions: { type: "extra-rounded", color: "#000000" }, cornersDotOptions: { type: "dot", color: "#000000" } });
-            uiEngine.append(DOM.display.qrContainer);
-            gsap.from(".glass-panel", { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" });
+            // Audio Engine
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            window.AudioEngine = {
+                init: () => { if (audioCtx.state === 'suspended') audioCtx.resume(); },
+                playClick: () => { window.AudioEngine.init(); const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.type = 'sine'; o.frequency.setValueAtTime(800, audioCtx.currentTime); g.gain.setValueAtTime(0.1, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); o.start(); o.stop(audioCtx.currentTime + 0.1); },
+                playSuccess: () => { window.AudioEngine.init(); const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.type = 'triangle'; o.frequency.setValueAtTime(400, audioCtx.currentTime); o.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.3); g.gain.setValueAtTime(0.2, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5); o.start(); o.stop(audioCtx.currentTime + 0.5); },
+                playError: () => { window.AudioEngine.init(); const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.type = 'sawtooth'; o.frequency.setValueAtTime(200, audioCtx.currentTime); g.gain.setValueAtTime(0.1, audioCtx.currentTime); g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3); o.start(); o.stop(audioCtx.currentTime + 0.3); },
+                playMorse: (morseStr) => { 
+                    window.AudioEngine.init(); let time = audioCtx.currentTime + 0.1; const dot = 0.08; const dash = dot * 3; const gap = dot; const charGap = dot * 3; const wordGap = dot * 7; 
+                    for(let i=0; i<morseStr.length; i++) { 
+                        let c = morseStr[i]; 
+                        if(c === '.' || c === '-') { 
+                            const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.type = 'sine'; o.frequency.value = 650; 
+                            g.gain.setValueAtTime(0, time); g.gain.linearRampToValueAtTime(0.1, time + 0.01); o.connect(g); g.connect(audioCtx.destination); o.start(time); 
+                            let len = (c === '.') ? dot : dash; g.gain.setValueAtTime(0.1, time + len - 0.01); g.gain.linearRampToValueAtTime(0, time + len); o.stop(time + len); time += len + gap; 
+                        } else if (c === ' ') time += charGap; else if (c === '/') time += wordGap; 
+                    } 
+                },
+                exportMorseWAV: async (morseStr) => { 
+                    const dot = 0.08; const dash = dot * 3; const gap = dot; const charGap = dot * 3; const wordGap = dot * 7; let totalTime = 0.5; 
+                    for(let c of morseStr) { if(c==='.') totalTime+=dot+gap; else if(c==='-') totalTime+=dash+gap; else if(c===' ') totalTime+=charGap; else if(c==='/') totalTime+=wordGap; } 
+                    const offlineCtx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 44100 * totalTime, 44100); let time = 0.1; 
+                    for(let c of morseStr) { 
+                        if(c === '.' || c === '-') { 
+                            const o = offlineCtx.createOscillator(); const g = offlineCtx.createGain(); o.type = 'sine'; o.frequency.value = 650; 
+                            g.gain.setValueAtTime(0, time); g.gain.linearRampToValueAtTime(0.8, time + 0.01); o.connect(g); g.connect(offlineCtx.destination); o.start(time); 
+                            let len = (c === '.') ? dot : dash; g.gain.setValueAtTime(0.8, time + len - 0.01); g.gain.linearRampToValueAtTime(0, time + len); o.stop(time + len); time += len + gap; 
+                        } else if (c === ' ') time += charGap; else if (c === '/') time += wordGap; 
+                    } 
+                    const renderedBuffer = await offlineCtx.startRendering(); 
+                    return audioBufferToWav(renderedBuffer); 
+                }
+            };
+            function playSound(type) { if(type==='click') window.AudioEngine.playClick(); else if(type==='success') window.AudioEngine.playSuccess(); else window.AudioEngine.playError(); }
 
-            /* TAB SWITCHING */
+            function audioBufferToWav(buffer) { 
+                const numChannels = buffer.numberOfChannels, sampleRate = buffer.sampleRate, format = 1, bitDepth = 16; 
+                let result = buffer.getChannelData(0); 
+                const bytesPerSample = bitDepth / 8; const blockAlign = numChannels * bytesPerSample; const outBuf = new ArrayBuffer(44 + result.length * bytesPerSample); 
+                const view = new DataView(outBuf); function writeString(view, offset, string) { for (let i = 0; i < string.length; i++) view.setUint8(offset + i, string.charCodeAt(i)); }
+                writeString(view, 0, 'RIFF'); view.setUint32(4, 36 + result.length * bytesPerSample, true); 
+                writeString(view, 8, 'WAVE'); writeString(view, 12, 'fmt '); view.setUint32(16, 16, true); view.setUint16(20, format, true); 
+                view.setUint16(22, numChannels, true); view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * blockAlign, true); 
+                view.setUint16(32, blockAlign, true); view.setUint16(34, bitDepth, true); writeString(view, 36, 'data'); view.setUint32(40, result.length * bytesPerSample, true); 
+                let offset = 44; for (let i = 0; i < result.length; i++, offset += 2) { let s = Math.max(-1, Math.min(1, result[i])); view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true); } 
+                return new Blob([view], { type: 'audio/wav' }); 
+            }
+
+            function toast(msg, type='success') {
+                const el = document.createElement('div'); el.className = `toast ${type}`; el.textContent = msg;
+                document.getElementById('toast-container').appendChild(el); requestAnimationFrame(()=>el.classList.add('show'));
+                setTimeout(() => { el.classList.remove('show'); setTimeout(()=>el.remove(), 400); }, 3000);
+            }
+            document.querySelectorAll('button, select, input[type="color"]').forEach(el => { el.addEventListener('click', () => playSound('click')); });
+
+            const uiEngine = new QRCodeStyling({ width: 1080, height: 1080, type: "canvas", data: "https://morhafali5r-hub.github.io/MORHAF-Portfolio/", margin: 20, qrOptions: {errorCorrectionLevel: 'Q'}, dotsOptions: { color: "#000000", type: "square" }, backgroundOptions: { color: "#ffffff" }, cornersSquareOptions: { type: "square", color: "#000000" }, cornersDotOptions: { type: "square", color: "#000000" } });
+            uiEngine.append(DOM.qrContainer); gsap.from(".glass-panel", { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" });
+
+            // TABS LOGIC
             function switchTab(mode) {
-                if (currentMode === mode) return;
-                currentMode = mode;
+                if (currentMode === mode) return; currentMode = mode;
                 const isGen = mode === 'generate';
                 DOM.tabs.gen.classList.toggle('active', isGen); DOM.tabs.dec.classList.toggle('active', !isGen);
-                const hideWS = isGen ? DOM.workspaces.dec : DOM.workspaces.gen;
-                const showWS = isGen ? DOM.workspaces.gen : DOM.workspaces.dec;
-                if(isGen) stopCamera(); 
+                const hideWS = isGen ? DOM.workspaces.dec : DOM.workspaces.gen; const showWS = isGen ? DOM.workspaces.gen : DOM.workspaces.dec;
+                if(isGen && typeof stopCamera === 'function') stopCamera(); 
                 gsap.to(hideWS, { opacity: 0, duration: 0.2, onComplete: () => {
-                    hideWS.style.display = 'none'; showWS.style.display = 'block';
-                    gsap.fromTo(showWS, {opacity: 0, y: 10}, {opacity: 1, y: 0, duration: 0.3});
+                    hideWS.style.display = 'none'; showWS.style.display = 'block'; gsap.fromTo(showWS, {opacity: 0, y: 10}, {opacity: 1, y: 0, duration: 0.3});
                     if (isGen) updateQR(false); 
-                    else DOM.display.qrContainer.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0A0F1C;"><svg viewBox="0 0 24 24" style="width:80px;height:80px;fill:var(--glass-border)"><path d="M4 4h4v2H6v2H4V4zm16 0h-4v2h2v2h2V4zM4 20h4v-2H6v-2H4v4zm16 0h-4v-2h2v-2h2v4z"/></svg></div>`;
+                    else DOM.qrContainer.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0A0F1C;border-radius:var(--radius-sm)"><svg viewBox="0 0 24 24" style="width:80px;height:80px;fill:var(--glass-border)"><path d="M4 4h4v2H6v2H4V4zm16 0h-4v2h2v2h2V4zM4 20h4v-2H6v-2H4v4zm16 0h-4v-2h2v-2h2v4z"/></svg></div>`;
                 }});
             }
             DOM.tabs.gen.addEventListener('click', () => switchTab('generate')); DOM.tabs.dec.addEventListener('click', () => switchTab('decode'));
 
-            /* HEX COLOR SYNC */
-            function syncColors(source, target, isHexToColor = false) {
-                if (isHexToColor) { let val = source.value; if (!val.startsWith('#')) val = '#' + val; if (val.match(/^#[0-9A-Fa-f]{6}$/)) { target.value = val; updateQR(false); }
-                } else { target.value = source.value.toUpperCase(); updateQR(false); }
-            }
-            DOM.inputs.colorDots.addEventListener('input', () => syncColors(DOM.inputs.colorDots, DOM.inputs.hexDots)); DOM.inputs.colorBg.addEventListener('input', () => syncColors(DOM.inputs.colorBg, DOM.inputs.hexBg));
-            DOM.inputs.hexDots.addEventListener('input', () => syncColors(DOM.inputs.hexDots, DOM.inputs.colorDots, true)); DOM.inputs.hexBg.addEventListener('input', () => syncColors(DOM.inputs.hexBg, DOM.inputs.colorBg, true));
+            // ==========================================
+            // PRO SYSTEM & LOCKS (THE TEASING EFFECT)
+            // ==========================================
+            const WORKER_URL = "https://payment-system.morhaf-ali-5r.workers.dev";
+            
+            // Capture-Phase Click Listener for Locked Elements
+            document.addEventListener('click', (e) => {
+                if (!isPro) {
+                    if (e.target.classList.contains('pro-locked') || e.target.closest('.pro-locked')) {
+                        DOM.modal.classList.add('active');
+                        playSound('error');
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                }
+            }, true);
 
-            /* DYNAMIC FORM BUILDER */
-            DOM.inputs.type.addEventListener('change', (e) => {
-                const type = e.target.value; let html = '';
+            function enforceProLocks() {
+                const isProFeatureSelected = DOM.type.value === 'image' || DOM.type.value === 'morse' || DOM.styleDots.value === 'rounded' || DOM.styleDots.value === 'extra-rounded' || DOM.styleDots.value === 'classy' || DOM.styleDots.value === 'classy-rounded';
+                
+                if(!isPro) {
+                    // Apply visual locks to tease users
+                    DOM.logoSection.classList.add('pro-locked'); 
+                    DOM.stealthWrapper.classList.add('pro-locked'); 
+                    DOM.display.decoderPassGroup.classList.add('pro-locked');
+                    
+                    DOM.stealthMode.value = 'none'; 
+                    DOM.stealthMode.disabled = true; 
+                    DOM.stealthContainer.classList.remove('active'); // Hide container inputs
+                    
+                    DOM.btnSubscribeTop.style.display = 'block'; 
+                    DOM.btnLogoutPro.style.display = 'none';
+                    DOM.actions.tabMorse.style.display = 'none';
+                    
+                    if(isProFeatureSelected) { 
+                        DOM.modal.classList.add('active'); 
+                        playSound('error'); 
+                        // Revert selects if Free user tries to use them
+                        if (DOM.type.value === 'image' || DOM.type.value === 'morse') DOM.type.value = 'text';
+                        if (['rounded', 'extra-rounded', 'classy', 'classy-rounded'].includes(DOM.styleDots.value)) DOM.styleDots.value = 'square';
+                        buildInputs();
+                    }
+                } else {
+                    DOM.logoSection.classList.remove('pro-locked'); 
+                    DOM.stealthWrapper.classList.remove('pro-locked'); 
+                    DOM.display.decoderPassGroup.classList.remove('pro-locked');
+                    
+                    DOM.stealthMode.disabled = false;
+                    // Normal behavior: only show matrix if active is selected
+                    DOM.stealthContainer.classList.toggle('active', DOM.stealthMode.value === 'active');
+                    
+                    DOM.proBadge.style.display = 'block'; 
+                    DOM.btnSubscribeTop.style.display = 'none'; 
+                    DOM.btnLogoutPro.style.display = 'block'; 
+                    DOM.actions.tabMorse.style.display = 'block';
+                }
+            }
+            function checkLocalPro() { const localData = JSON.parse(localStorage.getItem('MORHAF_PRO_DATA')); if(localData && localData.token) { isPro = true; enforceProLocks(); } } checkLocalPro();
+
+            DOM.type.addEventListener('change', enforceProLocks); DOM.styleDots.addEventListener('change', enforceProLocks);
+            DOM.btnSubscribeTop.addEventListener('click', () => { DOM.modal.classList.add('active'); });
+            document.getElementById('close-modal').addEventListener('click', () => { DOM.modal.classList.remove('active'); if(!isPro) { DOM.type.value = 'text'; DOM.styleDots.value = 'square'; buildInputs(); } });
+
+            // Activate & Restore Action
+            DOM.btnActivatePro.addEventListener('click', async () => {
+                const code = DOM.codeInput.value.trim();
+                if(!code) { DOM.proErrorMsg.innerText = "الرجاء إدخال الكود أولاً."; DOM.proErrorMsg.style.display = 'block'; playSound('error'); return; }
+
+                if (code.startsWith('MORHAF_')) {
+                    DOM.btnActivatePro.innerText = "جاري الاتصال بقاعدة البيانات...";
+                    try {
+                        const response = await fetch(`${WORKER_URL}/client/restore`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: code }) });
+                        const data = await response.json();
+                        if(response.ok && data.success) {
+                            const fetchedName = data.name || "عودة ميمونة";
+                            localStorage.setItem('MORHAF_PRO_DATA', JSON.stringify({ name: fetchedName, token: code }));
+                            isPro = true; DOM.modal.classList.remove('active'); enforceProLocks(); showWelcomeScreen(fetchedName, code, true);
+                        } else { DOM.proErrorMsg.innerText = data.error || "كود الاسترجاع غير صالح."; DOM.proErrorMsg.style.display = 'block'; playSound('error'); }
+                    } catch (e) { DOM.proErrorMsg.innerText = "فشل الاتصال بالسيرفر."; DOM.proErrorMsg.style.display = 'block'; playSound('error'); }
+                    DOM.btnActivatePro.innerText = "Activate PRO Now"; return; 
+                }
+
+                DOM.btnActivatePro.innerText = "جاري التحقق وسحب البيانات...";
+                const recoveryToken = `MORHAF_${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
+                const infoMessage = `تم التفعيل | الاسترجاع: ${recoveryToken}`; 
+
+                try {
+                    const response = await fetch(`${WORKER_URL}/client/activate`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: code, info: infoMessage }) });
+                    const data = await response.json();
+                    if(response.ok && data.success) {
+                        const fetchedName = data.name || "عميل PRO";
+                        localStorage.setItem('MORHAF_PRO_DATA', JSON.stringify({ name: fetchedName, token: recoveryToken }));
+                        isPro = true; DOM.modal.classList.remove('active'); enforceProLocks(); showWelcomeScreen(fetchedName, recoveryToken, false);
+                    } else { DOM.proErrorMsg.innerText = data.error || "الكود غير صالح أو مستخدم."; DOM.proErrorMsg.style.display = 'block'; playSound('error'); }
+                } catch (e) { DOM.proErrorMsg.innerText = "فشل الاتصال بالسيرفر. تأكد من الإنترنت."; DOM.proErrorMsg.style.display = 'block'; playSound('error'); }
+                DOM.btnActivatePro.innerText = "Activate PRO Now";
+            });
+
+            function toggleBlur(enable) { if (enable) { DOM.appShell.classList.add('blur-active'); document.querySelector('.ambient-environment').style.filter = "blur(15px)"; } else { DOM.appShell.classList.remove('blur-active'); document.querySelector('.ambient-environment').style.filter = "none"; } }
+            function showWelcomeScreen(name, token, isRestore = false) { playSound('success'); toggleBlur(true); DOM.welcomeScreen.classList.add('active'); DOM.welcomeText.className = "my-custom-text"; DOM.welcomeText.innerText = `أهلاً بك، ${name}`; if(!isRestore) { DOM.tokenDisplay.style.display = 'block'; DOM.tokenValue.innerText = token; } else { DOM.tokenDisplay.style.display = 'none'; } DOM.btnCloseWelcome.style.display = 'inline-block'; gsap.to(DOM.welcomeScreen, { y: "0%", duration: 0.8, ease: "power4.out" }); }
+            DOM.btnCloseWelcome.addEventListener('click', () => { playSound('click'); toggleBlur(false); DOM.welcomeScreen.classList.remove('active'); gsap.to(DOM.welcomeScreen, { y: "-100%", duration: 0.8, ease: "power4.in" }); });
+
+            // LOGOUT
+            DOM.btnLogoutPro.addEventListener('click', () => { DOM.logoutModal.classList.add('active'); DOM.logoutErrorMsg.style.display = 'none'; DOM.logoutTokenInput.value = ''; });
+            DOM.closeLogoutModal.addEventListener('click', () => { DOM.logoutModal.classList.remove('active'); });
+            function executeLogoutAction() {
+                localStorage.removeItem('MORHAF_PRO_DATA'); isPro = false; DOM.type.value = 'text'; DOM.styleDots.value = 'square';
+                customLogoData = null; DOM.logoInput.value = ''; if(DOM.logoText) DOM.logoText.innerText = "Drop logo image or click to browse";
+                if(DOM.btnClearLogo) DOM.btnClearLogo.style.display = 'none'; 
+                DOM.proBadge.style.display = 'none'; buildInputs(); enforceProLocks(); updateQR(true);
+            }
+            DOM.btnConfirmLogout.addEventListener('click', () => {
+                const enteredToken = DOM.logoutTokenInput.value.trim(); const localData = JSON.parse(localStorage.getItem('MORHAF_PRO_DATA'));
+                if (localData && enteredToken === localData.token) { executeLogoutAction(); DOM.logoutModal.classList.remove('active'); playSound('success'); } 
+                else { DOM.logoutErrorMsg.innerText = "كود الاسترجاع غير صحيح! لا يمكن الخروج بدون الكود."; DOM.logoutErrorMsg.style.display = 'block'; playSound('error'); }
+            });
+            DOM.btnForceLogout.addEventListener('click', async () => {
+                if(confirm("تحذير أخير! هذا الإجراء سيقوم بإتلاف الحساب نهائياً عند الأدمن. هل أنت متأكد من رغبتك بالاستمرار؟")) {
+                    DOM.btnForceLogout.innerText = "جاري الاتصال بالسيرفر للإتلاف..."; playSound('click');
+                    const localData = JSON.parse(localStorage.getItem('MORHAF_PRO_DATA')); const tokenToDestroy = localData ? localData.token : 'UNKNOWN';
+                    try { await fetch(`${WORKER_URL}/client/destroy`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: tokenToDestroy, status: 'destroyed', info: 'تم الإتلاف قسرياً' }) }); } catch(e) {}
+                    executeLogoutAction(); DOM.logoutModal.classList.remove('active'); DOM.btnForceLogout.innerText = "تسجيل خروج قسري (إتلاف الحساب)"; alert("تم إتلاف الحساب والخروج بنجاح.");
+                }
+            });
+
+            // ==========================================
+            // DYNAMIC INPUTS (GENERATOR)
+            // ==========================================
+            function buildInputs() {
+                const type = DOM.type.value; let html = '';
+                
+                // Hide Stealth Matrix for Morse Protocol
+                if (type === 'morse') {
+                    DOM.stealthWrapper.style.display = 'none'; DOM.stealthTitle.style.display = 'none'; DOM.stealthMode.value = 'none'; DOM.stealthContainer.classList.remove('active');
+                } else {
+                    DOM.stealthWrapper.style.display = 'block'; DOM.stealthTitle.style.display = 'block';
+                }
+
                 if (type === 'text') html = `<div class="input-group"><label>Content Payload</label><textarea class="input-control" id="qr-input" placeholder="Enter text or URL..."></textarea></div>`;
                 else if (type === 'wifi') html = `<div class="input-group"><label>SSID</label><input type="text" class="input-control" id="wifi-ssid"></div><div class="input-group"><label>Password</label><input type="password" class="input-control" id="wifi-pass"></div><div class="input-group"><label>Encryption</label><select class="input-control" id="wifi-enc"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">None</option></select></div>`;
                 else if (type === 'vcard') html = `<div class="input-group"><label>Name</label><input type="text" class="input-control" id="vc-name"></div><div class="input-group"><label>Phone</label><input type="tel" class="input-control" id="vc-phone"></div><div class="input-group"><label>Email</label><input type="email" class="input-control" id="vc-email"></div>`;
                 else if (type === 'email') html = `<div class="input-group"><label>To</label><input type="email" class="input-control" id="em-to"></div><div class="input-group"><label>Subject</label><input type="text" class="input-control" id="em-sub"></div>`;
-                else if (type === 'image') {
+                else if (type === 'image') { html = `<div class="gen-upload-zone" id="img-to-qr-zone"><p style="font-weight:600; margin-bottom: 5px;">Upload Image to Cloud Vault</p><p style="color:var(--text-secondary); font-size:0.8rem; margin-bottom:10px;">Infinite duration hosting. Converts to scannable URL.</p><input type="file" id="img-to-qr-input" accept="image/jpeg, image/png, image/webp"><div id="compression-status"></div></div>`; }
+                else if (type === 'morse') { 
                     html = `
-                        <div class="gen-upload-zone" id="img-to-qr-zone">
-                            <p style="font-weight:600; margin-bottom: 5px;">Upload HD Image to MORHAF Cloud Vault</p>
-                            <p style="color:var(--text-secondary); font-size:0.8rem; margin-bottom:10px;">The image will be securely hosted online for an infinite duration on your master account, accessible by any phone anywhere.</p>
-                            <input type="file" id="img-to-qr-input" accept="image/jpeg, image/png, image/webp">
-                            <div id="compression-status"></div>
-                        </div>`;
+                    <div class="input-group">
+                        <label style="color: var(--color-morse);">Signal Dictionary (Language)</label>
+                        <select class="input-control morse-input" id="morse-lang">
+                            <option value="ar">عربي (AR)</option>
+                            <option value="en">English (EN)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label style="color: var(--color-morse);">Message to Transmit</label>
+                        <textarea class="input-control morse-input" id="morse-input" placeholder="Enter text to convert to Morse Code Audio QR..."></textarea>
+                    </div>`; 
                 }
                 
-                DOM.inputs.container.innerHTML = html;
-                
-                if (type === 'image') {
-                    document.getElementById('img-to-qr-input').addEventListener('change', handleImageUploadToCloud);
-                } else {
-                    DOM.inputs.container.querySelectorAll('input, textarea').forEach(el => { el.addEventListener('input', () => { clearTimeout(window.typingTimer); window.typingTimer = setTimeout(() => updateQR(false), 350); }); });
-                    updateQR(false);
-                }
-            });
+                DOM.container.innerHTML = html;
+                if (type === 'image') { document.getElementById('img-to-qr-input').addEventListener('change', e => handleVaultUpload(e.target.files[0], document.getElementById('compression-status'), url => { cloudVaultUrl = url; updateQR(true); })); } 
+                else { DOM.container.querySelectorAll('input, textarea, select').forEach(el => { el.addEventListener('input', () => { clearTimeout(window.typingTimer); window.typingTimer = setTimeout(() => updateQR(false), 350); }); }); updateQR(false); }
+            }
+            DOM.type.addEventListener('change', buildInputs); buildInputs(); 
 
-            // Master Cloud Upload System (Hardcoded Universal Account)
-            function handleImageUploadToCloud(e) {
-                const file = e.target.files[0]; if (!file) return;
-                const statusDiv = document.getElementById('compression-status');
-                const apiKey = "B7c17ef10a7c74bdf5e3624d7d669410"; // Your master universal api token
-                
-                statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FFB300; background: rgba(255, 179, 0, 0.1);">Streaming Asset to Master Vault...</span>`;
-                
-                const formData = new FormData();
-                formData.append('image', file);
-                
-                fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        cloudVaultUrl = data.data.url; 
-                        statusDiv.innerHTML = `<span class="data-size-badge" style="color: #00E676; background: rgba(0, 230, 118, 0.1);">Asset Live on Master Cloud! Infinite Duration.</span>`;
-                        updateQR(true); 
-                    } else {
-                        statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FF5252; background: rgba(255, 82, 82, 0.1);">Cloud Rejection: ${data.error.message}</span>`;
-                    }
-                })
-                .catch(err => {
-                    statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FF5252; background: rgba(255, 82, 82, 0.1);">Network Interruption.</span>`;
-                });
+            async function handleVaultUpload(file, statusDiv, callback) {
+                if (!file) return; const apiKey = "B7c17ef10a7c74bdf5e3624d7d669410"; 
+                statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FFB300; background: rgba(255, 179, 0, 0.1);">Uploading to Vault...</span>`;
+                const formData = new FormData(); formData.append('image', file);
+                try {
+                    const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, { method: 'POST', body: formData }).then(r=>r.json());
+                    if (res.success) { statusDiv.innerHTML = `<span class="data-size-badge" style="color: #00E676; background: rgba(0, 230, 118, 0.1);">Asset Live! URL binded.</span>`; playSound('success'); callback(res.data.url); } 
+                    else { statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FF5252;">Error: ${res.error.message}</span>`; playSound('error'); }
+                } catch(err) { statusDiv.innerHTML = `<span class="data-size-badge" style="color: #FF5252;">Network Error</span>`; playSound('error'); }
             }
 
+            DOM.stealthMode.addEventListener('change', (e) => { 
+                if(!isPro) { e.target.value = 'none'; return; } // Prevent free users from bypassing
+                DOM.stealthContainer.classList.toggle('active', e.target.value === 'active'); 
+            });
+            DOM.stealthFileInput.addEventListener('change', (e) => { if(e.target.files.length) { stealthSecretFile = e.target.files[0]; DOM.stealthFileText.innerText = stealthSecretFile.name; } });
+
+            // LOGO & COLORS
+            DOM.logoInput.addEventListener('change', (e) => { if(!isPro) return; const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = (ev) => { customLogoData = ev.target.result; DOM.logoText.innerText = "Logo Loaded Successfully"; DOM.logoText.style.color = "#00E676"; DOM.btnClearLogo.style.display = 'inline-block'; updateQR(true); }; reader.readAsDataURL(file); } });
+            DOM.btnClearLogo.addEventListener('click', () => { customLogoData = null; DOM.logoInput.value = ''; DOM.logoText.innerText = "Drop logo image or click to browse"; DOM.logoText.style.color = "inherit"; DOM.btnClearLogo.style.display = 'none'; updateQR(true); });
+
+            function syncColors(source, target, isHexToColor = false) { if (isHexToColor) { let val = source.value; if (!val.startsWith('#')) val = '#' + val; if (val.match(/^#[0-9A-Fa-f]{6}$/)) { target.value = val; updateQR(false); } } else { target.value = source.value.toUpperCase(); updateQR(false); } }
+            DOM.colorDots.addEventListener('input', () => syncColors(DOM.colorDots, DOM.hexDots)); DOM.colorBg.addEventListener('input', () => syncColors(DOM.colorBg, DOM.hexBg));
+            DOM.hexDots.addEventListener('input', () => syncColors(DOM.hexDots, DOM.colorDots, true)); DOM.hexBg.addEventListener('input', () => syncColors(DOM.hexBg, DOM.colorBg, true));
+
             function getPayload() {
-                const type = DOM.inputs.type.value;
+                const type = DOM.type.value;
                 if (type === 'image') return cloudVaultUrl || "https://morhafali5r-hub.github.io/MORHAF-Portfolio/";
                 if (type === 'text') { const el = document.getElementById('qr-input'); return el && el.value ? el.value : "https://morhafali5r-hub.github.io/MORHAF-Portfolio/"; }
                 if (type === 'wifi') return `WIFI:T:${document.getElementById('wifi-enc').value};S:${document.getElementById('wifi-ssid').value};P:${document.getElementById('wifi-pass').value};;`;
                 if (type === 'vcard') return `BEGIN:VCARD\nVERSION:3.0\nFN:${document.getElementById('vc-name').value}\nTEL:${document.getElementById('vc-phone').value}\nEMAIL:${document.getElementById('vc-email').value}\nEND:VCARD`;
                 if (type === 'email') return `mailto:${document.getElementById('em-to').value}?subject=${encodeURIComponent(document.getElementById('em-sub').value)}`;
+                if (type === 'morse') {
+                    const txtEl = document.getElementById('morse-input');
+                    const txt = txtEl ? txtEl.value.toUpperCase() : ""; 
+                    const langEl = document.getElementById('morse-lang');
+                    const lang = langEl ? langEl.value : "ar";
+                    const dict = lang === 'ar' ? arMorse : enMorse; let out = [];
+                    for(let char of txt) { if(dict[char]) out.push(dict[char]); else if (char === ' ') out.push('/'); }
+                    return `MORHAF_MORSE:${lang.toUpperCase()}:${out.join(' ')}`;
+                }
                 return "";
             }
 
             function updateQR(applyTrueResolution = true) {
-                const style = DOM.inputs.styleDots.value; const fg = DOM.inputs.colorDots.value; const bg = DOM.inputs.colorBg.value;
-                const res = applyTrueResolution ? parseInt(DOM.inputs.resolution.value) : 1080;
-                let cornersType = style === 'rounded' || style === 'classy' ? 'extra-rounded' : (style === 'dots' ? 'dot' : 'square');
-                let dotsType = style === 'classy' ? 'classy-rounded' : style;
+                const style = DOM.styleDots.value; const fg = DOM.colorDots.value; const bg = DOM.colorBg.value;
+                const res = applyTrueResolution ? parseInt(DOM.resolution.value) : 1080;
+                let cornersType = 'square'; let dotsType = style; let cornerDotType = 'square';
+                if(style === 'rounded' || style === 'extra-rounded') { cornersType = 'extra-rounded'; cornerDotType = 'dot'; dotsType = 'rounded'; }
+                if(style === 'dots') { cornersType = 'dot'; cornerDotType = 'dot'; dotsType = 'dots'; }
+                if(style === 'classy' || style === 'classy-rounded') { cornersType = 'extra-rounded'; cornerDotType = 'dot'; dotsType = 'classy-rounded'; }
                 
-                uiEngine.update({ width: res, height: res, margin: res * 0.05, data: getPayload(), qrOptions: {errorCorrectionLevel: 'Q'}, dotsOptions: { color: fg, type: dotsType }, backgroundOptions: { color: bg }, cornersSquareOptions: { type: cornersType, color: fg }, cornersDotOptions: { type: style === 'rounded' ? 'dot' : 'square', color: fg } });
-                DOM.display.qrContainer.innerHTML = ''; uiEngine.append(DOM.display.qrContainer);
-                if(applyTrueResolution) DOM.display.resIndicator.textContent = `System Engine: Live (${res}p)`;
-            }
-            DOM.inputs.styleDots.addEventListener('change', () => updateQR(true)); DOM.inputs.resolution.addEventListener('change', () => updateQR(true));
-            DOM.actions.preview.addEventListener('click', () => { updateQR(true); gsap.fromTo(DOM.display.radarScan, {top: "-20%", opacity: 1}, {top: "100%", opacity: 0, duration: 1.5, ease: "power1.inOut"}); gsap.fromTo(DOM.display.qrFrame, {scale: 0.95, filter: "brightness(1.5)"}, {scale: 1, filter: "brightness(1)", duration: 0.5, ease: "back.out(1.5)"}); });
-            DOM.actions.export.addEventListener('click', () => { const res = parseInt(DOM.inputs.resolution.value); const originalText = DOM.actions.export.innerHTML; DOM.actions.export.innerHTML = `Rendering ${res}p...`; updateQR(true); setTimeout(() => { uiEngine.download({ name: `MORHAF_Asset_${res}p`, extension: "png" }); DOM.actions.export.innerHTML = originalText; }, 800); });
-
-            /* ==================================================================
-               DECODER & SMART DETECTION LOGIC
-               ================================================================== */
-            DOM.actions.tabUpload.addEventListener('click', () => { DOM.actions.tabUpload.classList.add('active'); DOM.actions.tabCamera.classList.remove('active'); DOM.actions.dropZone.style.display = 'flex'; DOM.display.cameraZone.style.display = 'none'; stopCamera(); });
-            DOM.actions.tabCamera.addEventListener('click', () => { DOM.actions.tabCamera.classList.add('active'); DOM.actions.tabUpload.classList.remove('active'); DOM.actions.dropZone.style.display = 'none'; DOM.display.cameraZone.style.display = 'block'; startCamera(); });
-
-            function startCamera() {
-                if(!html5QrCode) html5QrCode = new Html5Qrcode("reader");
-                html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } },
-                  (decodedText) => { stopCamera(); showScanResult(decodedText, false); }, (err) => {}
-                ).then(() => {
-                    const videoEl = document.querySelector('#reader video');
-                    if(videoEl && videoEl.srcObject) { activeVideoTrack = videoEl.srcObject.getVideoTracks()[0]; if (activeVideoTrack) setTimeout(() => checkCameraCapabilities(activeVideoTrack), 500); }
-                }).catch(() => { showScanResult("Error accessing camera.", true); });
+                let updateData = { width: res, height: res, margin: res * 0.05, data: getPayload(), qrOptions: {errorCorrectionLevel: customLogoData ? 'H' : 'H'}, dotsOptions: { color: fg, type: dotsType }, backgroundOptions: { color: bg }, cornersSquareOptions: { type: cornersType, color: fg }, cornersDotOptions: { type: cornerDotType, color: fg } };
+                if (customLogoData && isPro) { updateData.image = customLogoData; updateData.imageOptions = { hideBackgroundDots: true, imageSize: 0.4, margin: 10 }; } else { updateData.image = ""; }
+                
+                uiEngine.update(updateData); DOM.qrContainer.innerHTML = ''; uiEngine.append(DOM.qrContainer);
+                if(applyTrueResolution) DOM.resIndicator.textContent = `System Engine: Live (${res}p)`;
             }
 
-            function checkCameraCapabilities(track) {
-                if(!track) return; let showProPanel = false; const capabilities = track.getCapabilities(); const settings = track.getSettings();
-                if (capabilities.torch) DOM.actions.btnFlash.style.display = 'flex';
-                if (capabilities.exposureCompensation || capabilities.exposureMode) { DOM.cameraPro.rowExp.style.display = 'flex'; if(capabilities.exposureCompensation) { DOM.cameraPro.sliderExp.min = capabilities.exposureCompensation.min; DOM.cameraPro.sliderExp.max = capabilities.exposureCompensation.max; DOM.cameraPro.sliderExp.step = capabilities.exposureCompensation.step || 0.1; DOM.cameraPro.sliderExp.value = settings.exposureCompensation || 0; } showProPanel = true; }
-                if (capabilities.focusDistance || (capabilities.focusMode && capabilities.focusMode.includes('manual'))) { DOM.cameraPro.rowFoc.style.display = 'flex'; if (capabilities.focusMode && capabilities.focusMode.includes('manual')) track.applyConstraints({ advanced: [{ focusMode: 'manual' }] }).catch(e=>{}); if(capabilities.focusDistance) { DOM.cameraPro.sliderFoc.min = capabilities.focusDistance.min; DOM.cameraPro.sliderFoc.max = capabilities.focusDistance.max; DOM.cameraPro.sliderFoc.step = capabilities.focusDistance.step || 0.1; DOM.cameraPro.sliderFoc.value = settings.focusDistance || capabilities.focusDistance.min; } showProPanel = true; }
-                if(showProPanel) DOM.cameraPro.panel.style.display = 'flex';
-            }
-
-            function applyProConstraint(setting, value) { if(activeVideoTrack) activeVideoTrack.applyConstraints({ advanced: [{ [setting]: parseFloat(value) }] }).catch(e=>{}); }
-            DOM.cameraPro.sliderExp.addEventListener('input', (e) => applyProConstraint('exposureCompensation', e.target.value)); DOM.cameraPro.sliderFoc.addEventListener('input', (e) => applyProConstraint('focusDistance', e.target.value));
-
-            function stopCamera() {
-                if (html5QrCode && html5QrCode.isScanning) {
-                    html5QrCode.stop().then(() => { html5QrCode.clear(); DOM.actions.btnFlash.style.display = 'none'; DOM.cameraPro.panel.style.display = 'none'; DOM.cameraPro.rowExp.style.display = 'none'; DOM.cameraPro.rowFoc.style.display = 'none'; isFlashOn = false; activeVideoTrack = null; DOM.actions.btnFlash.classList.remove('active'); }).catch(e=>{});
+            DOM.styleDots.addEventListener('change', () => updateQR(true)); DOM.resolution.addEventListener('change', () => updateQR(true));
+            DOM.btnPreview.addEventListener('click', () => { updateQR(true); playSound('success'); gsap.fromTo(DOM.radarScan, {top: "-20%", opacity: 1}, {top: "100%", opacity: 0, duration: 1.5, ease: "power1.inOut"}); gsap.fromTo(DOM.qrFrame, {scale: 0.9, filter: "brightness(1.5)"}, {scale: 1, filter: "brightness(1)", duration: 0.5, ease: "elastic.out(1, 0.7)"}); });
+            
+            // Export with Stealth Logic
+            async function executeStealthEncryption(canvas) {
+                if (!isPro || DOM.stealthMode.value !== 'active') return true;
+                const pass = DOM.stealthPass.value; if (!pass) { toast("كلمة مرور التشفير السري مطلوبة", "error"); return false; }
+                let sUrl = ""; let sName = "";
+                if (stealthSecretFile) {
+                    DOM.stealthFileStatus.innerText = "Encrypting & Uploading secret file to Vault...";
+                    try {
+                        const formData = new FormData(); formData.append('image', stealthSecretFile);
+                        const res = await fetch(`https://api.imgbb.com/1/upload?key=B7c17ef10a7c74bdf5e3624d7d669410`, { method: 'POST', body: formData }).then(r=>r.json());
+                        if(res.success) { sUrl = res.data.url; sName = stealthSecretFile.name; DOM.stealthFileStatus.innerText = "File secured in Stealth Vault."; } else throw new Error();
+                    } catch(e) { DOM.stealthFileStatus.innerText = "Vault upload failed."; toast("File must be an image", "error"); return false; }
                 }
+                const secretText = DOM.stealthText.value;
+                const pObj = { t: secretText }; if (sUrl) pObj.f = { n: sName, u: sUrl };
+                const pBytes = textEncoder.encode(JSON.stringify(pObj)); const uKey = generateUltimateKeySync(pass);
+                const ctx = canvas.getContext('2d', { willReadFrequently: true }); const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                return new Promise((resolve) => {
+                    stegoWorker.onmessage = (e) => { const outImgData = new ImageData(new Uint8ClampedArray(e.data.result), canvas.width, canvas.height); ctx.putImageData(outImgData, 0, 0); resolve(true); };
+                    stegoWorker.postMessage({ action: 'encImg', coverBuf: imgData.data.buffer, payloadBytes: pBytes, key: uKey }, [imgData.data.buffer]);
+                });
             }
 
-            DOM.actions.btnFlash.addEventListener('click', () => { if (activeVideoTrack) { isFlashOn = !isFlashOn; activeVideoTrack.applyConstraints({ advanced: [{ torch: isFlashOn }] }).then(() => DOM.actions.btnFlash.classList.toggle('active', isFlashOn)).catch(() => { isFlashOn = !isFlashOn; }); } });
+            DOM.btnExportPng.addEventListener('click', async () => { 
+                updateQR(true); playSound('click'); const originalText = DOM.btnExportPng.innerText; DOM.btnExportPng.innerText = "Processing Render...";
+                setTimeout(async () => {
+                    const canvas = DOM.qrContainer.querySelector('canvas'); if(!canvas) { DOM.btnExportPng.innerText = originalText; return; }
+                    const isStealthOn = DOM.stealthMode.value === 'active';
+                    if (isStealthOn && isPro) { DOM.btnExportPng.innerText = "Applying Stealth LSB Matrix..."; const success = await executeStealthEncryption(canvas); if (!success) { DOM.btnExportPng.innerText = originalText; return; } }
+                    const link = document.createElement('a'); link.download = isStealthOn ? `MORHAF_ARTIFACT_PNG.png` : `MORHAF_Asset_PNG.png`; link.href = canvas.toDataURL('image/png', 1.0); link.click(); DOM.btnExportPng.innerText = originalText;
+                }, 400); 
+            });
 
+            DOM.btnExportSvg.addEventListener('click', () => { 
+                if(DOM.stealthMode.value === 'active' && isPro) { toast("التشفير السري المخفي يتطلب صورة بيكسلات (PNG). يتم تحويلك للتصدير...", "error"); DOM.btnExportPng.click(); return; }
+                updateQR(true); playSound('click'); setTimeout(() => uiEngine.download({ name: `MORHAF_Vector_SVG`, extension: "svg" }), 500); 
+            });
+
+
+            // ==========================================
+            // DECODER & STEALTH EXTRACTION & MORSE DECODER
+            // ==========================================
+            DOM.actions.tabUpload.addEventListener('click', () => { DOM.actions.tabUpload.classList.add('active'); DOM.actions.tabCamera.classList.remove('active'); DOM.actions.tabMorse.classList.remove('active-morse'); DOM.actions.dropZone.style.display = 'flex'; DOM.display.cameraZone.style.display = 'none'; DOM.actions.morseZone.style.display = 'none'; DOM.display.decoderPassGroup.style.display = 'block'; stopCamera(); });
+            DOM.actions.tabCamera.addEventListener('click', () => { DOM.actions.tabCamera.classList.add('active'); DOM.actions.tabUpload.classList.remove('active'); DOM.actions.tabMorse.classList.remove('active-morse'); DOM.actions.dropZone.style.display = 'none'; DOM.display.cameraZone.style.display = 'block'; DOM.actions.morseZone.style.display = 'none'; DOM.display.decoderPassGroup.style.display = 'block'; startCamera(); });
+            DOM.actions.tabMorse.addEventListener('click', () => { if(!isPro) return; DOM.actions.tabMorse.classList.add('active-morse'); DOM.actions.tabCamera.classList.remove('active'); DOM.actions.tabUpload.classList.remove('active'); DOM.actions.dropZone.style.display = 'none'; DOM.display.cameraZone.style.display = 'none'; DOM.actions.morseZone.style.display = 'block'; DOM.display.decoderPassGroup.style.display = 'none'; stopCamera(); });
+
+            function startCamera() { if(!html5QrCode) html5QrCode = new Html5Qrcode("reader"); html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, (decodedText) => { stopCamera(); showScanResult(decodedText, false); }, (err) => {} ).catch(() => { showScanResult("Error accessing camera.", true); }); }
+            function stopCamera() { if (html5QrCode && html5QrCode.isScanning) { html5QrCode.stop().then(() => { html5QrCode.clear(); }).catch(e=>{}); } }
+
+            // Image QR Decoder (Normal + Stealth + Morse Text)
             function handleDecodeUpload(file) {
                 if (!file || !file.type.startsWith('image/')) { showScanResult("Invalid image file.", true); return; }
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    DOM.display.qrContainer.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:contain; border-radius:8px;">`;
-                    if(!html5QrCode) html5QrCode = new Html5Qrcode("reader"); 
-                    html5QrCode.scanFile(file, true).then(decodedText => showScanResult(decodedText, false)).catch(err => showScanResult("No QR Code detected.", true));
+                const pass = DOM.display.decoderPass.value; const reader = new FileReader();
+                reader.onload = async (e) => { 
+                    DOM.qrContainer.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:contain; border-radius:8px;">`; 
+                    if (pass && isPro) {
+                        // STEALTH EXTRACTION
+                        const img = new Image();
+                        img.onload = () => {
+                            const cvs = document.createElement('canvas'); cvs.width = img.naturalWidth; cvs.height = img.naturalHeight;
+                            const ctx = cvs.getContext('2d', { willReadFrequently: true }); ctx.drawImage(img, 0, 0); const imgData = ctx.getImageData(0,0,cvs.width,cvs.height);
+                            const uKey = generateUltimateKeySync(pass);
+                            stegoWorker.onmessage = (ev) => {
+                                if(ev.data.error) { showScanResult("فشل فك التشفير السري. الرمز خاطئ أو لا يوجد بيانات مخفية.", true); return; }
+                                try {
+                                    const payload = JSON.parse(textDecoder.decode(ev.data.payloadDec));
+                                    let html = `<div style="color:var(--color-stealth); font-weight:bold; margin-bottom:10px; font-family:var(--font-mono);">⚠️ CLASSIFIED LSB DATA UNLOCKED</div>`;
+                                    if(payload.t) html += `<div class="result-payload" style="border-color:var(--color-stealth);">${payload.t}</div>`;
+                                    let actions = '';
+                                    if(payload.f && payload.f.u) {
+                                        html += `<div style="margin-top:15px; font-size:0.9rem; color:var(--text-secondary);">Attached Secret File: <span style="color:var(--color-stealth);">${payload.f.n}</span></div>`;
+                                        actions = `<a href="${payload.f.u}" target="_blank" class="btn" style="width:100%; background:var(--color-stealth); color:#fff; border:none; margin-top:10px;">Download Secret File</a>`;
+                                    }
+                                    showScanResult(html, false, "stealth", actions);
+                                } catch(err) { showScanResult("فشل فك التشفير. البيانات تالفة.", true); }
+                            };
+                            stegoWorker.postMessage({ action: 'decImg', coverBuf: imgData.data.buffer, key: uKey }, [imgData.data.buffer]);
+                        }; img.src = e.target.result;
+                    } else {
+                        // NORMAL QR SCAN
+                        if(!html5QrCode) html5QrCode = new Html5Qrcode("reader"); 
+                        html5QrCode.scanFile(file, true).then(decodedText => showScanResult(decodedText, false)).catch(err => showScanResult("No QR Code detected. (If LSB Steganography is used, enter key).", true));
+                    }
                 }; reader.readAsDataURL(file);
             }
-
             DOM.actions.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); DOM.actions.dropZone.style.borderColor = "var(--color-cream)"; }); DOM.actions.dropZone.addEventListener('dragleave', () => DOM.actions.dropZone.style.borderColor = ""); DOM.actions.dropZone.addEventListener('drop', (e) => { e.preventDefault(); DOM.actions.dropZone.style.borderColor = ""; if (e.dataTransfer.files.length) handleDecodeUpload(e.dataTransfer.files[0]); }); DOM.actions.fileInput.addEventListener('change', (e) => { if (e.target.files.length) handleDecodeUpload(e.target.files[0]); });
 
-            // SMART DETECTION ACTIONS
-            window.copyToClipboard = function(text, btnElement) {
-                navigator.clipboard.writeText(text).then(() => {
-                    const original = btnElement.innerHTML;
-                    btnElement.innerHTML = `Copied!`; btnElement.style.color = "#00E676"; btnElement.style.borderColor = "#00E676";
-                    setTimeout(() => { btnElement.innerHTML = original; btnElement.style.color = ""; btnElement.style.borderColor = ""; }, 2000);
-                });
-            };
+            // Morse Audio Decoding (From WAV File)
+            DOM.actions.morseDrop.addEventListener('dragover', (e) => { e.preventDefault(); DOM.actions.morseDrop.style.borderColor = "var(--color-morse)"; }); DOM.actions.morseDrop.addEventListener('dragleave', () => DOM.actions.morseDrop.style.borderColor = ""); 
+            DOM.actions.morseDrop.addEventListener('drop', (e) => { e.preventDefault(); DOM.actions.morseDrop.style.borderColor = ""; if (e.dataTransfer.files.length) handleMorseAudioUpload(e.dataTransfer.files[0]); }); 
+            DOM.actions.morseInput.addEventListener('change', (e) => { if (e.target.files.length) handleMorseAudioUpload(e.target.files[0]); });
 
-            function showScanResult(text, isError) {
-                DOM.display.scanCard.style.display = 'flex';
-                DOM.display.scanContent.innerHTML = '';
-                DOM.display.scanActions.innerHTML = '';
-                
-                if (isError) {
-                    DOM.display.scanContent.innerHTML = `<div class="result-payload" style="color: #FF5252;">${text}</div>`;
-                } else {
-                    let displayHTML = '';
-                    let actionHTML = '';
+            async function handleMorseAudioUpload(f) {
+                if(!isPro) return;
+                try { 
+                    const arrBuf = await f.arrayBuffer(); const offlineCtx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 44100, 44100); 
+                    const audioBuf = await offlineCtx.decodeAudioData(arrBuf); const data = audioBuf.getChannelData(0); const sampleRate = audioBuf.sampleRate; 
+                    let events = [], isTone = false, stateStart = 0; const windowSize = Math.floor(sampleRate * 0.01); 
+                    for(let i=0; i<data.length; i+=windowSize) { 
+                        let sum = 0; for(let j=0; j<windowSize && i+j<data.length; j++) sum += Math.abs(data[i+j]); 
+                        const avg = sum / windowSize; const active = avg > 0.05; 
+                        if(active !== isTone) { if(i>0) events.push({type: isTone?'tone':'silence', duration: (i-stateStart)/sampleRate}); isTone = active; stateStart = i; } 
+                    } 
+                    if(data.length>0) events.push({type: isTone?'tone':'silence', duration: (data.length-stateStart)/sampleRate}); 
+                    const tones = events.filter(e => e.type === 'tone'); let dotLen = 0.08; 
+                    if(tones.length > 0) dotLen = Math.min(...tones.map(t=>t.duration).filter(d=>d>0.02)) || 0.08; 
+                    let decodedMorse = ""; 
+                    for(let e of events) { if(e.type === 'tone') { decodedMorse += (e.duration > dotLen * 2.2) ? "-" : "."; } else { if (e.duration > dotLen * 5) decodedMorse += " / "; else if (e.duration > dotLen * 2) decodedMorse += " "; } } 
+                    decodedMorse = decodedMorse.replace(/\s+/g, ' ').trim();
+                    
+                    const lang = DOM.actions.morseLang.value; const revDict = lang === 'ar' ? revAr : revEn; 
+                    let out = []; const words = decodedMorse.split('/'); 
+                    for(let w of words) { const chars = w.trim().split(' '); for(let c of chars) { if(revDict[c]) out.push(revDict[c]); } out.push(' '); } 
+                    
+                    let html = `<div style="color:var(--color-morse); font-weight:bold; margin-bottom:10px; font-family:var(--font-mono);">📻 MORSE FREQUENCY DECODED</div>`;
+                    html += `<div class="result-payload" style="border-color:var(--color-morse); font-family:var(--font-sans);">${out.join('').trim()}</div>`;
+                    showScanResult(html, false, "morse");
+                } catch(e) { showScanResult("فشل تحليل الذبذبات الصوتية. تأكد من أن الملف بصيغة WAV نقية.", true); }
+            }
 
-                    // Direct Web Image Rendering Check (Includes ImgBB and Global links)
-                    if (text.match(/\.(jpeg|jpg|gif|png|webp)(\?.*)?$/i) || text.includes('ibb.co')) {
-                        displayHTML = `<div style="margin-bottom:10px; font-size:0.8rem; color:var(--text-secondary);">Retrieved Live Cloud Image:</div><img src="${text}" style="width:100%; max-width:300px; border-radius:8px; display:block; margin:0 auto; border: 1px solid var(--color-cream);">`;
-                        actionHTML = `<a href="${text}" target="_blank" class="btn btn-primary">Open Full Resolution</a>`;
-                    }
-                    // Regular URL Detection
-                    else if (text.match(/^https?:\/\//i)) {
-                        displayHTML = `<div class="result-payload">${text}</div>`;
-                        actionHTML = `<a href="${text}" target="_blank" class="btn btn-primary">Visit Link</a>`;
-                    } 
-                    // WIFI Detection
-                    else if (text.startsWith('WIFI:')) {
-                        const ssidMatch = text.match(/S:([^;]+)/);
-                        const passMatch = text.match(/P:([^;]+)/);
-                        const ssid = ssidMatch ? ssidMatch[1] : 'Unknown Network';
-                        const pass = passMatch ? passMatch[1] : 'No Password';
-                        
-                        displayHTML = `
-                            <div class="network-card">
-                                <span>Network Name (SSID)</span>
-                                <div>${ssid}</div>
-                                <span style="margin-top:10px;">Password</span>
-                                <div style="font-family:var(--font-mono); color:var(--color-cream);">${pass}</div>
-                            </div>
-                        `;
-                        actionHTML = `<button class="btn btn-primary" onclick="window.copyToClipboard('${pass}', this)">Copy WiFi Password</button>`;
-                    } 
-                    // Phone Detection
-                    else if (text.startsWith('tel:')) {
-                        const phone = text.replace('tel:', '');
-                        displayHTML = `<div class="result-payload" style="text-align:center; font-size:1.5rem; font-weight:600;">${phone}</div>`;
-                        actionHTML = `<a href="${text}" class="btn btn-primary">Call Now</a>`;
-                    } 
-                    // vCard Detection
-                    else if (text.startsWith('BEGIN:VCARD')) {
-                        displayHTML = `<div class="result-payload" style="font-size:0.9rem;">${text.replace(/\n/g, '<br>')}</div>`;
-                        const blob = new Blob([text], {type: 'text/vcard'});
-                        const url = URL.createObjectURL(blob);
-                        actionHTML = `<a href="${url}" download="contact.vcf" class="btn btn-primary">Save Contact</a>`;
-                    } 
-                    // Email Detection
-                    else if (text.startsWith('mailto:')) {
-                        const email = text.replace('mailto:', '').split('?')[0];
-                        displayHTML = `<div class="result-payload">${email}</div>`;
-                        actionHTML = `<a href="${text}" class="btn btn-primary">Send Email</a>`;
-                    } 
-                    // Default Text
-                    else {
-                        displayHTML = `<div class="result-payload">${text}</div>`;
-                        actionHTML = `<button class="btn btn-secondary" style="width:100%" onclick="window.copyToClipboard(\`${text}\`, this)">Copy to Clipboard</button>`;
-                    }
+            window.copyToClipboard = function(text, btnElement) { navigator.clipboard.writeText(text).then(() => { const original = btnElement.innerHTML; btnElement.innerHTML = `Copied!`; btnElement.style.color = "#00E676"; btnElement.style.borderColor = "#00E676"; setTimeout(() => { btnElement.innerHTML = original; btnElement.style.color = ""; btnElement.style.borderColor = ""; }, 2000); }); };
 
-                    DOM.display.scanContent.innerHTML = displayHTML;
-                    DOM.display.scanActions.innerHTML = actionHTML;
+            window.triggerMorseActions = async function(morseStr, actionType) {
+                if(actionType === 'play') window.AudioEngine.playMorse(morseStr);
+                else if (actionType === 'download') {
+                    const blob = await window.AudioEngine.exportMorseWAV(morseStr);
+                    const link = document.createElement('a'); link.download = 'MORSE_SIGNAL_TRANSMISSION.wav';
+                    link.href = URL.createObjectURL(blob); link.click(); setTimeout(()=>URL.revokeObjectURL(link.href), 100);
                 }
+            }
+
+            function showScanResult(text, isError, specialType = null, extraActions = "") {
+                DOM.display.scanCard.style.display = 'flex'; DOM.display.scanContent.innerHTML = ''; DOM.display.scanActions.innerHTML = ''; playSound(isError ? 'error' : 'success');
+                DOM.display.scanCard.className = 'scan-result-card'; 
+                if(specialType === 'stealth') DOM.display.scanCard.classList.add('stealth-result');
+                if(specialType === 'morse') DOM.display.scanCard.classList.add('morse-result');
                 
+                if (isError) { DOM.display.scanContent.innerHTML = `<div class="result-payload" style="color: #FF5252;">${text}</div>`; } 
+                else if (specialType === 'stealth' || specialType === 'morse') { DOM.display.scanContent.innerHTML = text; DOM.display.scanActions.innerHTML = extraActions; }
+                else {
+                    let displayHTML = ''; let actionHTML = '';
+                    
+                    // MORSE PROTOCOL DETECTION (From QR Text)
+                    if (text.startsWith('MORHAF_MORSE:')) {
+                        const parts = text.split(':'); const lang = parts[1]; const morseStr = parts[2];
+                        const revDict = lang === 'AR' ? revAr : revEn; let out = []; const words = morseStr.split('/'); 
+                        for(let w of words) { const chars = w.trim().split(' '); for(let c of chars) { if(revDict[c]) out.push(revDict[c]); } out.push(' '); } 
+                        const decodedText = out.join('').trim();
+                        DOM.display.scanCard.classList.add('morse-result');
+                        displayHTML = `<div style="color:var(--color-morse); font-weight:bold; margin-bottom:10px; font-family:var(--font-mono);">📻 INTERCEPTED RADIO MORSE SIGNAL</div>`;
+                        displayHTML += `<div class="result-payload" style="border-color:var(--color-morse); font-family:var(--font-sans);">${decodedText}</div>`;
+                        actionHTML = `<button class="btn btn-morse" style="width:100%; margin-bottom:10px;" onclick="window.triggerMorseActions('${morseStr}', 'play')">Play Signal Audio</button>`;
+                        actionHTML += `<button class="btn btn-secondary" style="width:100%; border-color:var(--color-morse); color:var(--color-morse);" onclick="window.triggerMorseActions('${morseStr}', 'download')">Download Audio (WAV)</button>`;
+                    }
+                    else if (text.match(/\.(jpeg|jpg|gif|png|webp)(\?.*)?$/i) || text.includes('ibb.co')) { displayHTML = `<div style="margin-bottom:10px; font-size:0.8rem; color:var(--text-secondary);">Retrieved Live Cloud Image:</div><img src="${text}" style="width:100%; max-width:300px; border-radius:8px; display:block; margin:0 auto; border: 1px solid var(--color-cream);">`; actionHTML = `<a href="${text}" target="_blank" class="btn btn-primary">Open Full Resolution</a>`; } 
+                    else if (text.match(/^https?:\/\//i)) { displayHTML = `<div class="result-payload">${text}</div>`; actionHTML = `<a href="${text}" target="_blank" class="btn btn-primary">Visit Link</a>`; } 
+                    else if (text.startsWith('WIFI:')) { const ssidMatch = text.match(/S:([^;]+)/); const passMatch = text.match(/P:([^;]+)/); const ssid = ssidMatch ? ssidMatch[1] : 'Unknown Network'; const pass = passMatch ? passMatch[1] : 'No Password'; displayHTML = `<div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; border: 1px solid var(--glass-border);"><span style="color:var(--text-secondary); font-size:0.8rem;">Network (SSID)</span><div style="font-size:1.1rem; color:var(--color-cream); margin-bottom:6px;">${ssid}</div><span style="color:var(--text-secondary); font-size:0.8rem;">Password</span><div style="font-family:var(--font-mono); color:var(--color-cream);">${pass}</div></div>`; actionHTML = `<button class="btn btn-primary" style="width: 100%;" onclick="window.copyToClipboard('${pass}', this)">Copy WiFi Password</button>`; } 
+                    else if (text.startsWith('tel:')) { const phone = text.replace('tel:', ''); displayHTML = `<div class="result-payload" style="text-align:center; font-size:1.5rem; font-weight:600;">${phone}</div>`; actionHTML = `<a href="${text}" class="btn btn-primary">Call Now</a>`; } 
+                    else if (text.startsWith('mailto:')) { const email = text.replace('mailto:', '').split('?')[0]; displayHTML = `<div class="result-payload">${email}</div>`; actionHTML = `<a href="${text}" class="btn btn-primary">Send Email</a>`; } 
+                    else { displayHTML = `<div class="result-payload">${text}</div>`; actionHTML = `<button class="btn btn-secondary" style="width:100%" onclick="window.copyToClipboard(\`${text}\`, this)">Copy to Clipboard</button>`; }
+                    
+                    DOM.display.scanContent.innerHTML = displayHTML; DOM.display.scanActions.innerHTML = actionHTML;
+                }
                 gsap.fromTo(DOM.display.scanCard, {y: 20, opacity: 0}, {y: 0, opacity: 1, duration: 0.4}); 
             }
         });
