@@ -10,9 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- External Libraries -->
+    <!-- External Libraries (Dual Engine Scanners Added) -->
     <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script> <!-- تمت إضافة هذا المحرك القوي -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
@@ -97,14 +98,8 @@
         select.input-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23DEDBC8'%3E%3Cpath d='M12 15L7 10H17L12 15Z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; background-size: 20px; cursor: pointer; }
         select.input-control:disabled { opacity: 0.7; cursor: not-allowed; }
 
-        /* --- PRO LOCKED EFFECT (TEASING UI) --- */
         .pro-locked { position: relative; transition: 0.3s; border-radius: var(--radius-md); user-select: none; }
-        .pro-locked::after { 
-            content: "PRO ONLY"; position: absolute; inset: 0; background: rgba(0,0,0,0.6); 
-            backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; 
-            color: var(--color-gold); font-size: 1.3rem; font-weight: 800; border-radius: inherit; 
-            letter-spacing: 3px; border: 2px dashed var(--color-gold); z-index: 10; cursor: pointer; 
-        }
+        .pro-locked::after { content: "PRO ONLY"; position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; color: var(--color-gold); font-size: 1.3rem; font-weight: 800; border-radius: inherit; letter-spacing: 3px; border: 2px dashed var(--color-gold); z-index: 10; cursor: pointer; }
         
         .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         .color-picker-wrapper { display: flex; align-items: center; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 8px 12px; gap: 12px; transition: var(--transition-normal); }
@@ -113,16 +108,13 @@
         .color-picker-wrapper input[type="color"]::-webkit-color-swatch { border: none; border-radius: 6px; }
         .hex-input { background: transparent; border: none; color: var(--text-primary); font-family: var(--font-mono); font-size: 1rem; width: 100%; outline: none; text-transform: uppercase; }
 
-        /* Stealth UI Styles */
         .stealth-matrix { border: 1px dashed var(--color-stealth); background: rgba(176, 38, 255, 0.05); border-radius: var(--radius-md); padding: 20px; margin-top: 1.5rem; margin-bottom: 2rem; display: none; box-shadow: inset 0 0 20px rgba(176, 38, 255, 0.1); }
         .stealth-matrix.active { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
         .stealth-label { color: var(--color-stealth) !important; font-family: var(--font-mono); }
         .stealth-input { border-color: rgba(176, 38, 255, 0.3) !important; }
         .stealth-input:focus { border-color: var(--color-stealth) !important; box-shadow: 0 0 0 3px rgba(176, 38, 255, 0.2) !important; }
 
-        /* Morse UI Styles */
         .morse-matrix { border: 1px dashed var(--color-morse); background: rgba(255, 140, 0, 0.05); border-radius: var(--radius-md); padding: 20px; margin-bottom: 2rem; display: block; box-shadow: inset 0 0 20px rgba(255, 140, 0, 0.1); }
         .morse-label { color: var(--color-morse) !important; font-family: var(--font-mono); }
         .morse-input { border-color: rgba(255, 140, 0, 0.3) !important; }
@@ -603,7 +595,7 @@
             }
             document.querySelectorAll('button, select, input[type="color"]').forEach(el => { el.addEventListener('click', () => playSound('click')); });
 
-            const uiEngine = new QRCodeStyling({ width: 1080, height: 1080, type: "canvas", data: "https://morhafali5r-hub.github.io/MORHAF-Portfolio/", margin: 20, qrOptions: {errorCorrectionLevel: 'Q'}, dotsOptions: { color: "#000000", type: "square" }, backgroundOptions: { color: "#ffffff" }, cornersSquareOptions: { type: "square", color: "#000000" }, cornersDotOptions: { type: "square", color: "#000000" } });
+            const uiEngine = new QRCodeStyling({ width: 1080, height: 1080, type: "canvas", data: "https://morhafali5r-hub.github.io/MORHAF-Portfolio/", margin: 20, qrOptions: {errorCorrectionLevel: 'H'}, dotsOptions: { color: "#000000", type: "square" }, backgroundOptions: { color: "#ffffff" }, cornersSquareOptions: { type: "square", color: "#000000" }, cornersDotOptions: { type: "square", color: "#000000" } });
             uiEngine.append(DOM.qrContainer); gsap.from(".glass-panel", { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" });
 
             // TABS LOGIC
@@ -797,7 +789,7 @@
             }
 
             DOM.stealthMode.addEventListener('change', (e) => { 
-                if(!isPro) { e.target.value = 'none'; return; } // Prevent free users from bypassing
+                if(!isPro) { e.target.value = 'none'; return; } 
                 DOM.stealthContainer.classList.toggle('active', e.target.value === 'active'); 
             });
             DOM.stealthFileInput.addEventListener('change', (e) => { if(e.target.files.length) { stealthSecretFile = e.target.files[0]; DOM.stealthFileText.innerText = stealthSecretFile.name; } });
@@ -837,7 +829,7 @@
                 if(style === 'dots') { cornersType = 'dot'; cornerDotType = 'dot'; dotsType = 'dots'; }
                 if(style === 'classy' || style === 'classy-rounded') { cornersType = 'extra-rounded'; cornerDotType = 'dot'; dotsType = 'classy-rounded'; }
                 
-                let updateData = { width: res, height: res, margin: res * 0.05, data: getPayload(), qrOptions: {errorCorrectionLevel: customLogoData ? 'H' : 'H'}, dotsOptions: { color: fg, type: dotsType }, backgroundOptions: { color: bg }, cornersSquareOptions: { type: cornersType, color: fg }, cornersDotOptions: { type: cornerDotType, color: fg } };
+                let updateData = { width: res, height: res, margin: res * 0.05, data: getPayload(), qrOptions: {errorCorrectionLevel: 'H'}, dotsOptions: { color: fg, type: dotsType }, backgroundOptions: { color: bg }, cornersSquareOptions: { type: cornersType, color: fg }, cornersDotOptions: { type: cornerDotType, color: fg } };
                 if (customLogoData && isPro) { updateData.image = customLogoData; updateData.imageOptions = { hideBackgroundDots: true, imageSize: 0.4, margin: 10 }; } else { updateData.image = ""; }
                 
                 uiEngine.update(updateData); DOM.qrContainer.innerHTML = ''; uiEngine.append(DOM.qrContainer);
@@ -889,23 +881,26 @@
             // ==========================================
             // DECODER & STEALTH EXTRACTION & MORSE DECODER
             // ==========================================
-            DOM.actions.tabUpload.addEventListener('click', () => { DOM.actions.tabUpload.classList.add('active'); DOM.actions.tabCamera.classList.remove('active'); DOM.actions.tabMorse.classList.remove('active-morse'); DOM.actions.dropZone.style.display = 'flex'; DOM.display.cameraZone.style.display = 'none'; DOM.actions.morseZone.style.display = 'none'; DOM.display.decoderPassGroup.style.display = 'block'; stopCamera(); });
-            DOM.actions.tabCamera.addEventListener('click', () => { DOM.actions.tabCamera.classList.add('active'); DOM.actions.tabUpload.classList.remove('active'); DOM.actions.tabMorse.classList.remove('active-morse'); DOM.actions.dropZone.style.display = 'none'; DOM.display.cameraZone.style.display = 'block'; DOM.actions.morseZone.style.display = 'none'; DOM.display.decoderPassGroup.style.display = 'block'; startCamera(); });
+            DOM.actions.tabUpload.addEventListener('click', () => { DOM.actions.tabUpload.classList.add('active'); DOM.actions.tabCamera.classList.remove('active'); DOM.actions.tabMorse.classList.remove('active-morse'); DOM.actions.dropZone.style.display = 'flex'; DOM.display.cameraZone.style.display = 'none'; DOM.actions.morseZone.style.display = 'none'; DOM.display.decoderPassGroup.style.display = isPro ? 'block' : 'none'; stopCamera(); });
+            DOM.actions.tabCamera.addEventListener('click', () => { DOM.actions.tabCamera.classList.add('active'); DOM.actions.tabUpload.classList.remove('active'); DOM.actions.tabMorse.classList.remove('active-morse'); DOM.actions.dropZone.style.display = 'none'; DOM.display.cameraZone.style.display = 'block'; DOM.actions.morseZone.style.display = 'none'; DOM.display.decoderPassGroup.style.display = isPro ? 'block' : 'none'; startCamera(); });
             DOM.actions.tabMorse.addEventListener('click', () => { if(!isPro) return; DOM.actions.tabMorse.classList.add('active-morse'); DOM.actions.tabCamera.classList.remove('active'); DOM.actions.tabUpload.classList.remove('active'); DOM.actions.dropZone.style.display = 'none'; DOM.display.cameraZone.style.display = 'none'; DOM.actions.morseZone.style.display = 'block'; DOM.display.decoderPassGroup.style.display = 'none'; stopCamera(); });
 
             function startCamera() { if(!html5QrCode) html5QrCode = new Html5Qrcode("reader"); html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, (decodedText) => { stopCamera(); showScanResult(decodedText, false); }, (err) => {} ).catch(() => { showScanResult("Error accessing camera.", true); }); }
             function stopCamera() { if (html5QrCode && html5QrCode.isScanning) { html5QrCode.stop().then(() => { html5QrCode.clear(); }).catch(e=>{}); } }
 
-            // Image QR Decoder (Normal + Stealth + Morse Text)
+            // Image QR Decoder (Normal + Stealth + Morse Text) - DUAL ENGINE UPGRADE
             function handleDecodeUpload(file) {
                 if (!file || !file.type.startsWith('image/')) { showScanResult("Invalid image file.", true); return; }
-                const pass = DOM.display.decoderPass.value; const reader = new FileReader();
+                const pass = DOM.display.decoderPass.value; 
+                const reader = new FileReader();
+
                 reader.onload = async (e) => { 
                     DOM.qrContainer.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:contain; border-radius:8px;">`; 
-                    if (pass && isPro) {
-                        // STEALTH EXTRACTION
-                        const img = new Image();
-                        img.onload = () => {
+                    
+                    const img = new Image();
+                    img.onload = () => {
+                        // 1. If PRO and Password entered -> Try Stealth
+                        if (pass && isPro) {
                             const cvs = document.createElement('canvas'); cvs.width = img.naturalWidth; cvs.height = img.naturalHeight;
                             const ctx = cvs.getContext('2d', { willReadFrequently: true }); ctx.drawImage(img, 0, 0); const imgData = ctx.getImageData(0,0,cvs.width,cvs.height);
                             const uKey = generateUltimateKeySync(pass);
@@ -924,14 +919,38 @@
                                 } catch(err) { showScanResult("فشل فك التشفير. البيانات تالفة.", true); }
                             };
                             stegoWorker.postMessage({ action: 'decImg', coverBuf: imgData.data.buffer, key: uKey }, [imgData.data.buffer]);
-                        }; img.src = e.target.result;
-                    } else {
-                        // NORMAL QR SCAN
+                            return; 
+                        }
+
+                        // 2. NORMAL SCAN: Dual Engine approach for maximum accuracy
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        let w = img.width; let h = img.height;
+                        const maxDim = 1000;
+                        if (w > maxDim || h > maxDim) { const ratio = Math.min(maxDim / w, maxDim / h); w = w * ratio; h = h * ratio; }
+                        canvas.width = w; canvas.height = h;
+                        context.drawImage(img, 0, 0, w, h);
+                        const imageData = context.getImageData(0, 0, w, h);
+                        
+                        // Engine 1: jsQR (Excellent for static images, styled QRs, and Logos)
+                        if (typeof jsQR !== 'undefined') {
+                            const decoded = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "attemptBoth" });
+                            if (decoded && decoded.data) {
+                                showScanResult(decoded.data, false);
+                                return;
+                            }
+                        }
+
+                        // Engine 2: Fallback to html5-qrcode
                         if(!html5QrCode) html5QrCode = new Html5Qrcode("reader"); 
-                        html5QrCode.scanFile(file, true).then(decodedText => showScanResult(decodedText, false)).catch(err => showScanResult("No QR Code detected. (If LSB Steganography is used, enter key).", true));
-                    }
+                        html5QrCode.scanFile(file, false)
+                            .then(decodedText => showScanResult(decodedText, false))
+                            .catch(err => showScanResult("No QR Code detected. (If LSB Steganography is used, enter key).", true));
+                    }; 
+                    img.src = e.target.result;
                 }; reader.readAsDataURL(file);
             }
+
             DOM.actions.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); DOM.actions.dropZone.style.borderColor = "var(--color-cream)"; }); DOM.actions.dropZone.addEventListener('dragleave', () => DOM.actions.dropZone.style.borderColor = ""); DOM.actions.dropZone.addEventListener('drop', (e) => { e.preventDefault(); DOM.actions.dropZone.style.borderColor = ""; if (e.dataTransfer.files.length) handleDecodeUpload(e.dataTransfer.files[0]); }); DOM.actions.fileInput.addEventListener('change', (e) => { if (e.target.files.length) handleDecodeUpload(e.target.files[0]); });
 
             // Morse Audio Decoding (From WAV File)
