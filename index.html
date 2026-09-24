@@ -2,6 +2,35 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
+
+<!-- ==========================================================================
+     MOBILE PERFORMANCE DETECTOR (runs before anything else)
+     ========================================================================== -->
+<script>
+(function() {
+  try {
+    const ua = navigator.userAgent || '';
+    const isMobileUA = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini/i.test(ua);
+    const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    const isSmallScreen = window.innerWidth < 900;
+    const cores = navigator.hardwareConcurrency || 4;
+    const mem = navigator.deviceMemory || 4;
+    const isLowPower = cores <= 4 || mem <= 4;
+    const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const isMobile = isMobileUA || (isTouch && isSmallScreen) || isSmallScreen || isLowPower;
+    window.__MID_PERF_LITE__ = isMobile || reducedMotion;
+
+    if (window.__MID_PERF_LITE__) {
+      document.documentElement.className += ' perf-lite';
+    }
+  } catch (e) {
+    // Fail-safe: never block the app from loading
+    window.__MID_PERF_LITE__ = false;
+  }
+})();
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>MORHAF QR Studio | V3 ULTIMATE</title>
 
@@ -16,8 +45,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 
-<!-- Monaco Editor (VSCode-like code editor) -->
-<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+<!-- Monaco Editor is now lazy-loaded (see loadMonacoScript in JS) -->
 
 <style>
 /* ==========================================================================
@@ -465,7 +493,6 @@ input[type="range"].input-control::-moz-range-thumb {
   display: none !important;
 }
 
-/* Show correct sub-workspace */
 .workspace.builder-active.mode-nocode #nocode-workspace { display: block !important; }
 .workspace.builder-active.mode-htmlcode #htmlcode-workspace { display: block !important; }
 
@@ -490,7 +517,6 @@ input[type="range"].input-control::-moz-range-thumb {
   background: linear-gradient(90deg, rgba(222,219,200,.15), transparent);
 }
 
-/* Floating buttons top-right */
 .builder-action-bar {
   position: absolute; top: 0; right: 0; z-index: 20;
   display: flex; gap: 10px; align-items: center;
@@ -739,33 +765,16 @@ select.inp-b optgroup { background: #0a0f1c; color: var(--color-gold); font-weig
 }
 .code-panel-head .left { display: flex; align-items: center; gap: 10px; }
 .code-panel-head .traffic { display: flex; gap: 6px; }
-.code-panel-head .traffic span {
-  width: 11px; height: 11px; border-radius: 50%;
-}
+.code-panel-head .traffic span { width: 11px; height: 11px; border-radius: 50%; }
 .code-panel-head .traffic .r { background: #ff5f57; }
 .code-panel-head .traffic .y { background: #febc2e; }
 .code-panel-head .traffic .g { background: #28c840; }
-.code-panel-head .filename {
-  color: #cfcfcf; font-weight: 600; padding-left: 6px;
-}
+.code-panel-head .filename { color: #cfcfcf; font-weight: 600; padding-left: 6px; }
 .code-panel-head .filename b { color: #00e5ff; }
 .code-panel-head .actions { display: flex; gap: 8px; align-items: center; }
-.code-panel-head .actions .btn {
-  padding: 7px 14px; font-size: 11px; font-weight: 700;
-  border-radius: 9px; letter-spacing: .5px;
-}
-#monacoEditor {
-  flex: 1;
-  min-height: 400px;
-  width: 100%;
-}
-#htmlcodePreview {
-  flex: 1;
-  width: 100%;
-  border: none;
-  background: #fff;
-  display: block;
-}
+.code-panel-head .actions .btn { padding: 7px 14px; font-size: 11px; font-weight: 700; border-radius: 9px; letter-spacing: .5px; }
+#monacoEditor { flex: 1; min-height: 400px; width: 100%; }
+#htmlcodePreview { flex: 1; width: 100%; border: none; background: #fff; display: block; }
 .code-editor-loading {
   display: flex; align-items: center; justify-content: center;
   height: 100%; color: #888; font-family: var(--font-mono); font-size: 0.85rem;
@@ -1071,6 +1080,110 @@ select.inp-b optgroup { background: #0a0f1c; color: var(--color-gold); font-weig
   .gradient-dial { width: 74px; height: 74px; }
   .code-panel-head .filename { display: none; }
   .color-grid-3 { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   ★★★ MOBILE PERFORMANCE MODE ★★★
+   Same design language, but drastically lighter rendering.
+   Applied automatically when the performance detector enables .perf-lite
+   on the <html> element (see script in <head>).
+   ========================================================================== */
+
+/* Remove expensive fixed background effects */
+.perf-lite .noise-texture,
+.perf-lite .grid-overlay { display: none !important; }
+.perf-lite .orb { display: none !important; }
+
+.perf-lite .ambient-environment {
+  animation: none !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(24,90,255,.25), transparent 60%),
+    radial-gradient(circle at 0% 100%, rgba(0,212,255,.22), transparent 60%),
+    #0A0F1C !important;
+}
+
+/* Disable ALL backdrop-filters (biggest GPU win) */
+.perf-lite *,
+.perf-lite *::before,
+.perf-lite *::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Replace glass transparency with near-solid panels (same visual weight) */
+.perf-lite .glass-panel,
+.perf-lite .builder-panel,
+.perf-lite .qr-frame,
+.perf-lite .modal-content,
+.perf-lite .nav-switcher,
+.perf-lite .blk-bar,
+.perf-lite .phone-mockup {
+  background: rgba(10, 15, 28, 0.94) !important;
+}
+
+/* Simplify heavy shadows */
+.perf-lite .glass-panel,
+.perf-lite .qr-frame,
+.perf-lite .builder-panel {
+  box-shadow: 0 10px 30px rgba(0,0,0,.5) !important;
+}
+.perf-lite .phone-mockup {
+  box-shadow:
+    0 20px 40px rgba(0,0,0,.7),
+    inset 0 0 0 9px #14141d,
+    inset 0 0 0 11px #05050a !important;
+}
+.perf-lite .blk.selected { box-shadow: 0 0 0 2px rgba(0,229,255,.5) !important; }
+.perf-lite .btn.primary,
+.perf-lite .btn-gold,
+.perf-lite .btn-web,
+.perf-lite .builder-apply-btn,
+.perf-lite .builder-exit-btn { box-shadow: none !important; }
+.perf-lite .btn.primary:hover,
+.perf-lite .btn-gold:hover,
+.perf-lite .btn-web:hover { box-shadow: none !important; }
+
+/* Kill all continuous idle animations */
+.perf-lite .brand-orb,
+.perf-lite .status-dot,
+.perf-lite #pro-badge,
+.perf-lite .pro-locked::after,
+.perf-lite .btn-whatsapp,
+.perf-lite .builder-apply-btn::after,
+.perf-lite .builder-exit-btn::before,
+.perf-lite .radar-scan {
+  animation: none !important;
+}
+
+/* No hover transforms (no hover on touch anyway) */
+.perf-lite .elem:hover,
+.perf-lite .pattern-card:hover,
+.perf-lite .theme-btn-b:hover,
+.perf-lite .qr-frame:hover,
+.perf-lite .phone-mockup:hover,
+.perf-lite .btn:hover,
+.perf-lite .collapsible:hover {
+  transform: none !important;
+}
+
+/* Faster collapsible transition (less work per frame) */
+.perf-lite .collapsible-body {
+  transition: max-height .25s ease, padding .2s ease !important;
+}
+
+/* No focus-ring animations */
+.perf-lite .inp:focus,
+.perf-lite .input-control:focus,
+.perf-lite .inp-b:focus {
+  box-shadow: none !important;
+}
+
+/* Gradient dial: no transition */
+.perf-lite .gradient-dial { transition: none !important; }
+
+/* When user switches tab away: pause every animation */
+.tab-hidden * {
+  animation-play-state: paused !important;
 }
 </style>
 </head>
@@ -1521,6 +1634,11 @@ document.addEventListener("DOMContentLoaded", () => {
 'use strict';
 
 /* ==========================================================================
+   PERF FLAG (shortcut)
+   ========================================================================== */
+const PERF_LITE = !!window.__MID_PERF_LITE__;
+
+/* ==========================================================================
    CORE
    ========================================================================== */
 const textEncoder = new TextEncoder();
@@ -1530,7 +1648,7 @@ const GF_LIST = ['Roboto:wght@400;700','Montserrat:wght@400;700','Poppins:wght@4
 document.getElementById('gfLink').href = 'https://fonts.googleapis.com/css2?' + GF_LIST.map(f => 'family=' + f).join('&') + '&display=swap';
 
 /* ==========================================================================
-   STEGO WORKER
+   STEGO WORKER — LAZY (only created when first used)
    ========================================================================== */
 const stegoWorkerCode = `
 self.onmessage = function(e) {
@@ -1559,8 +1677,15 @@ self.onmessage = function(e) {
     self.postMessage({ payloadDec: dec });
   }
 };`;
-const workerBlob = new Blob([stegoWorkerCode], { type: 'application/javascript' });
-const stegoWorker = new Worker(URL.createObjectURL(workerBlob));
+
+let _stegoWorker = null;
+function getStegoWorker() {
+  if (!_stegoWorker) {
+    const workerBlob = new Blob([stegoWorkerCode], { type: 'application/javascript' });
+    _stegoWorker = new Worker(URL.createObjectURL(workerBlob));
+  }
+  return _stegoWorker;
+}
 
 function generateUltimateKeySync(textPass) {
   let keyLen = Math.max(textEncoder.encode(textPass).length, 32);
@@ -1739,14 +1864,19 @@ const COLOR_PRESETS = {
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 window.AudioEngine = {
   init: () => { if (audioCtx.state === 'suspended') audioCtx.resume(); },
-  playClick: () => { window.AudioEngine.init(); const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.type = 'sine'; o.frequency.setValueAtTime(800, audioCtx.currentTime); g.gain.setValueAtTime(0.08, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); o.start(); o.stop(audioCtx.currentTime + 0.1); },
+  playClick: () => { if (PERF_LITE) return; window.AudioEngine.init(); const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.type = 'sine'; o.frequency.setValueAtTime(800, audioCtx.currentTime); g.gain.setValueAtTime(0.08, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); o.start(); o.stop(audioCtx.currentTime + 0.1); },
   playSuccess: () => { window.AudioEngine.init(); const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.type = 'triangle'; o.frequency.setValueAtTime(400, audioCtx.currentTime); o.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.3); g.gain.setValueAtTime(0.15, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5); o.start(); o.stop(audioCtx.currentTime + 0.5); },
   playError: () => { window.AudioEngine.init(); const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.type = 'sawtooth'; o.frequency.setValueAtTime(180, audioCtx.currentTime); g.gain.setValueAtTime(0.1, audioCtx.currentTime); g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3); o.start(); o.stop(audioCtx.currentTime + 0.3); },
   playMorse: (morseStr) => { window.AudioEngine.init(); let time = audioCtx.currentTime + 0.1; const dot = 0.08, dash = dot * 3, gap = dot, charGap = dot * 3, wordGap = dot * 7; for (let i = 0; i < morseStr.length; i++) { let c = morseStr[i]; if (c === '.' || c === '-') { const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.type = 'sine'; o.frequency.value = 650; g.gain.setValueAtTime(0, time); g.gain.linearRampToValueAtTime(0.1, time + 0.01); o.connect(g); g.connect(audioCtx.destination); o.start(time); let len = (c === '.') ? dot : dash; g.gain.setValueAtTime(0.1, time + len - 0.01); g.gain.linearRampToValueAtTime(0, time + len); o.stop(time + len); time += len + gap; } else if (c === ' ') time += charGap; else if (c === '/') time += wordGap; } },
   exportMorseWAV: async (morseStr) => { const dot = 0.08, dash = dot * 3, gap = dot, charGap = dot * 3, wordGap = dot * 7; let totalTime = 0.5; for (let c of morseStr) { if (c === '.') totalTime += dot + gap; else if (c === '-') totalTime += dash + gap; else if (c === ' ') totalTime += charGap; else if (c === '/') totalTime += wordGap; } const offlineCtx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 44100 * totalTime, 44100); let time = 0.1; for (let c of morseStr) { if (c === '.' || c === '-') { const o = offlineCtx.createOscillator(); const g = offlineCtx.createGain(); o.type = 'sine'; o.frequency.value = 650; g.gain.setValueAtTime(0, time); g.gain.linearRampToValueAtTime(0.8, time + 0.01); o.connect(g); g.connect(offlineCtx.destination); o.start(time); let len = (c === '.') ? dot : dash; g.gain.setValueAtTime(0.8, time + len - 0.01); g.gain.linearRampToValueAtTime(0, time + len); o.stop(time + len); time += len + gap; } else if (c === ' ') time += charGap; else if (c === '/') time += wordGap; } const renderedBuffer = await offlineCtx.startRendering(); return audioBufferToWav(renderedBuffer); }
 };
 
-function playSound(type) { if (type === 'click') window.AudioEngine.playClick(); else if (type === 'success') window.AudioEngine.playSuccess(); else window.AudioEngine.playError(); }
+function playSound(type) {
+  if (PERF_LITE && type === 'click') return; // silence click sound on mobile for snappiness
+  if (type === 'click') window.AudioEngine.playClick();
+  else if (type === 'success') window.AudioEngine.playSuccess();
+  else window.AudioEngine.playError();
+}
 
 function audioBufferToWav(buffer) {
   const numChannels = 1, sampleRate = buffer.sampleRate, format = 1, bitDepth = 16;
@@ -1791,9 +1921,11 @@ const uiEngine = new QRCodeStyling({
 });
 uiEngine.append(DOM.qrContainer);
 
-gsap.from(".glass-panel", { y: 30, opacity: 0, duration: 0.9, ease: "power3.out" });
-gsap.from("header", { y: -30, opacity: 0, duration: 0.7, ease: "power3.out" });
-gsap.from(".brand-orb", { scale: 0, duration: 0.6, delay: 0.3, ease: "back.out(1.7)" });
+if (!PERF_LITE) {
+  gsap.from(".glass-panel", { y: 30, opacity: 0, duration: 0.9, ease: "power3.out" });
+  gsap.from("header", { y: -30, opacity: 0, duration: 0.7, ease: "power3.out" });
+  gsap.from(".brand-orb", { scale: 0, duration: 0.6, delay: 0.3, ease: "back.out(1.7)" });
+}
 
 /* ==========================================================================
    COLLAPSIBLES
@@ -1820,13 +1952,10 @@ function switchTab(mode) {
   const hideWS = isGen ? DOM.workspaces.dec : DOM.workspaces.gen;
   const showWS = isGen ? DOM.workspaces.gen : DOM.workspaces.dec;
   if (isGen && typeof stopCamera === 'function') stopCamera();
-  gsap.to(hideWS, { opacity: 0, duration: 0.2, onComplete: () => {
-    hideWS.style.display = 'none';
-    showWS.style.display = 'block';
-    gsap.fromTo(showWS, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35 });
-    if (isGen) updateQR(false);
-    else DOM.qrContainer.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0A0F1C;border-radius:8px;"><svg viewBox="0 0 24 24" style="width:80px;height:80px;fill:rgba(222,219,200,.2)"><path d="M4 4h4v2H6v2H4V4zm16 0h-4v2h2v2h2V4zM4 20h4v-2H6v-2H4v4zm16 0h-4v-2h2v-2h2v4z"/></svg></div>`;
-  }});
+  hideWS.style.display = 'none';
+  showWS.style.display = 'block';
+  if (isGen) updateQR(false);
+  else DOM.qrContainer.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0A0F1C;border-radius:8px;"><svg viewBox="0 0 24 24" style="width:80px;height:80px;fill:rgba(222,219,200,.2)"><path d="M4 4h4v2H6v2H4V4zm16 0h-4v2h2v2h2V4zM4 20h4v-2H6v-2H4v4zm16 0h-4v-2h2v-2h2v4z"/></svg></div>`;
 }
 DOM.tabs.gen.addEventListener('click', () => switchTab('generate'));
 DOM.tabs.dec.addEventListener('click', () => switchTab('decode'));
@@ -1954,7 +2083,6 @@ function buildInputs() {
     DOM.workspace.classList.remove('mode-htmlcode');
     initBuilder();
     playSound('success');
-    gsap.fromTo('#nocode-workspace', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
     return;
   }
 
@@ -1964,7 +2092,6 @@ function buildInputs() {
     DOM.workspace.classList.remove('mode-nocode');
     initCodeEditor();
     playSound('success');
-    gsap.fromTo('#htmlcode-workspace', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
     return;
   }
 
@@ -2043,7 +2170,7 @@ function extractPaletteFromLogo(dataUrl) {
   img.crossOrigin = 'anonymous';
   img.onload = () => {
     const canvas = document.createElement('canvas');
-    const size = 80;
+    const size = PERF_LITE ? 48 : 80;
     canvas.width = size; canvas.height = size;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     ctx.drawImage(img, 0, 0, size, size);
@@ -2260,7 +2387,10 @@ function updateQR(applyTrueResolution = true) {
   const dotColor = DOM.colorDots.value;
   const cornerColor = DOM.colorCorners.value;
   const bgColor = DOM.colorBg.value;
-  const res = applyTrueResolution ? parseInt(DOM.resolution.value) : 1080;
+  let res = applyTrueResolution ? parseInt(DOM.resolution.value) : 1080;
+
+  /* PERF: cap resolution on mobile to avoid huge canvas cost */
+  if (PERF_LITE && res > 1080) res = 1080;
 
   const dotsOptions = { color: dotColor, type: pat.dots };
 
@@ -2309,8 +2439,10 @@ DOM.resolution.addEventListener('change', () => updateQR(true));
 DOM.btnPreview.addEventListener('click', () => {
   updateQR(true);
   playSound('success');
-  gsap.fromTo(DOM.radarScan, { top: "-20%", opacity: 1 }, { top: "100%", opacity: 0, duration: 1.5, ease: "power1.inOut" });
-  gsap.fromTo(DOM.qrFrame, { scale: 0.9, filter: "brightness(1.5)" }, { scale: 1, filter: "brightness(1)", duration: 0.55, ease: "elastic.out(1, 0.7)" });
+  if (!PERF_LITE) {
+    gsap.fromTo(DOM.radarScan, { top: "-20%", opacity: 1 }, { top: "100%", opacity: 0, duration: 1.5, ease: "power1.inOut" });
+    gsap.fromTo(DOM.qrFrame, { scale: 0.9, filter: "brightness(1.5)" }, { scale: 1, filter: "brightness(1)", duration: 0.55, ease: "elastic.out(1, 0.7)" });
+  }
 });
 
 async function executeStealthEncryption(canvas) {
@@ -2335,12 +2467,13 @@ async function executeStealthEncryption(canvas) {
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   return new Promise((resolve) => {
-    stegoWorker.onmessage = (e) => {
+    const w = getStegoWorker();
+    w.onmessage = (e) => {
       const outImgData = new ImageData(new Uint8ClampedArray(e.data.result), canvas.width, canvas.height);
       ctx.putImageData(outImgData, 0, 0);
       resolve(true);
     };
-    stegoWorker.postMessage({ action: 'encImg', coverBuf: imgData.data.buffer, payloadBytes: pBytes, key: uKey }, [imgData.data.buffer]);
+    w.postMessage({ action: 'encImg', coverBuf: imgData.data.buffer, payloadBytes: pBytes, key: uKey }, [imgData.data.buffer]);
   });
 }
 
@@ -2424,14 +2557,22 @@ function showWelcomeScreen(name, token, isRestore = false) {
   if (!isRestore) { DOM.tokenDisplay.style.display = 'block'; DOM.tokenValue.innerText = token; }
   else { DOM.tokenDisplay.style.display = 'none'; }
   DOM.btnCloseWelcome.style.display = 'inline-block';
-  gsap.to(DOM.welcomeScreen, { y: "0%", duration: 0.85, ease: "power4.out" });
+  if (PERF_LITE) {
+    DOM.welcomeScreen.style.transform = 'translateY(0%)';
+  } else {
+    gsap.to(DOM.welcomeScreen, { y: "0%", duration: 0.85, ease: "power4.out" });
+  }
 }
 
 DOM.btnCloseWelcome.addEventListener('click', () => {
   playSound('click');
   toggleBlur(false);
   DOM.welcomeScreen.classList.remove('active');
-  gsap.to(DOM.welcomeScreen, { y: "-100%", duration: 0.85, ease: "power4.in" });
+  if (PERF_LITE) {
+    DOM.welcomeScreen.style.transform = 'translateY(-100%)';
+  } else {
+    gsap.to(DOM.welcomeScreen, { y: "-100%", duration: 0.85, ease: "power4.in" });
+  }
 });
 
 DOM.btnLogoutPro.addEventListener('click', () => { DOM.logoutModal.classList.add('active'); DOM.logoutErrorMsg.style.display = 'none'; DOM.logoutTokenInput.value = ''; });
@@ -2513,7 +2654,8 @@ function handleDecodeUpload(file) {
         ctx.drawImage(img, 0, 0);
         const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
         const uKey = generateUltimateKeySync(pass);
-        stegoWorker.onmessage = (ev) => {
+        const w = getStegoWorker();
+        w.onmessage = (ev) => {
           if (ev.data.error) { showScanResult("Decryption failed or no hidden data.", true); return; }
           try {
             const payload = JSON.parse(textDecoder.decode(ev.data.payloadDec));
@@ -2524,13 +2666,13 @@ function handleDecodeUpload(file) {
             showScanResult(html, false, "stealth", actions);
           } catch (err) { showScanResult("Decryption failed. Corrupted data.", true); }
         };
-        stegoWorker.postMessage({ action: 'decImg', coverBuf: imgData.data.buffer, key: uKey }, [imgData.data.buffer]);
+        w.postMessage({ action: 'decImg', coverBuf: imgData.data.buffer, key: uKey }, [imgData.data.buffer]);
         return;
       }
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
       let w = img.width, h = img.height;
-      const maxDim = 1000;
+      const maxDim = PERF_LITE ? 700 : 1000;
       if (w > maxDim || h > maxDim) { const ratio = Math.min(maxDim / w, maxDim / h); w = w * ratio; h = h * ratio; }
       canvas.width = w; canvas.height = h;
       context.drawImage(img, 0, 0, w, h);
@@ -2642,7 +2784,7 @@ function showScanResult(text, isError, specialType = null, extraActions = "") {
     DOM.display.scanContent.innerHTML = displayHTML;
     DOM.display.scanActions.innerHTML = actionHTML;
   }
-  gsap.fromTo(DOM.display.scanCard, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 });
+  if (!PERF_LITE) gsap.fromTo(DOM.display.scanCard, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 });
 }
 
 /* ==========================================================================
@@ -2785,6 +2927,9 @@ const B_BLOCK_CSS = `
 `;
 (function injectBBlockCSS() { const s = document.createElement('style'); s.textContent = B_BLOCK_CSS; document.head.appendChild(s); })();
 
+/* ==========================================================================
+   BUILDER RUNTIME JS — with hidden-tab guards
+   ========================================================================== */
 const B_RUNTIME_JS = String.raw`
 (function(){
   document.querySelectorAll('.mid-slider').forEach(function(sl){
@@ -2801,7 +2946,7 @@ const B_RUNTIME_JS = String.raw`
     }
     dots.forEach(function(d,x){ d.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); go(x); }); });
     go(0);
-    if(sl.dataset.autoplay==='true' && style!=='ticker' && n>1){ setInterval(function(){ go(i+1); },3600); }
+    if(sl.dataset.autoplay==='true' && style!=='ticker' && n>1){ setInterval(function(){ if(!document.hidden) go(i+1); },3600); }
   });
   document.querySelectorAll('.mid-count[data-date]').forEach(function(c){
     if(c.dataset.midInit) return; c.dataset.midInit='1';
@@ -2813,7 +2958,7 @@ const B_RUNTIME_JS = String.raw`
       if(g('d')) g('d').textContent=pad(d); if(g('h')) g('h').textContent=pad(h);
       if(g('m')) g('m').textContent=pad(m); if(g('s')) g('s').textContent=pad(s);
     }
-    tick(); setInterval(tick,1000);
+    tick(); setInterval(function(){ if(!document.hidden) tick(); },1000);
   });
   document.querySelectorAll('.mid-faq-q').forEach(function(q){
     if(q.dataset.midInit) return; q.dataset.midInit='1';
@@ -2834,7 +2979,27 @@ const B_RUNTIME_JS = String.raw`
   });
 })();
 `;
-function runBuilderRuntime() { try { new Function(B_RUNTIME_JS)(); } catch (err) { console.warn('runtime', err); } }
+
+/* PERF: cache the compiled runtime fn (avoids recompiling on every keystroke) */
+let _bRuntimeFn = null;
+function runBuilderRuntime() {
+  if (!_bRuntimeFn) {
+    try { _bRuntimeFn = new Function(B_RUNTIME_JS); }
+    catch (err) { console.warn('runtime compile', err); return; }
+  }
+  try { _bRuntimeFn(); } catch (err) { console.warn('runtime exec', err); }
+}
+
+/* PERF: rAF-throttled canvas renderer */
+let _bRenderRafPending = false;
+function bRenderCanvasThrottled() {
+  if (_bRenderRafPending) return;
+  _bRenderRafPending = true;
+  requestAnimationFrame(() => {
+    _bRenderRafPending = false;
+    bRenderCanvas();
+  });
+}
 
 const B_THEMES = [
   { name:'Cyberpunk', font:'Space Grotesk', text:'#e6fbff', bg:{ mode:'gradient', c1:'#12002e', c2:'#ff2e97', angle:140, s1:0, s2:100 }, solid:'#12002e', accent:'#00f0ff', accentText:'#00121a', radius:8 },
@@ -3046,13 +3211,13 @@ function bBindInspectorLists() {
   const addSlide = document.getElementById('bAddSlide');
   if (addSlide) addSlide.onclick = () => { b.opts.slides.push({ url:'https://picsum.photos/seed/' + Math.random().toString(36).slice(2, 7) + '/900/600', caption:'' }); bRenderCanvas(); bRenderInspector(); };
   document.querySelectorAll('[data-slide-del]').forEach(btn => { btn.onclick = () => { b.opts.slides.splice(+btn.dataset.slideDel, 1); if (!b.opts.slides.length) b.opts.slides.push({ url:'', caption:'' }); bRenderCanvas(); bRenderInspector(); }; });
-  document.querySelectorAll('[data-slide]').forEach(inp => { inp.addEventListener('input', () => { const i = +inp.dataset.index; b.opts.slides[i][inp.dataset.slide] = inp.value; bRenderCanvas(); }); });
+  document.querySelectorAll('[data-slide]').forEach(inp => { inp.addEventListener('input', () => { const i = +inp.dataset.index; b.opts.slides[i][inp.dataset.slide] = inp.value; bRenderCanvasThrottled(); }); });
   const slideList = document.getElementById('bSlideList');
   if (slideList && typeof Sortable !== 'undefined') { Sortable.create(slideList, { handle:'.slide-handle', animation:160, onEnd: () => { const order = Array.from(slideList.children).map(c => +c.dataset.index); b.opts.slides = order.map(i => b.opts.slides[i]); bRenderCanvas(); bRenderInspector(); } }); }
   const addFaq = document.getElementById('bAddFaq');
   if (addFaq) addFaq.onclick = () => { b.opts.items.push({ q:'New question', a:'New answer' }); bRenderCanvas(); bRenderInspector(); };
   document.querySelectorAll('[data-faq-del]').forEach(btn => { btn.onclick = () => { b.opts.items.splice(+btn.dataset.faqDel, 1); if (!b.opts.items.length) b.opts.items.push({ q:'', a:'' }); bRenderCanvas(); bRenderInspector(); }; });
-  document.querySelectorAll('[data-faq]').forEach(inp => { inp.addEventListener('input', () => { const i = +inp.dataset.index; b.opts.items[i][inp.dataset.faq] = inp.value; bRenderCanvas(); }); });
+  document.querySelectorAll('[data-faq]').forEach(inp => { inp.addEventListener('input', () => { const i = +inp.dataset.index; b.opts.items[i][inp.dataset.faq] = inp.value; bRenderCanvasThrottled(); }); });
   const faqList = document.getElementById('bFaqList');
   if (faqList && typeof Sortable !== 'undefined') { Sortable.create(faqList, { handle:'.faq-handle', animation:160, onEnd: () => { const order = Array.from(faqList.children).map(c => +c.dataset.findex); b.opts.items = order.map(i => b.opts.items[i]); bRenderCanvas(); bRenderInspector(); } }); }
 }
@@ -3061,18 +3226,18 @@ document.addEventListener('input', function (e) {
   const t = e.target;
   if (!t.closest('#builderInspector')) return;
   const b = builderState.blocks.find(x => x.id === builderSelectedId);
-  if (t.dataset.pprop) { const key = t.dataset.pprop; let v = t.value; if (t.type === 'number') v = parseFloat(v) || 0; builderState.page[key] = v; bRenderCanvas(); return; }
-  if (t.dataset.gprop) { const key = t.dataset.gprop; builderState.page.grad[key] = (t.type === 'range' || t.type === 'number') ? parseFloat(t.value) : t.value; bRenderCanvas(); const lbl = t.closest('.b-field') && t.closest('.b-field').querySelector('label'); if (lbl) { if (key === 's1') lbl.textContent = 'Start Stop — ' + builderState.page.grad.s1 + '%'; if (key === 's2') lbl.textContent = 'End Stop — ' + builderState.page.grad.s2 + '%'; } return; }
+  if (t.dataset.pprop) { const key = t.dataset.pprop; let v = t.value; if (t.type === 'number') v = parseFloat(v) || 0; builderState.page[key] = v; bRenderCanvasThrottled(); return; }
+  if (t.dataset.gprop) { const key = t.dataset.gprop; builderState.page.grad[key] = (t.type === 'range' || t.type === 'number') ? parseFloat(t.value) : t.value; bRenderCanvasThrottled(); const lbl = t.closest('.b-field') && t.closest('.b-field').querySelector('label'); if (lbl) { if (key === 's1') lbl.textContent = 'Start Stop — ' + builderState.page.grad.s1 + '%'; if (key === 's2') lbl.textContent = 'End Stop — ' + builderState.page.grad.s2 + '%'; } return; }
   if (!b || !t.dataset.prop) return;
   const prop = t.dataset.prop;
-  if (prop === 'style.bgSolid') { b.style.bg = t.value; bRenderCanvas(); return; }
+  if (prop === 'style.bgSolid') { b.style.bg = t.value; bRenderCanvasThrottled(); return; }
   let v = t.value;
   if (t.type === 'number' || t.type === 'range') v = parseFloat(v);
   if (v === '' || (typeof v === 'number' && isNaN(v))) v = (t.type === 'number' || t.type === 'range') ? 0 : '';
   const parts = prop.split('.'); let cur = b;
   for (let i = 0; i < parts.length - 1; i++) { if (cur[parts[i]] == null) cur[parts[i]] = {}; cur = cur[parts[i]]; }
   cur[parts[parts.length - 1]] = v;
-  bRenderCanvas();
+  bRenderCanvasThrottled();
 });
 
 document.addEventListener('click', function (e) {
@@ -3157,6 +3322,11 @@ function bBuildExportHTML() {
 html,body{margin:0;padding:0}
 body{background:${bgCSS};color:${p.textColor};font-family:'${p.font}',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
 .mid-wrap{max-width:${p.maxWidth}px;margin:0 auto;padding:${p.padTop}px ${p.padX}px ${p.padBottom}px;}
+/* Mobile perf lite for exported sites */
+@media (max-width: 900px) {
+  * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; animation-duration: 0.001s !important; animation-iteration-count: 1 !important; }
+  .mid-btn:hover, .mid-btn:active { transform: none !important; box-shadow: none !important; }
+}
 ${B_BLOCK_CSS}`.trim();
   return `<!DOCTYPE html><html lang="ar" dir="auto"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><title>${escHTML(builderState.title)}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="${B_GOOGLE_FONTS_HREF}" rel="stylesheet"><style>${css}</style></head><body><div class="mid-wrap">${body}</div>${popups}<script type="application/json" id="mid-state">${stateJson}<\/script><script>${B_RUNTIME_JS}<\/script></body></html>`;
 }
@@ -3195,8 +3365,10 @@ function exitBuilder() {
   updateQR(true);
   playSound('click');
   toast('Returned to QR Studio', 'info');
-  gsap.fromTo('#generate-workspace', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4 });
-  gsap.fromTo('.preview-area', { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.5 });
+  if (!PERF_LITE) {
+    gsap.fromTo('#generate-workspace', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4 });
+    gsap.fromTo('.preview-area', { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.5 });
+  }
 }
 
 DOM.builderExitTop.addEventListener('click', exitBuilder);
@@ -3218,14 +3390,14 @@ function initBuilder() {
   bRenderCanvas();
   bRenderInspector();
   setTimeout(bInitSortable, 120);
-  gsap.fromTo('.builder-shell', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' });
 }
 
 /* ==========================================================================
-   CODE EDITOR — Monaco
+   CODE EDITOR — Monaco (LAZY LOADED)
    ========================================================================== */
 let monacoEditor = null;
 let monacoInitialized = false;
+let monacoLoading = false;
 
 const DEFAULT_HTML_CODE = `<!DOCTYPE html>
 <html>
@@ -3302,7 +3474,18 @@ const DEFAULT_HTML_CODE = `<!DOCTYPE html>
 </body>
 </html>`;
 
-function initCodeEditor() {
+function loadMonacoScript() {
+  return new Promise((resolve, reject) => {
+    if (window.require && window.monaco) return resolve();
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js';
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+async function initCodeEditor() {
   const editorEl = document.getElementById('monacoEditor');
   if (!editorEl) return;
 
@@ -3310,9 +3493,15 @@ function initCodeEditor() {
     monacoEditor.layout();
     return;
   }
+  if (monacoLoading) return;
+  monacoLoading = true;
 
-  if (typeof require === 'undefined') {
-    // Fallback: plain textarea if Monaco didn't load
+  editorEl.innerHTML = '<div class="code-editor-loading"><div class="spinner-dark"></div><div>Loading VSCode Engine...</div></div>';
+
+  try {
+    await loadMonacoScript();
+  } catch (e) {
+    // Fallback: plain textarea
     editorEl.innerHTML = '<textarea id="htmlFallback" style="width:100%; height:100%; background:#1e1e1e; color:#d4d4d4; border:none; outline:none; font-family:monospace; font-size:13px; padding:16px; resize:none;" spellcheck="false"></textarea>';
     const ta = document.getElementById('htmlFallback');
     ta.value = DEFAULT_HTML_CODE;
@@ -3323,6 +3512,8 @@ function initCodeEditor() {
       }, 500);
     });
     document.getElementById('htmlcodePreview').srcdoc = ta.value;
+    monacoLoading = false;
+    monacoInitialized = true;
     return;
   }
 
@@ -3334,24 +3525,26 @@ function initCodeEditor() {
       language: 'html',
       theme: 'vs-dark',
       automaticLayout: true,
-      minimap: { enabled: true },
-      fontSize: 13,
+      minimap: { enabled: !PERF_LITE },
+      fontSize: PERF_LITE ? 12 : 13,
       fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
       lineNumbers: 'on',
       roundedSelection: true,
       scrollBeyondLastLine: false,
       wordWrap: 'on',
       tabSize: 2,
-      suggestOnTriggerCharacters: true,
-      quickSuggestions: { other: true, comments: false, strings: true },
-      formatOnPaste: true,
-      formatOnType: true,
+      suggestOnTriggerCharacters: !PERF_LITE,
+      quickSuggestions: PERF_LITE
+        ? { other: false, comments: false, strings: false }
+        : { other: true, comments: false, strings: true },
+      formatOnPaste: !PERF_LITE,
+      formatOnType: !PERF_LITE,
       autoClosingBrackets: 'always',
       autoClosingQuotes: 'always',
       autoIndent: 'full',
-      snippetSuggestions: 'top',
-      bracketPairColorization: { enabled: true },
-      guides: { bracketPairs: true, indentation: true },
+      snippetSuggestions: PERF_LITE ? 'none' : 'top',
+      bracketPairColorization: { enabled: !PERF_LITE },
+      guides: { bracketPairs: !PERF_LITE, indentation: true },
       scrollbar: { verticalScrollbarSize: 10, horizontalScrollbarSize: 10 }
     });
 
@@ -3360,21 +3553,22 @@ function initCodeEditor() {
       window.htmlPreviewTimer = setTimeout(() => {
         const preview = document.getElementById('htmlcodePreview');
         if (preview) preview.srcdoc = monacoEditor.getValue();
-      }, 450);
+      }, PERF_LITE ? 900 : 450);
     });
 
     document.getElementById('htmlcodePreview').srcdoc = monacoEditor.getValue();
     monacoInitialized = true;
+    monacoLoading = false;
     playSound('success');
   });
-
-  DOM.htmlcodeRefresh.addEventListener('click', () => {
-    if (monacoEditor) {
-      document.getElementById('htmlcodePreview').srcdoc = monacoEditor.getValue();
-      toast('Preview refreshed', 'info');
-    }
-  });
 }
+
+DOM.htmlcodeRefresh.addEventListener('click', () => {
+  if (monacoEditor) {
+    document.getElementById('htmlcodePreview').srcdoc = monacoEditor.getValue();
+    toast('Preview refreshed', 'info');
+  }
+});
 
 async function applyHTMLCode() {
   if (!monacoEditor) { toast('Editor not ready', 'error'); return; }
@@ -3401,6 +3595,17 @@ DOM.htmlcodeApplyBtn.addEventListener('click', applyHTMLCode);
 DOM.htmlcodeExitTop.addEventListener('click', exitBuilder);
 
 /* ==========================================================================
+   TAB VISIBILITY: pause everything when hidden
+   ========================================================================== */
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    document.body.classList.add('tab-hidden');
+  } else {
+    document.body.classList.remove('tab-hidden');
+  }
+});
+
+/* ==========================================================================
    BOOT
    ========================================================================== */
 buildPatternsGrid();
@@ -3408,8 +3613,9 @@ enforceProLocks();
 refreshGradientPreview();
 updateQR(true);
 
-console.log('%c◆ M.I.D QR Studio Pro V3.1 — Ultimate Edition','color:#00E5FF;font-size:14px;font-weight:900;');
-console.log('%c14 Patterns • Stealth • Morse • No Code Web • HTML Code Editor','color:#7C5CFF;font-size:11px;');
+console.log('%c◆ M.I.D QR Studio Pro V3.2 — Performance Edition','color:#00E5FF;font-size:14px;font-weight:900;');
+console.log('%c14 Patterns • Stealth • Morse • No Code Web • HTML Code Editor • Mobile Optimized','color:#7C5CFF;font-size:11px;');
+console.log('%cRunning in ' + (PERF_LITE ? 'LITE' : 'FULL') + ' mode', 'color:#FFD700;font-size:11px;font-weight:bold;');
 
 });
 </script>
