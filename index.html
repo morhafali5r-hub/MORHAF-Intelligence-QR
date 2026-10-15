@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>MORHAF QR Studio | V5.4</title>
+<title>MORHAF QR Studio | V7.0 LEGENDARY</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -462,13 +463,78 @@ select.inp-b optgroup{background:#0a0f1c;color:var(--color-gold);font-weight:800
 @media (max-width:1280px){.builder-shell{grid-template-columns:240px 1fr 300px}.phone-mockup{width:330px;height:660px}}
 @media (max-width:1024px){.workspace{grid-template-columns:1fr}.preview-area{order:-1;min-height:420px;padding-bottom:1.5rem}.action-grid{grid-template-columns:1fr}.decode-tabs{flex-direction:column}.builder-shell{grid-template-columns:1fr;min-height:auto;max-height:none;gap:12px}.builder-panel{max-height:none}.phone-mockup{width:100%;max-width:380px;height:640px;max-height:none}.code-shell{grid-template-columns:1fr;max-height:none;min-height:auto}.code-panel{min-height:420px}.builder-action-bar{position:static;justify-content:flex-end;padding-bottom:8px;flex-wrap:wrap}.inbox-stats{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.app-shell{padding:1rem}.brand-text{font-size:1.15rem}.nav-btn{padding:8px 12px;font-size:.75rem}.glass-panel{padding:1.5rem 1.15rem;border-radius:22px}.qr-frame{padding:16px}#qr-canvas-container{width:260px;height:260px}.patterns-grid{grid-template-columns:repeat(2,1fr)}.modal-content{padding:1.75rem 1.25rem}.my-custom-text{font-size:2.8rem}.token-value{font-size:1.3rem}.builder-exit-btn,.builder-apply-btn,.builder-load-btn{padding:9px 12px;font-size:.7rem}.gradient-dial{width:74px;height:74px}.info-modal-content{max-width:100%!important}.info-body{padding:16px 14px 22px;max-height:68vh}.info-header{padding:20px 16px 14px}.info-header h2{font-size:17px}.info-header p{font-size:11.5px}.info-tab{padding:6px 10px;font-size:10.5px}.info-grid-2{grid-template-columns:1fr}#btn-info{padding:6px 10px;font-size:.72rem}.nav-switcher{width:100%;justify-content:center}.lead-top{flex-direction:column}.inbox-stats{grid-template-columns:1fr 1fr;gap:8px}.inbox-stat .num{font-size:20px}}
+
+/* === V6.5 ULTRA LUXURY, GRANULAR QR, MAP PICKER & VARIABLE CONTENT === */
+#btn-lang-toggle,#btn-projects-vault{background:rgba(255,255,255,.06);color:var(--color-cream);border:1px solid var(--glass-border);font-size:.78rem;padding:8px 13px;border-radius:12px;font-weight:800;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;transition:.2s}
+#btn-lang-toggle:hover,#btn-projects-vault:hover{background:rgba(222,219,200,.14);border-color:var(--color-cream);transform:translateY(-2px)}
+.scannability-bar{margin-top:1rem;width:100%;max-width:360px;background:rgba(0,0,0,.45);border:1px solid var(--glass-border);border-radius:14px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.76rem}
+.scan-score-pill{padding:3px 10px;border-radius:100px;font-family:var(--font-mono);font-weight:800;font-size:.72rem;letter-spacing:.5px}
+.scan-score-pill.good{background:rgba(46,204,113,.18);color:#2ecc71;border:1px solid rgba(46,204,113,.4)}
+.scan-score-pill.warn{background:rgba(255,179,0,.18);color:#ffb300;border:1px solid rgba(255,179,0,.4)}
+.scan-score-pill.bad{background:rgba(255,82,82,.18);color:#ff5252;border:1px solid rgba(255,82,82,.4)}
+.mockup-switcher{display:inline-flex;background:rgba(0,0,0,.45);border:1px solid var(--glass-border);border-radius:100px;padding:4px;gap:4px;margin-bottom:1.2rem;flex-wrap:wrap;justify-content:center}
+.mockup-btn{background:transparent;border:none;color:var(--text-secondary);padding:6px 13px;border-radius:100px;font-family:inherit;font-size:.73rem;font-weight:700;cursor:pointer;transition:.2s}
+.mockup-btn.active{background:linear-gradient(135deg,var(--color-web-2),var(--color-web));color:#fff;box-shadow:0 4px 12px rgba(0,229,255,.3)}
+.qr-frame.mockup-vip{background:linear-gradient(135deg,#0d0d12 0%,#1a1610 50%,#08080c 100%);border:2px solid #d4af37;padding:34px 28px 28px;box-shadow:0 35px 90px rgba(0,0,0,.9),0 0 40px rgba(212,175,55,.22);transform:perspective(900px) rotateY(-8deg) rotateX(6deg)}
+.qr-frame.mockup-vip::before{content:'MORHAF VIP EXECUTIVE CARD';display:block;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:#d4af37;margin-bottom:12px;font-weight:800}
+.qr-frame.mockup-tent{background:linear-gradient(180deg,#1f1c18 0%,#0f0d0a 100%);border:1px solid rgba(222,219,200,.35);padding:30px 24px 36px;border-bottom:10px solid #8b5e34;box-shadow:0 45px 70px rgba(0,0,0,.85);transform:perspective(800px) rotateX(10deg)}
+.qr-frame.mockup-tent::before{content:'TABLE MENU • امسح للطلب';display:block;text-align:center;font-size:11px;letter-spacing:2px;color:var(--color-cream);margin-bottom:12px;font-weight:800}
+.qr-frame.mockup-holo{background:radial-gradient(circle at 50% 0%,rgba(0,229,255,.22),rgba(124,92,255,.15) 60%,rgba(5,6,11,.95));border:1px solid #00e5ff;box-shadow:0 0 50px rgba(0,229,255,.35),inset 0 0 25px rgba(124,92,255,.25);animation:holoFloat 4s ease-in-out infinite}
+@keyframes holoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.qr-badge-bar{margin-top:12px;padding:9px 16px;border-radius:12px;text-align:center;font-weight:800;font-size:.85rem;letter-spacing:1px;display:none;align-items:center;justify-content:center;gap:8px}
+.qr-badge-bar.show{display:flex}
+.qr-top-banner{margin-bottom:10px;padding:6px 14px;border-radius:10px;text-align:center;font-weight:800;font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;display:none}
+.qr-top-banner.show{display:block}
+.cipher-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;background:rgba(176,38,255,.15);border:1px solid rgba(176,38,255,.4);color:#e0aaff;font-family:var(--font-mono);font-size:.72rem;font-weight:700;margin-bottom:10px}
+.project-card{background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:14px;padding:12px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.project-card:hover{border-color:var(--color-web);background:rgba(0,229,255,.05)}
+.project-meta{flex:1;min-width:160px}
+.project-meta h4{font-size:.9rem;color:var(--color-cream);margin-bottom:2px}
+.project-meta .pid{font-family:var(--font-mono);font-size:.75rem;color:var(--color-web);letter-spacing:1.5px}
+.project-actions{display:flex;gap:6px;flex-wrap:wrap}
+.project-actions button{padding:6px 10px;font-size:.72rem;border-radius:8px;border:1px solid var(--glass-border);background:rgba(255,255,255,.06);color:var(--text-primary);cursor:pointer;font-weight:700}
+.project-actions button:hover{background:rgba(255,255,255,.15)}
+.mid-catalog-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mid-cat-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px;text-align:center;display:flex;flex-direction:column;gap:6px}
+.mid-cat-img{width:100%;height:110px;object-fit:cover;border-radius:10px;background:rgba(0,0,0,.3)}
+.mid-cat-title{font-weight:800;font-size:13px}
+.mid-cat-price{color:#FFD700;font-family:monospace;font-weight:800;font-size:12.5px}
+.mid-cat-btn{padding:7px 10px;border-radius:9px;border:none;background:#25D366;color:#fff;font-weight:800;font-size:11px;cursor:pointer;text-decoration:none;display:inline-block}
+.anatomy-box{background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.22);border-radius:16px;padding:14px;margin-bottom:1.25rem}
+.anatomy-title{font-size:.76rem;font-weight:800;color:var(--color-web);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.vc-studio-box{background:rgba(0,0,0,.38);border:1px solid rgba(255,215,0,.3);border-radius:18px;padding:16px;margin-bottom:1.25rem}
+.vc-top-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+.vc-modes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px;max-height:230px;overflow-y:auto;padding:4px;margin-bottom:14px;background:rgba(0,0,0,.35);border-radius:12px;border:1px solid var(--glass-border)}
+.vc-mode-btn{background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:10px;padding:8px 4px;color:var(--text-secondary);font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:.18s;text-align:center}
+.vc-mode-btn span{font-size:16px;line-height:1}
+.vc-mode-btn:hover{border-color:rgba(0,229,255,.4);color:#fff;transform:translateY(-1px)}
+.vc-mode-btn.active{background:linear-gradient(135deg,rgba(124,92,255,.35),rgba(0,229,255,.25));border-color:var(--color-web);color:#fff;box-shadow:0 0 0 2px rgba(0,229,255,.2)}
+#leaflet-map-box{width:100%;height:320px;border-radius:14px;border:1px solid var(--color-web);overflow:hidden;margin:10px 0;background:#0a0f1c;z-index:1}
+.map-pick-trigger{background:linear-gradient(135deg,rgba(0,229,255,.16),rgba(124,92,255,.16));border:1px dashed var(--color-web);color:var(--color-web);width:100%;padding:11px;border-radius:12px;font-family:inherit;font-weight:800;font-size:.82rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;transition:.2s}
+.map-pick-trigger:hover{background:rgba(0,229,255,.25);transform:translateY(-1px)}
+
+
+/* === V7.0 LEGENDARY UPGRADES === */
+#tab-inbox::after{content:'SOON';display:inline-block;background:linear-gradient(135deg,#ff8c00,#ff2e97);color:#fff;font-size:9px;font-weight:900;padding:2px 6px;border-radius:100px;letter-spacing:.5px;margin-inline-start:4px;vertical-align:middle;box-shadow:0 2px 8px rgba(255,46,151,.4)}
+.soon-badge{display:inline-block;background:linear-gradient(135deg,#ff8c00,#ff2e97);color:#fff;font-size:9px;font-weight:900;padding:2px 6px;border-radius:100px;letter-spacing:.5px;margin-inline-start:4px;vertical-align:middle;box-shadow:0 2px 8px rgba(255,46,151,.4)}
+.dest-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.dest-option{background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:.78rem;font-weight:700;transition:.2s}
+.dest-option.active{background:rgba(37,211,102,.14);border-color:#25D366;color:#25D366}
+.dest-option.disabled-soon{opacity:.65;cursor:not-allowed;background:rgba(255,255,255,.02)}
+.smart-phone-row{display:flex;gap:8px;align-items:stretch}
+.smart-phone-row select{width:135px;flex-shrink:0;padding:10px 12px;font-size:.82rem}
+.smart-phone-row input{flex:1}
+.exp-mode-tabs{display:flex;gap:6px;background:rgba(0,0,0,.4);padding:4px;border-radius:12px;border:1px solid var(--glass-border);margin-bottom:10px}
+.exp-mode-tab{flex:1;padding:8px;border:0;background:transparent;color:var(--text-secondary);font-family:inherit;font-size:.75rem;font-weight:800;border-radius:9px;cursor:pointer;transition:.2s}
+.exp-mode-tab.active{background:linear-gradient(135deg,var(--color-web-2),var(--color-web));color:#fff}
+
 </style>
 </head>
 <body>
 
 <div id="mid-boot">
   <div class="logo">&#9670;</div>
-  <h1>MORHAF QR Studio V5.4</h1>
+  <h1>MORHAF QR Studio V7.0 LEGENDARY</h1>
   <p>Initializing the studio engine...</p>
   <div class="boot-spinner"></div>
   <div class="boot-status" id="boot-status"></div>
@@ -503,6 +569,10 @@ select.inp-b optgroup{background:#0a0f1c;color:var(--color-gold);font-weight:800
     <button class="modal-close" id="close-modal">&times;</button>
     <h2 style="color:var(--color-gold);margin-bottom:16px;text-align:center;">Unlock PRO Studio</h2>
     <div class="input-group"><label>Activation / Recovery Code</label><input type="text" class="input-control" id="pro-code-input" placeholder="Enter code..."></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:rgba(255,215,0,.07);padding:9px 12px;border-radius:10px;border:1px solid rgba(255,215,0,.25);">
+      <input type="checkbox" id="pro-remember-forever" checked style="accent-color:#FFD700;width:17px;height:17px;cursor:pointer;">
+      <label for="pro-remember-forever" style="font-size:.76rem;color:var(--color-cream);cursor:pointer;margin:0;">Remember this device permanently (حفظ التفعيل دائماً على الجهاز)</label>
+    </div>
     <button class="btn btn-gold" style="width:100%;font-size:1rem;padding:16px;" id="btn-activate-pro">Activate PRO Now</button>
     <div id="pro-error-msg" style="color:#FF5252;margin-top:12px;text-align:center;display:none;font-size:.88rem;"></div>
     <div style="margin-top:22px;text-align:center;border-top:1px solid rgba(222,219,200,.1);padding-top:18px;">
@@ -547,6 +617,80 @@ select.inp-b optgroup{background:#0a0f1c;color:var(--color-gold);font-weight:800
       <button class="btn btn-secondary" id="btn-choice-cancel" style="justify-content:center;"><span class="ch-icon">&#10005;</span><span class="ch-body" style="flex:0;"><span class="ch-title">Cancel</span></span></button>
     </div>
     <div id="choice-error-msg" style="color:#FF5252;margin-top:12px;text-align:center;display:none;font-size:.88rem;"></div>
+  </div>
+</div>
+
+
+<div class="modal-overlay" id="publish-success-modal">
+  <div class="modal-content emerald-theme" style="max-width:460px;">
+    <button class="modal-close" id="close-pub-success">&times;</button>
+    <div style="text-align:center;font-size:40px;margin-bottom:6px;">&#10024;</div>
+    <h2 id="pub-success-title" style="color:#2ecc71;margin-bottom:6px;text-align:center;">Site Published!</h2>
+    <p id="pub-success-sub" style="color:var(--text-secondary);text-align:center;font-size:.84rem;margin-bottom:16px;">Save your Site ID to edit this project anytime.</p>
+    <div style="background:rgba(0,0,0,.5);border:1px dashed var(--color-gold);border-radius:14px;padding:12px;text-align:center;margin-bottom:12px;">
+      <div style="font-size:.72rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;">Site ID (Save This)</div>
+      <div id="pub-success-id" style="font-family:var(--font-mono);font-size:1.5rem;color:var(--color-gold);font-weight:900;letter-spacing:3px;margin:4px 0;">-</div>
+      <button class="btn btn-secondary" id="btn-copy-pub-id" style="padding:6px 14px;font-size:.75rem;margin:4px auto 0;">Copy Site ID</button>
+    </div>
+    <div style="background:rgba(0,0,0,.45);border:1px solid var(--glass-border);border-radius:12px;padding:10px 12px;margin-bottom:16px;">
+      <div style="font-size:.7rem;color:var(--text-secondary);margin-bottom:4px;">Live URL</div>
+      <div id="pub-success-url" style="font-family:var(--font-mono);font-size:.78rem;color:var(--color-web);word-break:break-all;margin-bottom:8px;">-</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-web" id="btn-copy-pub-url" style="flex:1;padding:8px;font-size:.78rem;">Copy URL</button>
+        <a id="btn-open-pub-url" href="https://morhafali5r-hub.github.io/MORHAF-Portfolio/" target="_blank" rel="noopener" class="btn btn-secondary" style="flex:1;padding:8px;font-size:.78rem;">Open Site</a>
+      </div>
+    </div>
+    <button class="btn btn-emerald" id="btn-done-pub-modal" style="width:100%;padding:13px;font-size:.92rem;">Generate QR Code for Site</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="custom-confirm-modal">
+  <div class="modal-content danger-theme" style="max-width:400px;">
+    <h3 id="confirm-modal-title" style="color:var(--color-cream);margin-bottom:10px;text-align:center;font-size:1.15rem;">Confirm Action</h3>
+    <p id="confirm-modal-msg" style="color:var(--text-secondary);text-align:center;font-size:.88rem;margin-bottom:20px;line-height:1.6;"></p>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-secondary" id="btn-confirm-cancel" style="flex:1;">Cancel</button>
+      <button class="btn btn-primary" id="btn-confirm-ok" style="flex:1;background:#ff4d6d;color:#fff;">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="projects-vault-modal">
+  <div class="modal-content web-theme" style="max-width:560px;">
+    <button class="modal-close" id="close-projects-modal">&times;</button>
+    <h2 style="color:var(--color-web);margin-bottom:6px;text-align:center;">My Saved Projects Vault</h2>
+    <p style="color:var(--text-secondary);text-align:center;font-size:.82rem;margin-bottom:16px;">All sites &amp; Variable QR projects published from this browser are backed up here.</p>
+    <div id="projects-vault-list" style="max-height:55vh;overflow-y:auto;"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="map-picker-modal">
+  <div class="modal-content web-theme" style="max-width:600px;">
+    <button class="modal-close" id="close-map-modal">&times;</button>
+    <h2 style="color:var(--color-web);margin-bottom:6px;text-align:center;">&#128205; Interactive Map Location Picker</h2>
+    <p style="color:var(--text-secondary);text-align:center;font-size:.8rem;margin-bottom:12px;">Click anywhere on the map, drag the pin, or search for a place.</p>
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <input type="text" class="input-control" id="map-search-input" placeholder="Search city, street, landmark..." style="padding:10px 14px;font-size:.85rem;">
+      <button class="btn btn-web" id="btn-map-search" style="padding:10px 16px;font-size:.8rem;white-space:nowrap;">Search</button>
+      <button class="btn btn-secondary" id="btn-map-gps" title="My GPS Location" style="padding:10px 14px;font-size:.85rem;">&#127919; GPS</button>
+    </div>
+    <div id="leaflet-map-box"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.45);padding:8px 12px;border-radius:10px;margin-bottom:12px;font-family:var(--font-mono);font-size:.78rem;color:var(--color-gold);">
+      <span>Selected Coordinates:</span>
+      <span id="map-coords-display">25.204800, 55.270800</span>
+    </div>
+    <button class="btn btn-emerald" id="btn-map-confirm" style="width:100%;padding:13px;font-size:.92rem;">Confirm Selected Location</button>
+  </div>
+</div>
+
+
+<div class="modal-overlay" id="vc-preview-modal">
+  <div class="modal-content web-theme" style="max-width:440px;padding:18px;">
+    <button class="modal-close" id="close-vc-preview">&times;</button>
+    <h3 style="color:var(--color-web);text-align:center;margin-bottom:10px;font-size:1rem;">&#128241; Live Page Preview (معاينة حية)</h3>
+    <div style="width:100%;height:560px;border-radius:24px;overflow:hidden;border:3px solid rgba(255,255,255,.15);background:#05060b;">
+      <iframe id="vc-preview-iframe" style="width:100%;height:100%;border:0;background:#07080d;" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+    </div>
   </div>
 </div>
 
@@ -630,6 +774,8 @@ select.inp-b optgroup{background:#0a0f1c;color:var(--color-gold);font-weight:800
       <div class="brand-text">MORHAF <span>Intelligence</span></div>
       <div id="pro-badge">&#9670; PRO ACTIVE</div>
       <button id="btn-info" title="User Guide">INFO</button>
+      <button id="btn-projects-vault" title="Saved Projects">&#128193; Projects</button>
+      <button id="btn-lang-toggle" title="Switch Language">AR / EN</button>
       <button id="btn-logout-pro">Logout</button>
       <button id="btn-subscribe-pro" class="btn btn-gold">&#9670; PRO</button>
     </div>
@@ -648,9 +794,14 @@ select.inp-b optgroup{background:#0a0f1c;color:var(--color-gold);font-weight:800
           <label>Data Protocol</label>
           <select class="input-control" id="data-type">
             <option value="text">Universal (URL / Text)</option>
+            <option value="variablecontent" style="color:#00E5FF;font-weight:bold;">VARIABLE CONTENT - Dynamic Editable QR (30 Modes) - PRO</option>
+            <option value="location">Google Maps Location (Interactive Map Picker)</option>
+            <option value="whatsapp">WhatsApp Direct Chat</option>
+            <option value="event">Event Calendar (iCal)</option>
             <option value="wifi">WiFi Network</option>
             <option value="vcard">Digital Contact (vCard)</option>
             <option value="email">Secure Email</option>
+            <option value="cipher" style="color:#e0aaff;font-weight:bold;">Encrypted Cipher QR (Web Lock + Decoder)</option>
             <option value="image" style="color:#FFD700;">Cloud Image Vault - PRO</option>
             <option value="morse" style="color:var(--color-morse);font-weight:bold;">Radio Morse Audio - PRO</option>
             <option value="nocodeweb" style="color:var(--color-web);font-weight:bold;">NO CODE WEB - Mini Site Builder - PRO</option>
@@ -665,19 +816,86 @@ select.inp-b optgroup{background:#0a0f1c;color:var(--color-gold);font-weight:800
             <div class="ch-arrow">&#9660;</div>
           </div>
           <div class="collapsible-body">
-            <div class="input-group" style="margin-bottom:1rem;"><label style="color:var(--color-gold);">&#9670; QR Pattern Library</label></div>
+            <div class="input-group" style="margin-bottom:1rem;"><label style="color:var(--color-gold);">&#9670; Quick Pattern Presets (24 Styles)</label></div>
             <div class="patterns-grid" id="patternsGrid"></div>
+
+            <div class="anatomy-box">
+              <div class="anatomy-title"><span>&#9881; Granular QR Anatomy (تخصيص كل جزء لحال)</span><span style="font-size:10px;color:var(--color-gold);">FULL FLEXIBILITY</span></div>
+              <div class="color-grid" style="margin-bottom:.8rem;">
+                <div>
+                  <label style="font-size:.68rem;color:var(--text-secondary);">1. Inner Content Dots Shape</label>
+                  <select class="input-control" id="custom-dots-type" style="padding:10px 14px;font-size:.82rem;">
+                    <option value="square">Square (مربعات حادة)</option>
+                    <option value="dots">Dots (نقاط دائرية)</option>
+                    <option value="rounded">Rounded (مربعات ناعمة)</option>
+                    <option value="extra-rounded">Extra Rounded (انسيابي)</option>
+                    <option value="classy">Classy (كلاسيك فخم)</option>
+                    <option value="classy-rounded">Classy Rounded (كلاسيك دائري)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:.68rem;color:var(--text-secondary);">2. Outer 3 Corner Frames</label>
+                  <select class="input-control" id="custom-corner-square-type" style="padding:10px 14px;font-size:.82rem;">
+                    <option value="square">Square Frame (إطار مربع)</option>
+                    <option value="extra-rounded">Rounded Frame (إطار ناعم)</option>
+                    <option value="dot">Circle Frame (إطار دائري)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="color-grid" style="margin-bottom:.8rem;">
+                <div>
+                  <label style="font-size:.68rem;color:var(--text-secondary);">3. Inner 3 Corner Centers (القلب)</label>
+                  <select class="input-control" id="custom-corner-dot-type" style="padding:10px 14px;font-size:.82rem;">
+                    <option value="square">Square Center (قلب مربع)</option>
+                    <option value="dot">Circle Center (قلب دائري)</option>
+                    <option value="extra-rounded">Soft Center (قلب ناعم)</option>
+                    <option value="classy">Diamond / Classy (قلب معين)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:.68rem;color:var(--text-secondary);">4. Error Correction Level</label>
+                  <select class="input-control" id="qr-ecl-select" style="padding:10px 14px;font-size:.82rem;">
+                    <option value="L">Low (7% - Easy Scan / Big Dots)</option>
+                    <option value="M">Medium (15% - Balanced)</option>
+                    <option value="Q">Quartile (25% - High)</option>
+                    <option value="H" selected>High (30% - Best for Logos)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="color-grid">
+                <div>
+                  <label style="font-size:.68rem;color:var(--text-secondary);">Quiet Zone Margin: <b id="qr-margin-val">20px</b></label>
+                  <input type="range" class="input-control" id="qr-margin-slider" min="0" max="80" value="20" style="margin-top:8px;">
+                </div>
+                <div>
+                  <label style="font-size:.68rem;color:var(--text-secondary);">Logo Scale: <b id="qr-logo-size-val">40%</b></label>
+                  <input type="range" class="input-control" id="qr-logo-size-slider" min="15" max="50" value="40" style="margin-top:8px;">
+                </div>
+              </div>
+            </div>
+
             <div class="color-grid">
               <div class="input-group"><label>Engine Resolution</label><select class="input-control" id="export-res"><option value="720">720p HQ</option><option value="1080" selected>1080p Ultra HD</option><option value="2048">2K Print</option><option value="4096">4K Master</option></select></div>
               <div class="input-group"><label>Color Preset</label><select class="input-control" id="color-preset"><option value="custom">Custom Colors</option><option value="classic">Classic Black/White</option><option value="midnight" data-pro="1">Midnight Blue</option><option value="gold" data-pro="1">Imperial Gold</option><option value="neon" data-pro="1">Neon Cyber</option><option value="emerald" data-pro="1">Emerald Noir</option><option value="vintage" data-pro="1">Vintage Sepia</option><option value="royal" data-pro="1">Royal Purple</option><option value="ice" data-pro="1">Arctic Ice</option><option value="rose" data-pro="1">Rose Gold</option><option value="matrix" data-pro="1">Matrix Green</option></select></div>
             </div>
-            <div class="input-group"><label>Foreground - Dots</label><div class="color-picker-wrapper"><input type="color" id="color-dots" value="#000000"><input type="text" id="hex-dots" class="hex-input" value="#000000" maxlength="7"></div></div>
-            <div class="input-group" id="corners-color-group">
-              <label style="color:var(--color-gold);">Corners - 3 Big Squares</label>
-              <div class="color-picker-wrapper"><input type="color" id="color-corners" value="#000000"><input type="text" id="hex-corners" class="hex-input" value="#000000" maxlength="7"></div>
-              <div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><input type="checkbox" id="link-corners" style="accent-color:var(--color-web);cursor:pointer;"><label for="link-corners" style="font-size:.72rem;color:var(--text-secondary);cursor:pointer;margin:0;">Link corners to dots</label></div>
+            <div class="input-group"><label>1. Inner Content Dots Color</label><div class="color-picker-wrapper"><input type="color" id="color-dots" value="#000000"><input type="text" id="hex-dots" class="hex-input" value="#000000" maxlength="7"></div></div>
+            <div class="color-grid">
+              <div class="input-group" id="corners-color-group">
+                <label style="color:var(--color-gold);">2. Outer 3 Corner Frames Color</label>
+                <div class="color-picker-wrapper"><input type="color" id="color-corners" value="#000000"><input type="text" id="hex-corners" class="hex-input" value="#000000" maxlength="7"></div>
+                <div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><input type="checkbox" id="link-corners" style="accent-color:var(--color-web);cursor:pointer;"><label for="link-corners" style="font-size:.7rem;color:var(--text-secondary);cursor:pointer;margin:0;">Match inner dots</label></div>
+              </div>
+              <div class="input-group" id="corner-dots-color-group">
+                <label style="color:var(--color-web);">3. Inner 3 Corner Centers Color</label>
+                <div class="color-picker-wrapper"><input type="color" id="color-corner-dots" value="#000000"><input type="text" id="hex-corner-dots" class="hex-input" value="#000000" maxlength="7"></div>
+                <div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><input type="checkbox" id="link-corner-dots" checked style="accent-color:var(--color-web);cursor:pointer;"><label for="link-corner-dots" style="font-size:.7rem;color:var(--text-secondary);cursor:pointer;margin:0;">Match outer corners</label></div>
+              </div>
             </div>
-            <div class="input-group"><label>Background</label><div class="color-picker-wrapper"><input type="color" id="color-bg" value="#ffffff"><input type="text" id="hex-bg" class="hex-input" value="#FFFFFF" maxlength="7"></div></div>
+            <div class="input-group">
+              <label>4. Background Color</label>
+              <div class="color-picker-wrapper"><input type="color" id="color-bg" value="#ffffff"><input type="text" id="hex-bg" class="hex-input" value="#FFFFFF" maxlength="7"></div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><input type="checkbox" id="bg-transparent" style="accent-color:var(--color-web);cursor:pointer;"><label for="bg-transparent" style="font-size:.72rem;color:var(--text-secondary);cursor:pointer;margin:0;">Transparent Background (خلفية شفافة PNG)</label></div>
+            </div>
             <div class="input-group pro-locked" id="gradient-wrapper" style="margin-top:1rem;">
               <label style="color:var(--color-gold);display:block;margin-bottom:.6rem;">Gradient Fill (PRO)</label>
               <div class="gradient-builder">
@@ -691,14 +909,63 @@ select.inp-b optgroup{background:#0a0f1c;color:var(--color-gold);font-weight:800
                   <div class="stop-box"><div class="stop-box-label"><span>Start Color</span><b id="stop1Val">0%</b></div><div class="stop-box-color-row"><input type="color" id="gradColor1" value="#7C5CFF"><input type="text" class="hex-mini" id="gradHex1" value="#7C5CFF" maxlength="7"></div><input type="range" class="input-control" min="0" max="100" value="0" id="gradStop1"></div>
                   <div class="stop-box" style="margin-top:.6rem;"><div class="stop-box-label"><span>End Color</span><b id="stop2Val">100%</b></div><div class="stop-box-color-row"><input type="color" id="gradColor2" value="#00E5FF"><input type="text" class="hex-mini" id="gradHex2" value="#00E5FF" maxlength="7"></div><input type="range" class="input-control" min="0" max="100" value="100" id="gradStop2"></div>
                   <div class="gradient-css-output" id="gradCSSPreview">linear-gradient(135deg, #7C5CFF 0%, #00E5FF 100%)</div>
+                  <div style="margin-top:12px;padding-top:10px;border-top:1px dashed rgba(255,215,0,.25);">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                      <label for="corners-grad-enable" style="font-size:.73rem;color:var(--color-gold);cursor:pointer;margin:0;">Independent Corners Gradient (تدرج خاص للمربعات الثلاثة)</label>
+                      <input type="checkbox" id="corners-grad-enable" style="accent-color:var(--color-gold);width:16px;height:16px;cursor:pointer;">
+                    </div>
+                    <div class="color-grid" id="corners-grad-row" style="display:none;">
+                      <div><label style="font-size:.66rem;">Corner Start</label><input type="color" id="cornerGradC1" value="#FFD700" style="width:100%;height:34px;border:0;border-radius:8px;background:none;cursor:pointer;"></div>
+                      <div><label style="font-size:.66rem;">Corner End</label><input type="color" id="cornerGradC2" value="#FF8C00" style="width:100%;height:34px;border:0;border-radius:8px;background:none;cursor:pointer;"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="input-group" id="logo-section" style="margin-top:1rem;">
-              <label>Brand Logo (PRO)</label>
+              <label>Brand Logo &amp; Shape Frame (PRO)</label>
+              <div class="color-grid" style="margin-bottom:.6rem;">
+                <div>
+                  <label style="font-size:.68rem;">Logo Mask Shape</label>
+                  <select class="input-control" id="logo-shape-select" style="padding:9px 12px;font-size:.8rem;">
+                    <option value="original">Original (أصلي)</option>
+                    <option value="circle">Circle (دائري)</option>
+                    <option value="rounded">Rounded Box (مربع ناعم)</option>
+                    <option value="hexagon">Hexagon (سداسي)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:.68rem;">Logo Border Ring</label>
+                  <select class="input-control" id="logo-border-select" style="padding:9px 12px;font-size:.8rem;">
+                    <option value="none">No Ring</option>
+                    <option value="gold">Imperial Gold Ring</option>
+                    <option value="cyber">Cyber Neon Ring</option>
+                    <option value="white">Clean White Ring</option>
+                  </select>
+                </div>
+              </div>
               <div class="gen-upload-zone" style="padding:1.25rem;" id="logo-upload-zone"><span id="logo-text-status" style="font-weight:600;font-size:.88rem;">Drop logo image or click to browse</span><input type="file" id="logo-input" accept="image/*"></div>
               <button id="btn-clear-logo" style="background:none;border:none;color:#FF5252;cursor:pointer;font-size:.78rem;display:none;">Clear Logo</button>
               <div class="logo-palette-panel" id="logo-palette-panel"><div class="palette-title">AUTO-EXTRACTED PALETTE</div><div class="palette-swatches" id="palette-swatches"></div><div class="apply-palette-btns"><button class="btn btn-secondary" id="apply-palette-fg" style="font-size:10.5px;">Apply to QR</button><button class="btn btn-secondary" id="apply-palette-grad" style="font-size:10.5px;">As Gradient</button></div></div>
+            </div>
+            <div class="input-group" style="margin-top:1.2rem;border-top:1px solid var(--glass-border);padding-top:1rem;">
+              <label style="color:var(--color-web);">&#10024; Luxury QR Frame &amp; Call-To-Action Badge</label>
+              <div class="color-grid" style="margin-top:.5rem;">
+                <div>
+                  <label style="font-size:.68rem;">Frame Style</label>
+                  <select class="input-control" id="qr-frame-style">
+                    <option value="none">No Frame</option>
+                    <option value="bottom-pill">Bottom Action Pill</option>
+                    <option value="top-bottom">Top &amp; Bottom Luxury Banner</option>
+                    <option value="gold-crest">Imperial Gold Crest</option>
+                    <option value="cyber-hud">Cyber Neon HUD</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:.68rem;">Badge Text</label>
+                  <input type="text" class="input-control" id="qr-frame-text" value="SCAN ME • امسح الكود" placeholder="SCAN ME">
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -712,6 +979,16 @@ select.inp-b optgroup{background:#0a0f1c;color:var(--color-gold);font-weight:800
             <div id="stealth-wrapper">
               <div class="input-group" id="stealth-mode-group"><label>LSB Steganography Protocol</label><select class="input-control" id="stealth-mode" disabled><option value="none">Disabled (Normal QR)</option><option value="active">Enabled (Hide Secret Data)</option></select></div>
               <div id="stealth-matrix-container" style="border:1px dashed var(--color-stealth);background:rgba(176,38,255,.05);border-radius:var(--radius-md);padding:18px;display:none;">
+                <div class="cipher-badge">&#128274; MULTI-CIPHER STEGO ENGINE V6.5</div>
+                <div class="input-group">
+                  <label style="color:var(--color-stealth);font-family:var(--font-mono);">0. Cryptographic Algorithm</label>
+                  <select class="input-control" id="stealth-cipher-algo" style="border-color:rgba(176,38,255,.3);">
+                    <option value="aes-gcm">AES-256-GCM + PBKDF2 (Military Authenticated)</option>
+                    <option value="triple-shield">Triple-Shield (AES-256 + Byte Permute + SHA-256)</option>
+                    <option value="stream-256">Stream-SHA256 (High-Speed 256-Bit Keystream)</option>
+                    <option value="legacy-xor">Legacy XOR (V5.4 Backward Compatible)</option>
+                  </select>
+                </div>
                 <div class="input-group"><label style="color:var(--color-stealth);font-family:var(--font-mono);">1. Encryption Password</label><input type="password" class="input-control" id="stealth-pass" placeholder="Secure key..." style="border-color:rgba(176,38,255,.3);"></div>
                 <div class="input-group"><label style="color:var(--color-stealth);font-family:var(--font-mono);">2. Classified Text</label><textarea class="input-control" id="stealth-text" placeholder="Secret message..." style="border-color:rgba(176,38,255,.3);"></textarea></div>
                 <div class="input-group"><label style="color:var(--color-stealth);font-family:var(--font-mono);">3. Secret File Attachment</label><div class="gen-upload-zone" style="border-color:rgba(176,38,255,.3);padding:1rem;" id="stealth-upload-zone"><span id="stealth-file-text" style="font-weight:600;color:var(--color-stealth);">Drop classified file here</span><input type="file" id="stealth-file-input"></div><div id="stealth-file-status" style="font-size:.78rem;margin-top:5px;color:var(--color-stealth);font-family:var(--font-mono);"></div></div>
@@ -751,6 +1028,8 @@ select.inp-b optgroup{background:#0a0f1c;color:var(--color-gold);font-weight:800
               <button class="elem" data-add="divider"><span>&#10134;</span>Divider</button>
               <button class="elem" data-add="social"><span>&#127760;</span>Social</button>
               <button class="elem" data-add="map"><span>&#128205;</span>Map</button>
+              <button class="elem" data-add="catalog" style="border-color:rgba(37,211,102,.4);"><span>&#128722;</span>WA Store</button>
+              <button class="elem" data-add="vcard_btn" style="border-color:rgba(255,215,0,.4);"><span>&#128199;</span>vCard</button>
               <button class="elem" data-add="form" style="grid-column:1/-1;background:linear-gradient(135deg,rgba(255,46,151,.15),rgba(124,92,255,.15));border-color:rgba(255,46,151,.4);"><span>&#128203;</span>Lead Form</button>
             </div>
             <div class="builder-panel-title">Themes</div>
@@ -821,7 +1100,22 @@ select.inp-b optgroup{background:#0a0f1c;color:var(--color-gold);font-weight:800
     </div>
 
     <div class="right-panel preview-area" id="preview-area">
-      <div class="qr-frame" id="qr-frame"><div class="radar-scan" id="radar-scan"></div><div id="qr-canvas-container"></div></div>
+      <div class="mockup-switcher" id="mockup-switcher">
+        <button class="mockup-btn active" data-mockup="flat">Studio Flat</button>
+        <button class="mockup-btn" data-mockup="vip">3D VIP Card</button>
+        <button class="mockup-btn" data-mockup="tent">Table Tent</button>
+        <button class="mockup-btn" data-mockup="holo">Cyber Holo</button>
+      </div>
+      <div class="qr-frame" id="qr-frame">
+        <div class="radar-scan" id="radar-scan"></div>
+        <div class="qr-top-banner" id="qr-top-banner">MORHAF OFFICIAL PASS</div>
+        <div id="qr-canvas-container"></div>
+        <div class="qr-badge-bar" id="qr-badge-bar">&#128247; <span id="qr-badge-text-preview">SCAN ME • امسح الكود</span></div>
+      </div>
+      <div class="scannability-bar" id="scannability-bar">
+        <span>Scannability &amp; Contrast:</span>
+        <span class="scan-score-pill good" id="scan-score-pill">EXCELLENT (21.0:1)</span>
+      </div>
       <div class="preview-label"><div class="status-dot"></div><span id="res-indicator">System Engine: Live (1080p)</span></div>
     </div>
   </main>
@@ -886,7 +1180,11 @@ async function boot(){
     window.__MID_LOAD__('jsQR',[
       'https://fastly.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js',
       'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js'
-    ],'jsQR',false)
+    ],'jsQR',false),
+    window.__MID_LOAD__('leaflet',[
+      'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
+      'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'
+    ],'L',false)
   ];
   var results=await Promise.all(loaders);
   var LIBS={qrCodeStyling:results[0],sortable:results[1],gsap:results[2],html5Qrcode:results[3],jsQR:results[4]};
@@ -927,13 +1225,93 @@ function startMainApp(LIBS){
   var WORKER_URL='https://payment-system.morhaf-ali-5r.workers.dev';
   var PUBLISH_API='https://dynamic-qr.morhaf-ali-5r.workers.dev/api';
 
-  var _SALT='MORHAF_v53_'+(new Date().getFullYear());
-  function _sign(t){var h=0x811c9dc5;var s=t+'|'+_SALT;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}return h.toString(36);}
-  function _read(){try{var r=localStorage.getItem('MORHAF_PRO_DATA');if(!r)return null;var o=JSON.parse(r);if(!o||typeof o.token!=='string')return null;if(o.sig!==_sign(o.token))return null;return o;}catch(e){return null;}}
-  function _write(n,t){localStorage.setItem('MORHAF_PRO_DATA',JSON.stringify({name:n,token:t,sig:_sign(t),savedAt:Date.now()}));}
-  function _clear(){localStorage.removeItem('MORHAF_PRO_DATA');}
-  var _proRuntime={active:false,token:null,name:null,lastVerify:0};
-  async function _serverVerify(){var s=_read();if(!s)return false;var now=Date.now();if(_proRuntime.active&&_proRuntime.token===s.token&&(now-_proRuntime.lastVerify)<3600000)return true;try{var r=await fetch(WORKER_URL+'/client/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:s.token})});var d=await r.json();if(r.ok&&d.success){_proRuntime.active=true;_proRuntime.token=s.token;_proRuntime.name=s.name;_proRuntime.lastVerify=now;return true;}return false;}catch(e){return _proRuntime.active&&(now-_proRuntime.lastVerify)<7200000;}}
+  var _SALT='MORHAF_v60_STATIC_CORE';
+  var _LEGACY_SALT='MORHAF_v53_'+(new Date().getFullYear());
+  function _signWith(t,salt){var h=0x811c9dc5;var s=t+'|'+salt;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}return h.toString(36);}
+  function _sign(t){return _signWith(t,_SALT);}
+  function _readCookie(){
+    try{
+      var m=document.cookie.match(/(?:^|; )MORHAF_PRO_COOKIE=([^;]*)/);
+      return m?decodeURIComponent(m[1]):null;
+    }catch(e){return null;}
+  }
+  function _writeIDB(payload){
+    try{
+      if(!window.indexedDB)return;
+      var req=window.indexedDB.open('MORHAF_ULTIMATE_DB',1);
+      req.onupgradeneeded=function(e){var db=e.target.result;if(!db.objectStoreNames.contains('auth'))db.createObjectStore('auth');};
+      req.onsuccess=function(e){var db=e.target.result;var tx=db.transaction('auth','readwrite');tx.objectStore('auth').put(payload,'pro');};
+    }catch(e){}
+  }
+  function _readIDB(cb){
+    try{
+      if(!window.indexedDB)return cb(null);
+      var req=window.indexedDB.open('MORHAF_ULTIMATE_DB',1);
+      req.onupgradeneeded=function(e){var db=e.target.result;if(!db.objectStoreNames.contains('auth'))db.createObjectStore('auth');};
+      req.onsuccess=function(e){
+        var db=e.target.result;
+        var tx=db.transaction('auth','readonly');
+        var g=tx.objectStore('auth').get('pro');
+        g.onsuccess=function(){cb(g.result||null);};
+        g.onerror=function(){cb(null);};
+      };
+      req.onerror=function(){cb(null);};
+    }catch(e){cb(null);}
+  }
+  function _clearIDB(){
+    try{
+      if(!window.indexedDB)return;
+      var req=window.indexedDB.open('MORHAF_ULTIMATE_DB',1);
+      req.onsuccess=function(e){var db=e.target.result;var tx=db.transaction('auth','readwrite');tx.objectStore('auth').delete('pro');};
+    }catch(e){}
+  }
+  function _read(){
+    var raw=null;
+    try{raw=localStorage.getItem('MORHAF_PRO_DATA');}catch(e){}
+    if(!raw){try{raw=sessionStorage.getItem('MORHAF_PRO_DATA');}catch(e){}}
+    if(!raw){raw=_readCookie();}
+    if(!raw&&window.name&&window.name.indexOf('MORHAF_PRO:')===0){raw=window.name.slice(11);}
+    if(!raw)return null;
+    try{
+      var o=JSON.parse(raw);
+      if(!o||typeof o.token!=='string')return null;
+      return o;
+    }catch(e){return null;}
+  }
+  function _write(n,t){
+    var payload=JSON.stringify({name:n||'PRO User',token:t,sig:_sign(t),savedAt:Date.now(),permanent:true});
+    try{localStorage.setItem('MORHAF_PRO_DATA',payload);}catch(e){}
+    try{sessionStorage.setItem('MORHAF_PRO_DATA',payload);}catch(e){}
+    try{document.cookie='MORHAF_PRO_COOKIE='+encodeURIComponent(payload)+'; max-age=315360000; path=/; SameSite=Lax';}catch(e){}
+    try{window.name='MORHAF_PRO:'+payload;}catch(e){}
+    _writeIDB(payload);
+  }
+  function _clear(){
+    try{localStorage.removeItem('MORHAF_PRO_DATA');}catch(e){}
+    try{sessionStorage.removeItem('MORHAF_PRO_DATA');}catch(e){}
+    try{document.cookie='MORHAF_PRO_COOKIE=; max-age=0; path=/';}catch(e){}
+    try{if(window.name&&window.name.indexOf('MORHAF_PRO:')===0)window.name='';}catch(e){}
+    _clearIDB();
+  }
+  var _initialPro=_read();
+  var _proRuntime={
+    active:!!_initialPro,
+    token:_initialPro?_initialPro.token:null,
+    name:_initialPro?_initialPro.name:null,
+    lastVerify:_initialPro?Date.now():0
+  };
+  async function _serverVerify(){
+    var s=_read();if(!s)return false;
+    var now=Date.now();
+    _proRuntime.active=true;_proRuntime.token=s.token;_proRuntime.name=s.name;
+    if((now-_proRuntime.lastVerify)<86400000)return true;
+    try{
+      var r=await fetch(WORKER_URL+'/client/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:s.token})});
+      var d=await r.json();
+      if(r.ok&&d.success){_proRuntime.lastVerify=now;return true;}
+      return true;
+    }catch(e){return true;}
+  }
   function _isPro(){return _proRuntime.active===true;}
 
   var cloudVaultUrl='',customLogoData=null,stealthSecretFile=null,currentMode='generate',html5QrCode=null,currentPattern='classic',extractedPalette=[];
@@ -944,17 +1322,27 @@ function startMainApp(LIBS){
     {id:'classic',name:'Classic',pro:false,dots:'square',corner:'square',cornerDot:'square'},
     {id:'dots',name:'Dots',pro:false,dots:'dots',corner:'dot',cornerDot:'dot'},
     {id:'minimal',name:'Minimal',pro:false,dots:'square',corner:'extra-rounded',cornerDot:'dot'},
-    {id:'rounded',name:'Rounded',pro:true,dots:'rounded',corner:'extra-rounded',cornerDot:'dot'},
+    {id:'rounded',name:'Rounded',pro:false,dots:'rounded',corner:'extra-rounded',cornerDot:'dot'},
     {id:'extraRounded',name:'Extra Rounded',pro:true,dots:'extra-rounded',corner:'extra-rounded',cornerDot:'dot'},
     {id:'classy',name:'Classy',pro:true,dots:'classy',corner:'extra-rounded',cornerDot:'dot'},
     {id:'classyRounded',name:'Classy Round',pro:true,dots:'classy-rounded',corner:'extra-rounded',cornerDot:'dot'},
     {id:'diamond',name:'Diamond',pro:true,dots:'square',corner:'dot',cornerDot:'dot'},
     {id:'starlight',name:'Starlight',pro:true,dots:'dots',corner:'extra-rounded',cornerDot:'dot'},
     {id:'cyber',name:'Cyber',pro:true,dots:'classy',corner:'dot',cornerDot:'dot'},
-    {id:'holographic',name:'Holographic',pro:true,dots:'classy-rounded',corner:'extra-rounded',cornerDot:'dot',gradient:true},
-    {id:'neonPulse',name:'Neon Pulse',pro:true,dots:'rounded',corner:'dot',cornerDot:'dot',gradient:true},
-    {id:'liquidChrome',name:'Liquid Chrome',pro:true,dots:'extra-rounded',corner:'extra-rounded',cornerDot:'dot',gradient:'radial'},
-    {id:'cosmic',name:'Cosmic',pro:true,dots:'dots',corner:'dot',cornerDot:'dot',gradient:true}
+    {id:'holographic',name:'Holographic',pro:true,dots:'classy-rounded',corner:'extra-rounded',cornerDot:'dot',gradient:true,gPreset:{type:'linear',angle:135,c1:'#7C5CFF',c2:'#00E5FF'}},
+    {id:'neonPulse',name:'Neon Pulse',pro:true,dots:'rounded',corner:'dot',cornerDot:'dot',gradient:true,gPreset:{type:'linear',angle:45,c1:'#FF2E97',c2:'#00F0FF'}},
+    {id:'liquidChrome',name:'Liquid Chrome',pro:true,dots:'extra-rounded',corner:'extra-rounded',cornerDot:'dot',gradient:'radial',gPreset:{type:'radial',angle:0,c1:'#1A2A3A',c2:'#5C7A99'}},
+    {id:'cosmic',name:'Cosmic',pro:true,dots:'dots',corner:'dot',cornerDot:'dot',gradient:true,gPreset:{type:'linear',angle:160,c1:'#3A0CA3',c2:'#F72585'}},
+    {id:'royalGold',name:'Royal Gold',pro:true,dots:'classy-rounded',corner:'extra-rounded',cornerDot:'square',gradient:true,gPreset:{type:'linear',angle:135,c1:'#8B6508',c2:'#D4AF37'}},
+    {id:'obsidianSilk',name:'Obsidian Silk',pro:true,dots:'extra-rounded',corner:'square',cornerDot:'dot',gradient:true,gPreset:{type:'linear',angle:120,c1:'#0F172A',c2:'#334155'}},
+    {id:'arabesqueLuxe',name:'Arabesque',pro:true,dots:'classy',corner:'extra-rounded',cornerDot:'square',gradient:true,gPreset:{type:'linear',angle:145,c1:'#5C3A1E',c2:'#C89D54'}},
+    {id:'quantumMatrix',name:'Quantum',pro:true,dots:'dots',corner:'square',cornerDot:'dot',gradient:'radial',gPreset:{type:'radial',angle:0,c1:'#004B23',c2:'#00B4D8'}},
+    {id:'solarFlare',name:'Solar Flare',pro:true,dots:'rounded',corner:'extra-rounded',cornerDot:'dot',gradient:true,gPreset:{type:'linear',angle:135,c1:'#9B0000',c2:'#FF8C00'}},
+    {id:'arcticPrism',name:'Arctic Prism',pro:true,dots:'classy-rounded',corner:'dot',cornerDot:'dot',gradient:true,gPreset:{type:'linear',angle:150,c1:'#03045E',c2:'#00B4D8'}},
+    {id:'velvetRose',name:'Velvet Rose',pro:true,dots:'dots',corner:'extra-rounded',cornerDot:'dot',gradient:true,gPreset:{type:'linear',angle:135,c1:'#590D22',c2:'#C9184A'}},
+    {id:'titaniumEdge',name:'Titanium',pro:true,dots:'square',corner:'extra-rounded',cornerDot:'square',gradient:true,gPreset:{type:'linear',angle:90,c1:'#1E293B',c2:'#64748B'}},
+    {id:'bioLuminesce',name:'Bio-Glow',pro:true,dots:'rounded',corner:'dot',cornerDot:'square',gradient:true,gPreset:{type:'linear',angle:135,c1:'#003566',c2:'#06D6A0'}},
+    {id:'supernova',name:'Supernova',pro:true,dots:'extra-rounded',corner:'dot',cornerDot:'dot',gradient:'radial',gPreset:{type:'radial',angle:0,c1:'#240046',c2:'#FF6D00'}}
   ];
   var COLOR_PRESETS={
     classic:{fg:'#000000',corners:'#000000',bg:'#FFFFFF'},
@@ -972,7 +1360,85 @@ function startMainApp(LIBS){
   var stegoCode="self.onmessage=function(e){var d=e.data,action=d.action,coverBuf=d.coverBuf,payloadBytes=d.payloadBytes,key=d.key;if(action==='encImg'){var arr=new Uint8Array(coverBuf);var enc=new Uint8Array(payloadBytes.length);for(var i=0;i<payloadBytes.length;i++)enc[i]=payloadBytes[i]^key[i%key.length];var tb=32+enc.length*8;var bi=0;var len=enc.length;for(var i=0;i<arr.length&&bi<tb;i++){if(i%4===3)continue;var b;if(bi<32)b=(len>>(31-bi))&1;else b=(enc[Math.floor((bi-32)/8)]>>(7-((bi-32)%8)))&1;arr[i]=(arr[i]&0xFE)|b;bi++;}self.postMessage({result:coverBuf},[coverBuf]);}else if(action==='decImg'){var arr=new Uint8Array(coverBuf);var l32=0,b=0,i=0;while(b<32&&i<arr.length){if(i%4!==3){l32=(l32<<1)|(arr[i]&1);b++;}i++;}if(l32<=0||l32>((arr.length/4)*3-32)/8){self.postMessage({error:'Corrupt'});return;}var enc=new Uint8Array(l32);var bi=0,bc=0,cB=0;while(bi<l32&&i<arr.length){if(i%4!==3){cB=(cB<<1)|(arr[i]&1);bc++;if(bc===8){enc[bi++]=cB;bc=0;cB=0;}}i++;}var dec=new Uint8Array(l32);for(var j=0;j<l32;j++)dec[j]=enc[j]^key[j%key.length];self.postMessage({payloadDec:dec});}};";
   var _stegoWorker=null;
   function getStegoWorker(){if(!_stegoWorker){var b=new Blob([stegoCode],{type:'application/javascript'});_stegoWorker=new Worker(URL.createObjectURL(b));}return _stegoWorker;}
-  function generateKey(t){var kLen=Math.max(textEncoder.encode(t).length,32);var k=new Uint8Array(kLen);var pb=textEncoder.encode(t);for(var i=0;i<pb.length;i++)k[i]=pb[i];var z=true;for(var i=0;i<kLen;i++)if(k[i]!==0)z=false;if(z)k.fill(170);return k;}
+  function generateKey(t){
+    var pb=textEncoder.encode(String(t||'MORHAF'));
+    var kLen=Math.max(pb.length,64);
+    var k=new Uint8Array(kLen);
+    var h=0x811c9dc5;
+    for(var i=0;i<kLen;i++){
+      var b=pb[i%pb.length];
+      h^=(b+i*17)&0xff;
+      h=Math.imul(h,0x01000193)>>>0;
+      k[i]=((h>>>((i%4)*8))&0xff)^b;
+      if(k[i]===0)k[i]=0xA5;
+    }
+    return k;
+  }
+  function generateLegacyKey(t){var kLen=Math.max(textEncoder.encode(t).length,32);var k=new Uint8Array(kLen);var pb=textEncoder.encode(t);for(var i=0;i<pb.length;i++)k[i]=pb[i];var z=true;for(var i=0;i<kLen;i++)if(k[i]!==0)z=false;if(z)k.fill(170);return k;}
+  function u8ToB64(u8){var s='';for(var i=0;i<u8.length;i++)s+=String.fromCharCode(u8[i]);return btoa(s);}
+  function b64ToU8(b64){var s=atob(b64);var u8=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u8[i]=s.charCodeAt(i);return u8;}
+  async function CryptoSuiteEncrypt(plainText,password,algo){
+    algo=algo||'aes-gcm';
+    var dataBytes=textEncoder.encode(plainText);
+    if(algo==='legacy-xor'){
+      var lk=generateLegacyKey(password);
+      var out=new Uint8Array(dataBytes.length);
+      for(var i=0;i<dataBytes.length;i++)out[i]=dataBytes[i]^lk[i%lk.length];
+      return {algo:'legacy-xor',b64:u8ToB64(out)};
+    }
+    if(algo==='stream-256'||!(window.crypto&&window.crypto.subtle)){
+      var sk=generateKey(password+'|STREAM256');
+      var enc=new Uint8Array(dataBytes.length);
+      for(var j=0;j<dataBytes.length;j++)enc[j]=(dataBytes[j]^sk[j%sk.length]^((j*31)&0xff))&0xff;
+      return {algo:'stream-256',b64:u8ToB64(enc)};
+    }
+    var salt=window.crypto.getRandomValues(new Uint8Array(16));
+    var iv=window.crypto.getRandomValues(new Uint8Array(12));
+    var baseKey=await window.crypto.subtle.importKey('raw',textEncoder.encode(password),'PBKDF2',false,['deriveKey']);
+    var aesKey=await window.crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:65000,hash:'SHA-256'},baseKey,{name:'AES-GCM',length:256},false,['encrypt']);
+    var payloadToEnc=dataBytes;
+    if(algo==='triple-shield'){
+      var permKey=generateKey(password+'|PERM');
+      payloadToEnc=new Uint8Array(dataBytes.length);
+      for(var k=0;k<dataBytes.length;k++)payloadToEnc[k]=(dataBytes[k]+permKey[k%permKey.length])&0xff;
+    }
+    var cipherBuf=await window.crypto.subtle.encrypt({name:'AES-GCM',iv:iv},aesKey,payloadToEnc);
+    var cipherU8=new Uint8Array(cipherBuf);
+    var packed=new Uint8Array(28+cipherU8.length);
+    packed.set(salt,0);packed.set(iv,16);packed.set(cipherU8,28);
+    return {algo:algo,b64:u8ToB64(packed)};
+  }
+  async function CryptoSuiteDecrypt(envelope,password){
+    var algo=envelope.algo||'aes-gcm';
+    var raw=b64ToU8(envelope.b64);
+    if(algo==='legacy-xor'){
+      var lk=generateLegacyKey(password);
+      var dec=new Uint8Array(raw.length);
+      for(var i=0;i<raw.length;i++)dec[i]=raw[i]^lk[i%lk.length];
+      return textDecoder.decode(dec);
+    }
+    if(algo==='stream-256'||!(window.crypto&&window.crypto.subtle)){
+      var sk=generateKey(password+'|STREAM256');
+      var dec2=new Uint8Array(raw.length);
+      for(var j=0;j<raw.length;j++)dec2[j]=(raw[j]^sk[j%sk.length]^((j*31)&0xff))&0xff;
+      return textDecoder.decode(dec2);
+    }
+    var salt=raw.slice(0,16);
+    var iv=raw.slice(16,28);
+    var cipherU8=raw.slice(28);
+    var baseKey=await window.crypto.subtle.importKey('raw',textEncoder.encode(password),'PBKDF2',false,['deriveKey']);
+    var aesKey=await window.crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:65000,hash:'SHA-256'},baseKey,{name:'AES-GCM',length:256},false,['decrypt']);
+    var plainBuf=await window.crypto.subtle.decrypt({name:'AES-GCM',iv:iv},aesKey,cipherU8);
+    var plainU8=new Uint8Array(plainBuf);
+    if(algo==='triple-shield'){
+      var permKey=generateKey(password+'|PERM');
+      for(var k=0;k<plainU8.length;k++)plainU8[k]=(plainU8[k]-permKey[k%permKey.length]+256)&0xff;
+    }
+    return textDecoder.decode(plainU8);
+  }
+  function buildWebLockHTML(title,algo,b64,exp){
+    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escHTML(title||'MORHAF Encrypted Vault')+'</title><style>*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 0%,#240046,#05060b 70%);color:#f0e6ff;font-family:system-ui,sans-serif;padding:20px}.card{width:100%;max-width:440px;background:rgba(15,18,32,.9);border:1px solid rgba(176,38,255,.45);border-radius:24px;padding:32px 24px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.85)}.ic{font-size:48px;margin-bottom:10px}h2{margin:0 0 8px;color:#e0aaff;font-size:22px}p{margin:0 0 20px;font-size:13.5px;opacity:.75}input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.5);color:#fff;font-size:15px;text-align:center;outline:none;margin-bottom:12px}input:focus{border-color:#00e5ff}button{width:100%;padding:14px;border-radius:12px;border:0;background:linear-gradient(135deg,#7c5cff,#00e5ff);color:#fff;font-weight:800;font-size:15px;cursor:pointer}.out{display:none;margin-top:18px;padding:16px;border-radius:14px;background:rgba(0,0,0,.6);border:1px solid #00e5ff;word-break:break-all;font-size:15px;line-height:1.7;text-align:right}</style></head><body><div class="card"><div class="ic">&#128274;</div><h2>'+escHTML(title||'خزنة مشفرة (Encrypted QR)')+'</h2><p>أدخل كلمة المرور لفك التشفير وعرض المحتوى السري</p><div id="lockForm"><input type="password" id="pw" placeholder="كلمة المرور..."><button id="ubtn">فك التشفير • Unlock</button><div id="err" style="color:#ff5262;font-size:13px;margin-top:10px;display:none;"></div></div><div id="outBox" class="out"></div></div><script>var ALGO="'+escAttr(algo)+'",B64="'+escAttr(b64)+'",EXP='+(exp||0)+';function b64ToU8(b){var s=atob(b),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u;}function genKey(t){var pb=new TextEncoder().encode(String(t||"MORHAF")),kLen=Math.max(pb.length,64),k=new Uint8Array(kLen),h=0x811c9dc5;for(var i=0;i<kLen;i++){var b=pb[i%pb.length];h^=(b+i*17)&0xff;h=Math.imul(h,0x01000193)>>>0;k[i]=((h>>>((i%4)*8))&0xff)^b;if(k[i]===0)k[i]=0xA5;}return k;}async function dec(pw){var raw=b64ToU8(B64);if(ALGO==="stream-256"||!(window.crypto&&window.crypto.subtle)){var sk=genKey(pw+"|STREAM256"),d=new Uint8Array(raw.length);for(var j=0;j<raw.length;j++)d[j]=(raw[j]^sk[j%sk.length]^((j*31)&0xff))&0xff;return new TextDecoder("utf-8",{fatal:true}).decode(d);}var salt=raw.slice(0,16),iv=raw.slice(16,28),c=raw.slice(28);var bk=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);var ak=await crypto.subtle.deriveKey({name:"PBKDF2",salt:salt,iterations:65000,hash:"SHA-256"},bk,{name:"AES-GCM",length:256},false,["decrypt"]);var pb=await crypto.subtle.decrypt({name:"AES-GCM",iv:iv},ak,c);var pu=new Uint8Array(pb);if(ALGO==="triple-shield"){var pk=genKey(pw+"|PERM");for(var k=0;k<pu.length;k++)pu[k]=(pu[k]-pk[k%pk.length]+256)&0xff;}return new TextDecoder("utf-8",{fatal:true}).decode(pu);}document.getElementById("ubtn").onclick=async function(){var pw=document.getElementById("pw").value,err=document.getElementById("err"),out=document.getElementById("outBox");err.style.display="none";if(EXP>0&&Date.now()>EXP){err.textContent="انتهت صلاحية هذا الرمز المشفر";err.style.display="block";return;}try{var res=JSON.parse(await dec(pw));if(res.exp&&res.exp>0&&Date.now()>res.exp){err.textContent="انتهت صلاحية المحتوى";err.style.display="block";return;}document.getElementById("lockForm").style.display="none";out.style.display="block";var t=String(res.t||"");if(/^https?:\/\//i.test(t)){out.innerHTML="<div style=\"margin-bottom:12px\">"+t+"</div><a href=\""+t+"\" style=\"display:block;padding:12px;background:#00e5ff;color:#000;text-align:center;border-radius:10px;text-decoration:none;font-weight:800\">فتح الرابط • Open Link</a>";}else{out.textContent=t;}}catch(e){err.textContent="كلمة المرور غير صحيحة!";err.style.display="block";}};<\/script></body></html>';
+  }
 
   var enMorse={'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.'};
   var arMorse={'\u0627':'.-','\u0623':'.-','\u0625':'.-','\u0622':'.-','\u0628':'-...','\u062A':'-','\u062B':'-.-.','\u062C':'.---','\u062D':'....','\u062E':'---','\u062F':'-..','\u0630':'--..','\u0631':'.-.','\u0632':'---.','\u0633':'...','\u0634':'----','\u0635':'-..-','\u0636':'...-','\u0637':'..-','\u0638':'-.--','\u0639':'.-.-','\u063A':'--.','\u0641':'..-.','\u0642':'--.-','\u0643':'-.-','\u0644':'.-..','\u0645':'--','\u0646':'-.','\u0647':'.','\u0648':'.--','\u064A':'..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.'};
@@ -1074,18 +1540,299 @@ function startMainApp(LIBS){
   function escHTML(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function escAttr(s){return String(s==null?'':s).replace(/["\\\n\r]/g,function(c){return {'"':'&quot;','\\':'\\\\','\n':'\\n','\r':'\\r'}[c];});}
 
-  async function saveFile(blob,filename,shareTitle){
-    var file=new File([blob],filename,{type:blob.type||'application/octet-stream'});
-    if(navigator.canShare&&navigator.canShare({files:[file]})){
-      try{await navigator.share({files:[file],title:shareTitle||filename});return {method:'share'};}
-      catch(e){if(e.name==='AbortError')return {method:'cancel'};}
+  async function saveFile(blob,filename,shareTitle,forceShare){
+    if(forceShare===true&&navigator.canShare){
+      try{
+        var file=new File([blob],filename,{type:blob.type||'application/octet-stream'});
+        if(navigator.canShare({files:[file]})){
+          await navigator.share({files:[file],title:shareTitle||filename});
+          return {method:'share'};
+        }
+      }catch(e){if(e.name==='AbortError')return {method:'cancel'};}
     }
     var url=URL.createObjectURL(blob);
-    var a=document.createElement('a');a.href=url;a.download=filename;a.rel='noopener';a.style.display='none';
-    document.body.appendChild(a);a.click();
-    setTimeout(function(){try{document.body.removeChild(a);}catch(e){}URL.revokeObjectURL(url);},300);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download=filename;
+    a.rel='noopener';
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){try{document.body.removeChild(a);}catch(e){}URL.revokeObjectURL(url);},1000);
     return {method:'download'};
   }
+
+
+  var COUNTRY_CODES=[
+    {code:'963',label:'🇸🇾 +963 (Syria)'},
+    {code:'966',label:'🇸🇦 +966 (Saudi)'},
+    {code:'971',label:'🇦🇪 +971 (UAE)'},
+    {code:'20',label:'🇪🇬 +20 (Egypt)'},
+    {code:'962',label:'🇯🇴 +962 (Jordan)'},
+    {code:'961',label:'🇱🇧 +961 (Lebanon)'},
+    {code:'964',label:'🇮🇶 +964 (Iraq)'},
+    {code:'965',label:'🇰🇼 +965 (Kuwait)'},
+    {code:'974',label:'🇶🇦 +974 (Qatar)'},
+    {code:'973',label:'🇧🇭 +973 (Bahrain)'},
+    {code:'968',label:'🇴🇲 +968 (Oman)'},
+    {code:'90',label:'🇹🇷 +90 (Turkey)'},
+    {code:'49',label:'🇩🇪 +49 (Germany)'},
+    {code:'1',label:'🇺🇸 +1 (USA/CA)'}
+  ];
+  function buildCountrySelectHTML(id,selectedCode){
+    selectedCode=selectedCode||'963';
+    var h='<select class="input-control" id="'+id+'">';
+    for(var i=0;i<COUNTRY_CODES.length;i++){
+      var c=COUNTRY_CODES[i];
+      h+='<option value="'+c.code+'"'+(c.code===String(selectedCode)?' selected':'')+'>'+c.label+'</option>';
+    }
+    return h+'</select>';
+  }
+  function parseSmartContactUrl(rawInput,countryCode,preMsg,platform){
+    var s=String(rawInput||'').trim();
+    var cc=String(countryCode||'963').replace(/[^0-9]/g,'');
+    if(!s)return 'https://wa.me/'+cc;
+    if(/^https?:\/\//i.test(s))return s;
+    if(/^(wa\.me|t\.me|instagram\.com|tiktok\.com|facebook\.com|x\.com|twitter\.com)\//i.test(s))return 'https://'+s;
+    if(s.charAt(0)==='@'){
+      var handle=s.slice(1).trim();
+      if(platform==='instagram')return 'https://instagram.com/'+handle;
+      if(platform==='tiktok')return 'https://tiktok.com/@'+handle;
+      if(platform==='twitter')return 'https://x.com/'+handle;
+      return 'https://t.me/'+handle;
+    }
+    if(/^[a-zA-Z][a-zA-Z0-9_.]{2,30}$/.test(s)&&!/^[0-9+$]+$/.test(s)){
+      if(platform==='instagram')return 'https://instagram.com/'+s;
+      if(platform==='telegram')return 'https://t.me/'+s;
+      return 'https://t.me/'+s;
+    }
+    var digits=s.replace(/[^0-9]/g,'');
+    if(digits.indexOf('00')===0)digits=digits.slice(2);
+    else if(digits.charAt(0)==='0')digits=cc+digits.slice(1);
+    else if(digits.length<=10&&digits.indexOf(cc)!==0)digits=cc+digits;
+    var msgPart=preMsg?('?text='+encodeURIComponent(preMsg)):'';
+    return 'https://wa.me/'+(digits||cc)+msgPart;
+  }
+
+  var MIN_TTL_MS=5*60*1000;
+  var MAX_TTL_MS=5*365.25*24*3600*1000;
+  function computeExpirationTimestamp(mode,durVal,durUnit,exactDateStr){
+    if(mode==='none')return 0;
+    var now=Date.now();
+    if(mode==='date'){
+      if(!exactDateStr)return 0;
+      var target=new Date(exactDateStr).getTime();
+      if(isNaN(target))return 0;
+      if(target<now+MIN_TTL_MS)target=now+MIN_TTL_MS;
+      if(target>now+MAX_TTL_MS)target=now+MAX_TTL_MS;
+      return target;
+    }
+    var val=parseFloat(durVal)||5;
+    var mult=60*1000;
+    if(durUnit==='hours')mult=3600*1000;
+    else if(durUnit==='days')mult=86400*1000;
+    else if(durUnit==='months')mult=30*86400*1000;
+    else if(durUnit==='years')mult=365*86400*1000;
+    var delta=val*mult;
+    if(delta<MIN_TTL_MS)delta=MIN_TTL_MS;
+    if(delta>MAX_TTL_MS)delta=MAX_TTL_MS;
+    return Math.round(now+delta);
+  }
+
+  function safeCopyText(text,onDone){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){if(onDone)onDone();}).catch(function(){fallbackCopyText(text,onDone);});
+    }else{fallbackCopyText(text,onDone);}
+  }
+  function fallbackCopyText(text,onDone){
+    try{
+      var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+      if(onDone)onDone();
+    }catch(e){}
+  }
+
+  var _confirmCallback=null;
+  function askCustomConfirm(title,msg,onConfirm){
+    var m=$('custom-confirm-modal');
+    if(!m){if(onConfirm)onConfirm();return;}
+    $('confirm-modal-title').textContent=title||'Confirm Action';
+    $('confirm-modal-msg').textContent=msg||'Are you sure?';
+    _confirmCallback=onConfirm;
+    m.classList.add('active');
+    playSound('click');
+  }
+  if($('btn-confirm-cancel'))$('btn-confirm-cancel').addEventListener('click',function(){$('custom-confirm-modal').classList.remove('active');_confirmCallback=null;});
+  if($('btn-confirm-ok'))$('btn-confirm-ok').addEventListener('click',function(){$('custom-confirm-modal').classList.remove('active');var cb=_confirmCallback;_confirmCallback=null;if(cb)cb();});
+
+  var _pubModalCallback=null;
+  function showPublishSuccessModal(id,url,updated,onDone,metaType){
+    saveProjectToVault({id:id,url:url,type:metaType||DOM.type.value,title:(builderState&&builderState.title)||'MORHAF Project',updatedAt:new Date().toISOString()});
+    var m=$('publish-success-modal');
+    if(!m){if(onDone)onDone();return;}
+    $('pub-success-title').textContent=updated?'Project Updated Live!':'Project Published Live!';
+    $('pub-success-id').textContent=id||'-';
+    $('pub-success-url').textContent=url||'-';
+    var openBtn=$('btn-open-pub-url');if(openBtn)openBtn.href=url||'https://morhafali5r-hub.github.io/MORHAF-Portfolio/';
+    _pubModalCallback=onDone;
+    m.classList.add('active');
+    playSound('success');
+  }
+  if($('close-pub-success'))$('close-pub-success').addEventListener('click',function(){$('publish-success-modal').classList.remove('active');if(_pubModalCallback){var cb=_pubModalCallback;_pubModalCallback=null;cb();}});
+  if($('btn-done-pub-modal'))$('btn-done-pub-modal').addEventListener('click',function(){$('publish-success-modal').classList.remove('active');if(_pubModalCallback){var cb=_pubModalCallback;_pubModalCallback=null;cb();}});
+  if($('btn-copy-pub-id'))$('btn-copy-pub-id').addEventListener('click',function(){var id=$('pub-success-id').textContent;safeCopyText(id,function(){toast('Site ID copied: '+id,'success');});});
+  if($('btn-copy-pub-url'))$('btn-copy-pub-url').addEventListener('click',function(){var u=$('pub-success-url').textContent;safeCopyText(u,function(){toast('Site URL copied!','success');});});
+
+  function getSavedProjects(){try{var r=localStorage.getItem('MORHAF_SAVED_PROJECTS');return r?JSON.parse(r):[];}catch(e){return[];}}
+  function saveProjectToVault(proj){
+    try{
+      var list=getSavedProjects().filter(function(p){return p.id!==proj.id;});
+      list.unshift(proj);
+      localStorage.setItem('MORHAF_SAVED_PROJECTS',JSON.stringify(list.slice(0,40)));
+    }catch(e){}
+  }
+  function renderProjectsVault(){
+    var box=$('projects-vault-list');if(!box)return;
+    var list=getSavedProjects();
+    if(!list.length){
+      box.innerHTML='<div style="text-align:center;padding:30px 10px;color:var(--text-secondary);font-size:.86rem;">No published projects saved in this browser yet. Publish a Variable Content QR, No-Code site, or HTML site and it will appear here!</div>';
+      return;
+    }
+    var h='';
+    for(var i=0;i<list.length;i++){
+      var p=list[i];
+      h+='<div class="project-card" data-pid="'+escAttr(p.id)+'" data-purl="'+escAttr(p.url)+'" data-ptype="'+escAttr(p.type||'nocodeweb')+'">';
+      h+='<div class="project-meta"><h4>'+escHTML(p.title||'Project')+'</h4><div class="pid">ID: '+escHTML(p.id)+' • '+escHTML((p.type||'site').toUpperCase())+'</div></div>';
+      h+='<div class="project-actions">';
+      h+='<button data-vault-act="qr">Make QR</button>';
+      h+='<button data-vault-act="copy">Copy ID</button>';
+      h+='<button data-vault-act="load">Edit</button>';
+      h+='<button data-vault-act="del" style="color:#ff5252;">&times;</button>';
+      h+='</div></div>';
+    }
+    box.innerHTML=h;
+  }
+  if($('btn-projects-vault'))$('btn-projects-vault').addEventListener('click',function(){renderProjectsVault();$('projects-vault-modal').classList.add('active');playSound('click');});
+  if($('close-projects-modal'))$('close-projects-modal').addEventListener('click',function(){$('projects-vault-modal').classList.remove('active');});
+  if($('projects-vault-list'))$('projects-vault-list').addEventListener('click',function(e){
+    var btn=e.target.closest('[data-vault-act]');if(!btn)return;
+    var card=btn.closest('.project-card');if(!card)return;
+    var pid=card.dataset.pid,purl=card.dataset.purl,ptype=card.dataset.ptype,act=btn.dataset.vaultAct;
+    if(act==='copy'){safeCopyText(pid,function(){toast('Copied ID: '+pid,'success');});}
+    else if(act==='qr'){
+      $('projects-vault-modal').classList.remove('active');
+      switchTab('generate');
+      returnToQRWithURL(purl,'Project '+pid,false);
+    }else if(act==='load'){
+      $('projects-vault-modal').classList.remove('active');
+      if(!_isPro()){DOM.modal.classList.add('active');return;}
+      DOM.type.value=(ptype==='variablecontent'?'variablecontent':(ptype==='htmlcode'?'htmlcode':'nocodeweb'));
+      buildInputs();
+      DOM.loadModal.classList.add('active');
+      DOM.loadIdInput.value=pid;
+    }else if(act==='del'){
+      try{
+        var list=getSavedProjects().filter(function(x){return x.id!==pid;});
+        localStorage.setItem('MORHAF_SAVED_PROJECTS',JSON.stringify(list));
+        renderProjectsVault();
+      }catch(err){}
+    }
+  });
+
+  // INTERACTIVE LEAFLET MAP PICKER
+  var _leafletMap=null,_leafletMarker=null,_mapPickCallback=null,_selectedLat=25.2048,_selectedLng=55.2708;
+  function openInteractiveMapPicker(initialQuery,onSelect){
+    _mapPickCallback=onSelect;
+    var modal=$('map-picker-modal');if(!modal)return;
+    modal.classList.add('active');
+    playSound('click');
+    var mMatch=String(initialQuery||'').match(/(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/);
+    if(mMatch){_selectedLat=parseFloat(mMatch[1]);_selectedLng=parseFloat(mMatch[2]);}
+    setTimeout(function(){
+      if(typeof L==='undefined'){
+        var box=$('leaflet-map-box');
+        if(box)box.innerHTML='<div style="display:grid;place-items:center;height:100%;color:var(--text-secondary);font-size:13px;padding:20px;text-align:center;">Map library loading or offline. Enter coordinates or search above.</div>';
+        return;
+      }
+      if(!_leafletMap){
+        _leafletMap=L.map('leaflet-map-box').setView([_selectedLat,_selectedLng],13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap'}).addTo(_leafletMap);
+        _leafletMarker=L.marker([_selectedLat,_selectedLng],{draggable:true}).addTo(_leafletMap);
+        _leafletMarker.on('dragend',function(ev){
+          var pos=ev.target.getLatLng();
+          _selectedLat=pos.lat;_selectedLng=pos.lng;
+          $('map-coords-display').textContent=_selectedLat.toFixed(6)+', '+_selectedLng.toFixed(6);
+        });
+        _leafletMap.on('click',function(ev){
+          _selectedLat=ev.latlng.lat;_selectedLng=ev.latlng.lng;
+          _leafletMarker.setLatLng([_selectedLat,_selectedLng]);
+          $('map-coords-display').textContent=_selectedLat.toFixed(6)+', '+_selectedLng.toFixed(6);
+        });
+      }else{
+        _leafletMap.invalidateSize();
+        _leafletMap.setView([_selectedLat,_selectedLng],13);
+        _leafletMarker.setLatLng([_selectedLat,_selectedLng]);
+      }
+      $('map-coords-display').textContent=_selectedLat.toFixed(6)+', '+_selectedLng.toFixed(6);
+    },180);
+  }
+  if($('close-map-modal'))$('close-map-modal').addEventListener('click',function(){$('map-picker-modal').classList.remove('active');});
+  if($('btn-map-search'))$('btn-map-search').addEventListener('click',async function(){
+    var q=($('map-search-input').value||'').trim();if(!q)return;
+    var btn=$('btn-map-search');btn.textContent='...';
+    try{
+      var r=await fetch('https://nominatim.openstreetmap.org/search?format=json&q='+encodeURIComponent(q)+'&limit=1');
+      var d=await r.json();
+      if(d&&d.length){
+        _selectedLat=parseFloat(d[0].lat);_selectedLng=parseFloat(d[0].lon);
+        $('map-coords-display').textContent=_selectedLat.toFixed(6)+', '+_selectedLng.toFixed(6);
+        if(_leafletMap&&_leafletMarker){_leafletMap.setView([_selectedLat,_selectedLng],15);_leafletMarker.setLatLng([_selectedLat,_selectedLng]);}
+        toast('Location found!','success');
+      }else toast('Place not found','error');
+    }catch(e){toast('Search error','error');}
+    btn.textContent='Search';
+  });
+  if($('btn-map-gps'))$('btn-map-gps').addEventListener('click',function(){
+    if(!navigator.geolocation){toast('GPS not supported','error');return;}
+    toast('Locating via GPS...','info');
+    navigator.geolocation.getCurrentPosition(function(pos){
+      _selectedLat=pos.coords.latitude;_selectedLng=pos.coords.longitude;
+      $('map-coords-display').textContent=_selectedLat.toFixed(6)+', '+_selectedLng.toFixed(6);
+      if(_leafletMap&&_leafletMarker){_leafletMap.setView([_selectedLat,_selectedLng],16);_leafletMarker.setLatLng([_selectedLat,_selectedLng]);}
+      toast('GPS Location locked!','success');
+    },function(){toast('Could not access GPS','error');});
+  });
+  if($('btn-map-confirm'))$('btn-map-confirm').addEventListener('click',function(){
+    var coordsStr=_selectedLat.toFixed(6)+', '+_selectedLng.toFixed(6);
+    $('map-picker-modal').classList.remove('active');
+    if(_mapPickCallback)_mapPickCallback(coordsStr,_selectedLat,_selectedLng);
+    toast('Location selected: '+coordsStr,'success');
+  });
+
+  var _isArabicUI=false;
+  if($('btn-lang-toggle'))$('btn-lang-toggle').addEventListener('click',function(){
+    _isArabicUI=!_isArabicUI;
+    document.documentElement.dir=_isArabicUI?'rtl':'ltr';
+    document.documentElement.lang=_isArabicUI?'ar':'en';
+    $('btn-lang-toggle').textContent=_isArabicUI?'EN / عربي':'AR / EN';
+    DOM.tabs.gen.innerHTML=_isArabicUI?'&#9670; الاستوديو':'&#9670; Studio';
+    DOM.tabs.dec.innerHTML=_isArabicUI?'&#9672; فك التشفير':'&#9672; Decoder';
+    DOM.tabs.inbox.innerHTML=_isArabicUI?'&#128236; الوارد':'Inbox';
+    DOM.btnPreview.textContent=_isArabicUI?'معاينة':'Preview';
+    DOM.btnExportPng.textContent=_isArabicUI?'تحميل PNG':'Export PNG';
+    DOM.btnExportSvg.textContent=_isArabicUI?'تحميل SVG':'Export SVG';
+    toast(_isArabicUI?'تم تفعيل الواجهة العربية':'Switched to English UI','info');
+  });
+
+  if($('mockup-switcher'))$('mockup-switcher').addEventListener('click',function(e){
+    var btn=e.target.closest('.mockup-btn');if(!btn)return;
+    var m=btn.dataset.mockup;
+    $('mockup-switcher').querySelectorAll('.mockup-btn').forEach(function(b){b.classList.toggle('active',b===btn);});
+    DOM.qrFrame.classList.remove('mockup-vip','mockup-tent','mockup-holo');
+    if(m!=='flat')DOM.qrFrame.classList.add('mockup-'+m);
+    playSound('click');
+  });
+
 
   var uiEngine=null;
   if(hasQR&&typeof QRCodeStyling!=='undefined'){
@@ -1108,7 +1855,7 @@ function startMainApp(LIBS){
 
   function enforceProLocks(){
     var type=DOM.type.value,pro=_isPro();
-    var isProFeature=type==='image'||type==='morse'||type==='nocodeweb'||type==='htmlcode';
+    var isProFeature=type==='image'||type==='morse'||type==='nocodeweb'||type==='htmlcode'||type==='variablecontent';
     var pp=QR_PATTERNS.find(function(p){return p.id===currentPattern;});
     var isProPat=pp&&pp.pro;
     if(!pro){
@@ -1133,7 +1880,26 @@ function startMainApp(LIBS){
     }
     buildPatternsGrid();
   }
-  async function checkLocalPro(){var s=_read();if(!s)return;_proRuntime.active=true;_proRuntime.token=s.token;_proRuntime.name=s.name;enforceProLocks();var ok=await _serverVerify();if(!ok){_proRuntime.active=false;_proRuntime.token=null;_clear();DOM.proBadge.style.display='none';enforceProLocks();toast('PRO session expired','error');}}
+  async function checkLocalPro(){
+    var s=_read();
+    if(s){
+      _proRuntime.active=true;_proRuntime.token=s.token;_proRuntime.name=s.name;_proRuntime.lastVerify=Date.now();
+      _write(s.name,s.token);
+      enforceProLocks();
+      return;
+    }
+    _readIDB(function(idbRaw){
+      if(!idbRaw)return;
+      try{
+        var o=JSON.parse(idbRaw);
+        if(o&&o.token){
+          _proRuntime.active=true;_proRuntime.token=o.token;_proRuntime.name=o.name||'PRO User';_proRuntime.lastVerify=Date.now();
+          _write(_proRuntime.name,_proRuntime.token);
+          enforceProLocks();
+        }
+      }catch(e){}
+    });
+  }
 
   function svgPatternPreview(p){
     var fg='#DEDBC8',bg='#000000',d,c;
@@ -1159,7 +1925,20 @@ function startMainApp(LIBS){
     var pat=null;for(var i=0;i<QR_PATTERNS.length;i++){if(QR_PATTERNS[i].id===c.dataset.pattern){pat=QR_PATTERNS[i];break;}}
     if(!pat)return;
     if(pat.pro&&!_isPro()){DOM.modal.classList.add('active');playSound('error');return;}
-    currentPattern=pat.id;buildPatternsGrid();updateQR(true);playSound('click');
+    currentPattern=pat.id;
+    if($('custom-dots-type'))$('custom-dots-type').value=pat.dots||'square';
+    if($('custom-corner-square-type'))$('custom-corner-square-type').value=pat.corner||'square';
+    if($('custom-corner-dot-type'))$('custom-corner-dot-type').value=pat.cornerDot||'square';
+    if(pat.gPreset&&_isPro()){
+      qrGradient.type=pat.gPreset.type;
+      qrGradient.angle=pat.gPreset.angle;
+      qrGradient.c1=pat.gPreset.c1;
+      qrGradient.c2=pat.gPreset.c2;
+      DOM.gradientType.value=pat.gPreset.type;
+      DOM.gradientControls.style.display='block';
+      refreshGradientPreview();
+    }
+    buildPatternsGrid();updateQR(true);playSound('click');
   });
 
   async function uploadFile(file,onProgress){
@@ -1231,16 +2010,20 @@ function startMainApp(LIBS){
     try{
       var formId=DOM.inboxFormSelect.value||undefined;
       var subs=await listFormData(formId||'');
+      var savedMeta={};
+      try{savedMeta=JSON.parse(localStorage.getItem('MORHAF_INBOX_META')||'{}');}catch(e){}
       _allLeads=subs.map(function(s){
+        var lid=s.id||s.fileName||Math.random().toString(36).slice(2);
+        var m=savedMeta[lid]||{};
         return {
-          id:s.id||s.fileName||Math.random().toString(36).slice(2),
+          id:lid,
           fileName:s.fileName||'',
           siteId:s.siteId||(s.data&&s.data.siteId)||'',
           formId:s.formId||(s.data&&s.data.formId)||'',
           timestamp:s.timestamp||new Date().toISOString(),
           data:(s.data&&s.data.data)||s.data||{},
-          read:s.read||false,
-          important:s.important||false
+          read:m.read!=null?m.read:(s.read||false),
+          important:m.important!=null?m.important:(s.important||false)
         };
       });
       _currentFormId=formId||'';
@@ -1317,13 +2100,21 @@ function startMainApp(LIBS){
     for(var i=0;i<_allLeads.length;i++){if(String(_allLeads[i].id)===String(leadId)){lead=_allLeads[i];break;}}
     if(!lead)return;
     var act=btn.dataset.inboxAct;
-    if(act==='read'||act==='unread'){lead.read=!lead.read;renderInbox();}
-    else if(act==='star'){lead.important=!lead.important;renderInbox();}
+    function persistLeadMeta(l){
+      try{
+        var sm=JSON.parse(localStorage.getItem('MORHAF_INBOX_META')||'{}');
+        sm[l.id]={read:!!l.read,important:!!l.important};
+        localStorage.setItem('MORHAF_INBOX_META',JSON.stringify(sm));
+      }catch(err){}
+    }
+    if(act==='read'||act==='unread'){lead.read=!lead.read;persistLeadMeta(lead);renderInbox();}
+    else if(act==='star'){lead.important=!lead.important;persistLeadMeta(lead);renderInbox();}
     else if(act==='del'){
-      if(!confirm('Delete this lead permanently?'))return;
-      try{if(lead.fileName&&_currentFormId){await deleteFormData(_currentFormId,lead.fileName);}}catch(e){}
-      _allLeads=_allLeads.filter(function(l){return String(l.id)!==String(leadId);});
-      renderInbox();toast('Lead deleted','info');
+      askCustomConfirm('Delete Lead','Delete this lead permanently from your Inbox?',async function(){
+        try{if(lead.fileName&&_currentFormId){await deleteFormData(_currentFormId,lead.fileName);}}catch(err){}
+        _allLeads=_allLeads.filter(function(l){return String(l.id)!==String(leadId);});
+        renderInbox();toast('Lead deleted','info');
+      });
     }
   });
   DOM.inboxExportCsv.addEventListener('click',function(){
@@ -1356,9 +2147,478 @@ function startMainApp(LIBS){
   ];
   function makeFormField(type){
     var icons={text:'T',phone:'P',email:'@',textarea:'M',select:'D',file:'F',date:'#'};
-    return {id:'f'+Math.random().toString(36).slice(2,8),type:type,label:'',placeholder:'',required:false,icon:icons[type]||'T'};
+    return {id:'f'+Math.random().toString(36).slice(2,8),type:type,label:'',placeholder:'',options:'VIP Package, Standard Package, Consultation',required:false,icon:icons[type]||'T'};
   }
 
+  // === VARIABLE CONTENT (30 DYNAMIC CLOUD MODES - PRO V7.0) ===
+  var VC_MODES=[
+    {id:'file',icon:'&#11015;',name:'File Download',ar:'تحميل ملف'},
+    {id:'image',icon:'&#128444;',name:'Single Image',ar:'عرض صورة'},
+    {id:'video',icon:'&#127916;',name:'Video Stream',ar:'تشغيل فيديو'},
+    {id:'audio',icon:'&#127925;',name:'Voice / Audio',ar:'مقطع صوتي'},
+    {id:'text',icon:'&#128221;',name:'Rich Text',ar:'نص متغير'},
+    {id:'location',icon:'&#128205;',name:'Map Location',ar:'موقع خريطة'},
+    {id:'whatsapp_hub',icon:'&#128172;',name:'WhatsApp Hub',ar:'واتساب ذكي'},
+    {id:'poll',icon:'&#128202;',name:'Quick Poll',ar:'استطلاع رأي'},
+    {id:'review',icon:'&#11088;',name:'Star Review',ar:'تقييم نجوم'},
+    {id:'booking',icon:'&#128197;',name:'Quick Booking',ar:'حجز موعد'},
+    {id:'gift_card',icon:'&#127873;',name:'Digital Gift',ar:'بطاقة هدية'},
+    {id:'link_tree',icon:'&#127760;',name:'Social Tree',ar:'شجرة حسابات'},
+    {id:'timed_content',icon:'&#8987;',name:'Timed QR',ar:'محتوى مؤقت'},
+    {id:'countdown_rem',icon:'&#9200;',name:'Countdown',ar:'عداد وتذكير'},
+    {id:'contact',icon:'&#128222;',name:'Contact Hub',ar:'تواصل وجهات'},
+    {id:'redirect',icon:'&#9889;',name:'Smart Redirect',ar:'تحويل رابط'},
+    {id:'secret',icon:'&#128274;',name:'Secret Vault',ar:'قفل بكلمة سر'},
+    {id:'wifi',icon:'&#128246;',name:'WiFi Card',ar:'بطاقة واي فاي'},
+    {id:'menu',icon:'&#127869;',name:'Mini Menu',ar:'قائمة أسعار'},
+    {id:'event',icon:'&#9203;',name:'Event Pass',ar:'بطاقة فعالية'},
+    {id:'coupon',icon:'&#127991;',name:'Promo Coupon',ar:'كوبون خصم'},
+    {id:'payment',icon:'&#128179;',name:'IBAN / Crypto',ar:'بيانات دفع'},
+    {id:'folder',icon:'&#128193;',name:'Multi-Files',ar:'حقيبة ملفات'},
+    {id:'before_after',icon:'&#128260;',name:'Before / After',ar:'قبل وبعد'},
+    {id:'gallery',icon:'&#127912;',name:'Photo Gallery',ar:'معرض صور'},
+    {id:'app_store',icon:'&#128241;',name:'App Links',ar:'روابط تطبيق'},
+    {id:'medical',icon:'&#129658;',name:'Medical SOS',ar:'بطاقة طوارئ'},
+    {id:'certificate',icon:'&#128737;',name:'Authenticity',ar:'شهادة أصالة'},
+    {id:'status',icon:'&#128994;',name:'Live Status',ar:'حالة مفتوح/مغلق'},
+    {id:'embed',icon:'&#128187;',name:'Web Embed',ar:'تضمين صفحة'}
+  ];
+
+  var vcState={
+    id:null,
+    adminPass:'',
+    mode:'file',
+    showHeader:true,
+    title:'MORHAF Official Page',
+    desc:'Scan & interact with the live content below.',
+    theme:'obsidian',
+    visitorPin:'',
+    expMode:'none',
+    expVal:30,
+    expUnit:'minutes',
+    expDate:'2027-01-01T00:23',
+    data:{
+      url:'',fileName:'',fileSize:0,btnText:'Download Now • تحميل الآن',autoDownload:false,
+      img2:'',lat:'25.204800',lng:'55.270800',
+      countryCode:'963',phone:'0932296769',whatsapp:'0932296769',waWelcome:'مرحباً، مسحت رمز الـ QR وأود الاستفسار عن...',
+      email:'info@example.com',destType:'whatsapp',
+      ssid:'MORHAF_VIP',wifiPass:'12345678',couponCode:'VIP50',discount:'50% OFF',iban:'SA0000000000000000000000',
+      bankName:'Al Rajhi / USDT',eventDate:'2027-01-01T00:23',statusType:'OPEN NOW • متاح الآن',
+      iosUrl:'',androidUrl:'',
+      itemsText:'استفسار عن الأسعار\nطلب خدمة أو صيانة\nالتحدث مع الإدارة',
+      bloodType:'O+',allergies:'None',serialNo:'MRHF-2026-9981',
+      giftAmount:'100$ VIP GIFT',giftCode:'GIFT-2027-LUXE'
+    }
+  };
+
+  function renderDestSelectorHTML(){
+    return '<div class="input-group"><label>Response Destination (وجهة استلام الردود)</label><div class="dest-selector">'+
+      '<div class="dest-option active" data-dest="whatsapp"><span>&#128172; Send to WhatsApp</span><span style="font-size:10px;background:rgba(37,211,102,.2);padding:2px 7px;border-radius:8px;">ACTIVE ✓</span></div>'+
+      '<div class="dest-option disabled-soon" data-dest="inbox"><span>&#128236; Studio Inbox</span><span class="soon-badge">SOON</span></div>'+
+    '</div></div>'+
+    '<div class="input-group"><label>Your WhatsApp Number, Link, or @Username (رقمك أو رابطك)</label>'+
+      '<div class="smart-phone-row">'+buildCountrySelectHTML('vc-cc-sel',vcState.data.countryCode)+
+      '<input type="text" class="input-control" data-vc="whatsapp" value="'+escAttr(vcState.data.whatsapp)+'" placeholder="0932296769 or https://wa.me/... or @username"></div>'+
+      '<div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">Accepts local number (09...), international (+963...), full link, or @username!</div>'+
+    '</div>';
+  }
+
+  function renderVCModeFields(){
+    var m=vcState.mode;
+    var d=vcState.data;
+    var h='';
+    if(m==='file'){
+      h+='<div class="input-group"><label>Upload File to Cloud Drive</label><div class="gen-upload-zone" style="padding:14px;margin-bottom:6px;"><span id="vc-file-lbl" style="font-weight:700;font-size:12px;">'+(d.fileName?escHTML(d.fileName)+' (Uploaded)':'Drop file or click to upload')+'</span><input type="file" id="vc-file-inp"></div></div>';
+      h+='<div class="color-grid"><div class="input-group"><label>Or Direct File URL</label><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url)+'" placeholder="https://..."></div><div class="input-group"><label>Button Label</label><input type="text" class="input-control" data-vc="btnText" value="'+escAttr(d.btnText)+'"></div></div>';
+      h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><input type="checkbox" id="vc-auto-dl" '+(d.autoDownload?'checked':'')+' style="accent-color:var(--color-web);cursor:pointer;"><label for="vc-auto-dl" style="font-size:.76rem;color:var(--text-secondary);cursor:pointer;">Auto-start download immediately when scanned</label></div>';
+    }else if(m==='image'){
+      h+='<div class="input-group"><label>Upload Image</label><div class="gen-upload-zone" style="padding:14px;margin-bottom:6px;"><span id="vc-file-lbl" style="font-weight:700;font-size:12px;">'+(d.url?'Image Ready (Click to replace)':'Drop image or click to upload')+'</span><input type="file" id="vc-file-inp" accept="image/*"></div></div>';
+      h+='<div class="input-group"><label>Or Direct Image URL</label><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url)+'" placeholder="https://..."></div>';
+    }else if(m==='video'){
+      h+='<div class="input-group"><label>Upload Video or Paste YouTube / MP4 Link</label><div class="gen-upload-zone" style="padding:12px;margin-bottom:6px;"><span id="vc-file-lbl" style="font-size:12px;">Drop video file to upload</span><input type="file" id="vc-file-inp" accept="video/*"></div><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url)+'" placeholder="https://youtube.com/watch?v=... or .mp4"></div>';
+    }else if(m==='audio'){
+      h+='<div class="input-group"><label>Upload Voice / Audio File (MP3/WAV)</label><div class="gen-upload-zone" style="padding:12px;margin-bottom:6px;"><span id="vc-file-lbl" style="font-size:12px;">Drop audio file to upload</span><input type="file" id="vc-file-inp" accept="audio/*"></div><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url)+'" placeholder="https://...mp3"></div>';
+    }else if(m==='text'||m==='timed_content'){
+      h+='<div class="input-group"><label>Dynamic Text / Secret Announcement</label><textarea class="input-control" data-vc="itemsText" style="min-height:110px;">'+escHTML(d.itemsText||'')+'</textarea></div>';
+      h+='<div class="input-group"><label>Optional Action Link / File URL</label><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url)+'" placeholder="Optional button link..."></div>';
+    }else if(m==='location'){
+      h+='<div class="input-group"><label>Coordinates or Place Name</label><input type="text" class="input-control" id="vc-loc-inp" data-vc="url" value="'+escAttr(d.url||(d.lat+', '+d.lng))+'" placeholder="25.2048, 55.2708"><button type="button" class="map-pick-trigger" id="btn-vc-pick-map">&#128506; Pick Location on Interactive Map (تحديد من الخريطة)</button></div>';
+    }else if(m==='whatsapp_hub'){
+      h+=renderDestSelectorHTML();
+      h+='<div class="input-group"><label>Default Welcome Message</label><input type="text" class="input-control" data-vc="waWelcome" value="'+escAttr(d.waWelcome)+'"></div>';
+      h+='<div class="input-group"><label>Quick Chat Buttons (One topic per line — clicking opens WhatsApp with this topic)</label><textarea class="input-control" data-vc="itemsText" style="min-height:85px;">'+escHTML(d.itemsText)+'</textarea></div>';
+    }else if(m==='poll'){
+      h+=renderDestSelectorHTML();
+      h+='<div class="input-group"><label>Poll Options (خيارات التصويت — كل خيار بسطر)</label><textarea class="input-control" data-vc="itemsText" style="min-height:90px;">'+escHTML(d.itemsText||'ممتاز جداً 🔥\nجيد 👍\nيحتاج تطوير 💡')+'</textarea></div>';
+    }else if(m==='review'){
+      h+=renderDestSelectorHTML();
+      h+='<div class="input-group"><label>Optional Google Maps Review Link (for 5-Star Redirect)</label><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url)+'" placeholder="https://g.page/r/..."></div>';
+    }else if(m==='booking'){
+      h+=renderDestSelectorHTML();
+      h+='<div class="input-group"><label>Available Services (الخدمات المتاحة للحجز — كل خدمة بسطر)</label><textarea class="input-control" data-vc="itemsText" style="min-height:80px;">'+escHTML(d.itemsText||'استشارة خاصة\nحجز موعد VIP\nطلب خدمة سريعة')+'</textarea></div>';
+    }else if(m==='gift_card'){
+      h+='<div class="color-grid"><div class="input-group"><label>Gift Value / Badge</label><input type="text" class="input-control" data-vc="giftAmount" value="'+escAttr(d.giftAmount)+'"></div><div class="input-group"><label>Voucher / Gift Code</label><input type="text" class="input-control" data-vc="giftCode" value="'+escAttr(d.giftCode)+'"></div></div>';
+      h+='<div class="input-group"><label>Personal Gift Message (تظهر عند فتح الظرف)</label><textarea class="input-control" data-vc="itemsText">'+escHTML(d.itemsText||'كل عام وأنت بخير! هذه بطاقة إهداء خاصة لك ✨')+'</textarea></div>';
+    }else if(m==='link_tree'){
+      h+='<div class="input-group"><label>Avatar / Logo Image URL (Optional)</label><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url)+'" placeholder="https://..."></div>';
+      h+='<div class="input-group"><label>Smart Links (One per line: Title | Phone or @username or URL)</label><textarea class="input-control" data-vc="itemsText" style="min-height:100px;">'+escHTML(d.itemsText||'WhatsApp | 0932296769\nTelegram | @morhaf\nInstagram | @morhaf\nWebsite | https://morhafali5r-hub.github.io/MORHAF-Portfolio/')+'</textarea></div>';
+    }else if(m==='countdown_rem'||m==='event'){
+      h+=renderDestSelectorHTML();
+      h+='<div class="color-grid"><div class="input-group"><label>Target Date &amp; Time</label><input type="datetime-local" class="input-control" data-vc="eventDate" value="'+escAttr(d.eventDate)+'"></div><div class="input-group"><label>Venue / Location</label><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url||'VIP Grand Hall')+'"></div></div>';
+    }else if(m==='contact'){
+      h+='<div class="input-group"><label>Country Code &amp; Phone / WhatsApp</label><div class="smart-phone-row">'+buildCountrySelectHTML('vc-cc-sel',d.countryCode)+'<input type="text" class="input-control" data-vc="whatsapp" value="'+escAttr(d.whatsapp)+'" placeholder="0932296769"></div></div>';
+      h+='<div class="color-grid"><div class="input-group"><label>Direct Call Number</label><input type="text" class="input-control" data-vc="phone" value="'+escAttr(d.phone)+'"></div><div class="input-group"><label>Email</label><input type="text" class="input-control" data-vc="email" value="'+escAttr(d.email)+'"></div></div>';
+    }else if(m==='redirect'){
+      h+='<div class="input-group"><label>Destination URL, Phone, or @Username (Redirects Immediately)</label><div class="smart-phone-row">'+buildCountrySelectHTML('vc-cc-sel',d.countryCode)+'<input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url||'https://example.com')+'" placeholder="https://... or 0932296769 or @username"></div></div>';
+    }else if(m==='secret'){
+      h+='<div class="input-group"><label>Visitor Unlock Password (Required on Scan)</label><input type="text" class="input-control" id="vc-secret-pin" value="'+escAttr(vcState.visitorPin||'1234')+'" placeholder="Enter PIN or Password..."></div><div class="input-group"><label>Secret Message or Link</label><textarea class="input-control" data-vc="itemsText">'+escHTML(d.itemsText||'Confidential VIP Access Code: 9940')+'</textarea></div>';
+    }else if(m==='wifi'){
+      h+='<div class="color-grid"><div class="input-group"><label>WiFi Network Name (SSID)</label><input type="text" class="input-control" data-vc="ssid" value="'+escAttr(d.ssid)+'"></div><div class="input-group"><label>WiFi Password</label><input type="text" class="input-control" data-vc="wifiPass" value="'+escAttr(d.wifiPass)+'"></div></div>';
+    }else if(m==='menu'||m==='folder'||m==='gallery'){
+      var lblMap={menu:'Menu Items (One per line: Name | Price)',folder:'Files List (One per line: Title | File URL)',gallery:'Image URLs (One URL per line)'};
+      if(m==='menu')h+=renderDestSelectorHTML();
+      h+='<div class="input-group"><label>'+lblMap[m]+'</label><textarea class="input-control" data-vc="itemsText" style="min-height:100px;">'+escHTML(d.itemsText||'')+'</textarea></div>';
+      if(m==='folder'||m==='gallery'){
+        h+='<div class="gen-upload-zone" style="padding:10px;"><span id="vc-file-lbl" style="font-size:11px;">+ Upload file/image to append URL automatically</span><input type="file" id="vc-file-inp"></div>';
+      }
+    }else if(m==='before_after'){
+      h+='<div class="color-grid"><div class="input-group"><label>Before Image URL</label><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url)+'"></div><div class="input-group"><label>After Image URL</label><input type="text" class="input-control" data-vc="img2" value="'+escAttr(d.img2)+'"></div></div>';
+    }else if(m==='coupon'){
+      h+='<div class="color-grid"><div class="input-group"><label>Promo Code</label><input type="text" class="input-control" data-vc="couponCode" value="'+escAttr(d.couponCode)+'"></div><div class="input-group"><label>Discount Badge</label><input type="text" class="input-control" data-vc="discount" value="'+escAttr(d.discount)+'"></div></div>';
+    }else if(m==='payment'){
+      h+='<div class="color-grid"><div class="input-group"><label>Bank / Network Name</label><input type="text" class="input-control" data-vc="bankName" value="'+escAttr(d.bankName)+'"></div><div class="input-group"><label>IBAN / Wallet Address</label><input type="text" class="input-control" data-vc="iban" value="'+escAttr(d.iban)+'"></div></div>';
+    }else if(m==='app_store'){
+      h+='<div class="color-grid"><div class="input-group"><label>iOS App Store URL</label><input type="text" class="input-control" data-vc="iosUrl" value="'+escAttr(d.iosUrl)+'"></div><div class="input-group"><label>Android / APK URL</label><input type="text" class="input-control" data-vc="androidUrl" value="'+escAttr(d.androidUrl)+'"></div></div>';
+    }else if(m==='medical'){
+      h+='<div class="color-grid"><div class="input-group"><label>Blood Type</label><input type="text" class="input-control" data-vc="bloodType" value="'+escAttr(d.bloodType)+'"></div><div class="input-group"><label>Emergency Phone</label><input type="text" class="input-control" data-vc="phone" value="'+escAttr(d.phone)+'"></div></div><div class="input-group"><label>Allergies / Medical Notes</label><input type="text" class="input-control" data-vc="allergies" value="'+escAttr(d.allergies)+'"></div>';
+    }else if(m==='certificate'){
+      h+='<div class="color-grid"><div class="input-group"><label>Serial / Batch Number</label><input type="text" class="input-control" data-vc="serialNo" value="'+escAttr(d.serialNo)+'"></div><div class="input-group"><label>Verification Link / Info</label><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url||'100% Authentic Guaranteed')+'"></div></div>';
+    }else if(m==='status'){
+      h+='<div class="input-group"><label>Current Live Status</label><select class="input-control" data-vc="statusType"><option value="OPEN NOW • مفتوح الآن">OPEN NOW • مفتوح الآن</option><option value="BUSY • مشغول حالياً">BUSY • مشغول حالياً</option><option value="CLOSED • مغلق حالياً">CLOSED • مغلق حالياً</option><option value="AVAILABLE FOR HIRE • متاح للعمل">AVAILABLE FOR HIRE • متاح للعمل</option></select></div>';
+    }else{
+      h+='<div class="input-group"><label>Target URL or Embed URL</label><input type="text" class="input-control" data-vc="url" value="'+escAttr(d.url)+'" placeholder="https://..."></div>';
+    }
+    return h;
+  }
+
+  function buildVariableContentPageHTML(){
+    var s=vcState,d=s.data,m=s.mode;
+    var themes={
+      obsidian:{bg:'radial-gradient(circle at 50% 0%,#1f1a12,#07080d 75%)',card:'rgba(18,20,30,.92)',border:'#d4af37',accent:'linear-gradient(135deg,#d4af37,#8b6508)',btnTxt:'#000',text:'#f5f0e6'},
+      cyber:{bg:'radial-gradient(circle at 50% 0%,#1a0b36,#05060b 75%)',card:'rgba(12,15,28,.92)',border:'#00e5ff',accent:'linear-gradient(135deg,#7c5cff,#00e5ff)',btnTxt:'#fff',text:'#e9ecf7'},
+      emerald:{bg:'linear-gradient(135deg,#071a12,#0d2e22)',card:'rgba(10,28,20,.94)',border:'#2ecc71',accent:'linear-gradient(135deg,#2ecc71,#00b4d8)',btnTxt:'#000',text:'#eafff5'},
+      minimal:{bg:'#f4f5f7',card:'#ffffff',border:'#e2e8f0',accent:'#111827',btnTxt:'#fff',text:'#111827'}
+    };
+    var th=themes[s.theme]||themes.obsidian;
+    var expTs=computeExpirationTimestamp(s.expMode||'none',s.expVal,s.expUnit,s.expDate);
+    var headerHTML='';
+    if(s.showHeader){
+      if(s.title)headerHTML+='<h1 style="margin:0 0 8px;font-size:23px;font-weight:900;">'+escHTML(s.title)+'</h1>';
+      if(s.desc)headerHTML+='<p style="margin:0 0 18px;font-size:13.5px;opacity:.78;line-height:1.6;">'+escHTML(s.desc)+'</p>';
+    }
+    var waBase=parseSmartContactUrl(d.whatsapp||d.phone,d.countryCode||'963','','whatsapp');
+    var bodyHTML='';
+    if(m==='file'){
+      var dlUrl=d.url||'#';
+      bodyHTML='<a id="vcDlBtn" href="'+escAttr(dlUrl)+'" download="'+escAttr(d.fileName||'file')+'" class="vc-btn">&#11015; '+escHTML(d.btnText||'Download File')+'</a>';
+      if(d.fileName)bodyHTML+='<div style="margin-top:10px;font-size:12px;opacity:.65;font-family:monospace;">'+escHTML(d.fileName)+'</div>';
+      if(d.autoDownload&&dlUrl&&dlUrl!=='#'){
+        bodyHTML+='<script>setTimeout(function(){var a=document.getElementById("vcDlBtn");if(a)a.click();},600);<\/script>';
+      }
+    }else if(m==='image'){
+      bodyHTML='<img src="'+escAttr(d.url)+'" style="width:100%;border-radius:16px;display:block;margin-bottom:14px;box-shadow:0 15px 40px rgba(0,0,0,.4);" alt="Image">';
+      if(d.url)bodyHTML+='<a href="'+escAttr(d.url)+'" target="_blank" download class="vc-btn" style="padding:11px 20px;font-size:13px;">Download Full Image</a>';
+    }else if(m==='video'){
+      bodyHTML='<div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;">'+bVideoEmbed(d.url)+'</div>';
+    }else if(m==='audio'){
+      bodyHTML='<audio controls autoplay src="'+escAttr(d.url)+'" style="width:100%;margin-top:8px;"></audio>';
+    }else if(m==='text'||m==='timed_content'){
+      bodyHTML='<div style="white-space:pre-wrap;text-align:right;line-height:1.8;font-size:15px;padding:16px;background:rgba(0,0,0,.25);border-radius:14px;border:1px solid rgba(255,255,255,.08);margin-bottom:12px;">'+escHTML(d.itemsText||'')+'</div>';
+      if(d.url)bodyHTML+='<a href="'+escAttr(parseSmartContactUrl(d.url,d.countryCode))+'" target="_blank" class="vc-btn">'+escHTML(d.btnText||'Open Link')+'</a>';
+    }else if(m==='location'){
+      var q=encodeURIComponent(d.url||(d.lat+','+d.lng));
+      bodyHTML='<div style="width:100%;height:280px;border-radius:16px;overflow:hidden;margin-bottom:14px;"><iframe src="https://maps.google.com/maps?q='+q+'&z=15&output=embed" style="width:100%;height:100%;border:0;" allowfullscreen></iframe></div>';
+      bodyHTML+='<a href="https://www.google.com/maps/search/?api=1&query='+q+'" target="_blank" class="vc-btn">&#128205; Open in Google Maps</a>';
+    }else if(m==='whatsapp_hub'){
+      var topics=String(d.itemsText||'').split('\n').filter(function(l){return l.trim()!=='';});
+      bodyHTML='<div style="display:flex;flex-direction:column;gap:10px;">';
+      bodyHTML+='<a href="'+escAttr(parseSmartContactUrl(d.whatsapp,d.countryCode,d.waWelcome,'whatsapp'))+'" target="_blank" class="vc-btn" style="background:#25D366;color:#fff;font-size:16px;">&#128172; محادثة واتساب مباشرة</a>';
+      for(var wi=0;wi<topics.length;wi++){
+        var tp=topics[wi].trim();
+        var tLink=parseSmartContactUrl(d.whatsapp,d.countryCode,tp,'whatsapp');
+        bodyHTML+='<a href="'+escAttr(tLink)+'" target="_blank" class="vc-btn" style="background:rgba(255,255,255,.08);color:inherit;border:1px solid rgba(255,255,255,.15);font-size:14px;">&#9889; '+escHTML(tp)+'</a>';
+      }
+      bodyHTML+='</div>';
+    }else if(m==='poll'){
+      var pLines=String(d.itemsText||'').split('\n').filter(function(l){return l.trim()!=='';});
+      bodyHTML='<div id="pollBox" style="display:flex;flex-direction:column;gap:9px;">';
+      for(var pi=0;pi<pLines.length;pi++){
+        var opt=pLines[pi].trim();
+        var voteWa=parseSmartContactUrl(d.whatsapp,d.countryCode,'📊 تصويت استطلاع الرأي ('+(s.title||'Poll')+'): اخترت [ '+opt+' ]','whatsapp');
+        bodyHTML+='<a href="'+escAttr(voteWa)+'" target="_blank" class="vc-btn" style="background:rgba(255,255,255,.07);color:inherit;border:1px solid rgba(255,255,255,.18);display:flex;justify-content:space-between;align-items:center;"><span>'+escHTML(opt)+'</span><span style="font-size:12px;color:#00e5ff;">تصويت &#8592;</span></a>';
+      }
+      bodyHTML+='</div>';
+    }else if(m==='review'){
+      var revWaBase=parseSmartContactUrl(d.whatsapp,d.countryCode,'','whatsapp');
+      var gMapUrl=d.url?parseSmartContactUrl(d.url,d.countryCode):'';
+      bodyHTML='<div style="display:flex;justify-content:center;gap:8px;font-size:34px;margin:10px 0 16px;cursor:pointer;" id="starRow"><span data-s="1">⭐</span><span data-s="2">⭐</span><span data-s="3">⭐</span><span data-s="4">⭐</span><span data-s="5">⭐</span></div>';
+      bodyHTML+='<textarea id="revNote" placeholder="اكتب رأيك أو ملاحظتك هنا..." style="width:100%;padding:12px;border-radius:12px;background:rgba(0,0,0,.35);color:inherit;border:1px solid rgba(255,255,255,.18);min-height:80px;margin-bottom:12px;font-family:inherit;"></textarea>';
+      bodyHTML+='<button type="button" id="revSendBtn" class="vc-btn" style="background:#25D366;color:#fff;">إرسال التقييم عبر واتساب</button>';
+      bodyHTML+='<script>var selStars=5,WABASE="'+escAttr(revWaBase)+'",GMAP="'+escAttr(gMapUrl)+'";document.querySelectorAll("#starRow span").forEach(function(st){st.onclick=function(){selStars=+st.getAttribute("data-s");document.querySelectorAll("#starRow span").forEach(function(x,i){x.style.opacity=(i<selStars)?"1":"0.25";});};});document.getElementById("revSendBtn").onclick=function(){var note=document.getElementById("revNote").value;if(selStars>=4&&GMAP){window.location.href=GMAP;return;}var sep=WABASE.indexOf("?")>=0?"&":"?";window.location.href=WABASE+sep+"text="+encodeURIComponent("⭐ تقييم جديد: "+selStars+"/5 نجوم\\nالملاحظة: "+note);};<\/script>';
+    }else if(m==='booking'){
+      var bkWaBase=parseSmartContactUrl(d.whatsapp,d.countryCode,'','whatsapp');
+      var svcs=String(d.itemsText||'حجز موعد').split('\n').filter(function(l){return l.trim()!=='';});
+      var svcOpts=svcs.map(function(x){return '<option value="'+escAttr(x.trim())+'">'+escHTML(x.trim())+'</option>';}).join('');
+      bodyHTML='<div style="display:flex;flex-direction:column;gap:10px;text-align:right;">';
+      bodyHTML+='<input id="bkName" placeholder="الاسم الكامل" style="width:100%;padding:12px;border-radius:11px;background:rgba(0,0,0,.35);color:inherit;border:1px solid rgba(255,255,255,.16);">';
+      bodyHTML+='<select id="bkSvc" style="width:100%;padding:12px;border-radius:11px;background:rgba(0,0,0,.55);color:inherit;border:1px solid rgba(255,255,255,.16);">'+svcOpts+'</select>';
+      bodyHTML+='<input id="bkDate" type="datetime-local" style="width:100%;padding:12px;border-radius:11px;background:rgba(0,0,0,.35);color:inherit;border:1px solid rgba(255,255,255,.16);">';
+      bodyHTML+='<button type="button" id="bkBtn" class="vc-btn" style="background:#25D366;color:#fff;">&#128197; تأكيد الحجز عبر واتساب</button></div>';
+      bodyHTML+='<script>var BKW="'+escAttr(bkWaBase)+'";document.getElementById("bkBtn").onclick=function(){var n=document.getElementById("bkName").value||"عميل",sv=document.getElementById("bkSvc").value,dt=document.getElementById("bkDate").value;var sep=BKW.indexOf("?")>=0?"&":"?";window.location.href=BKW+sep+"text="+encodeURIComponent("📅 طلب حجز جديد:\\nالاسم: "+n+"\\nالخدمة: "+sv+"\\nالموعد: "+dt);};<\/script>';
+    }else if(m==='gift_card'){
+      bodyHTML='<div id="giftClosed" style="padding:26px;border:2px dashed '+th.border+';border-radius:20px;cursor:pointer;background:rgba(255,215,0,.06);" onclick="this.style.display=\'none\';document.getElementById(\'giftOpened\').style.display=\'block\';"><div style="font-size:54px;">&#127873;</div><div style="font-weight:900;font-size:17px;margin-top:8px;color:#FFD700;">اضغط لفتح بطاقة الهدية ✨</div></div>';
+      bodyHTML+='<div id="giftOpened" style="display:none;padding:22px;border:2px solid #FFD700;border-radius:20px;background:rgba(0,0,0,.45);"><div style="font-size:28px;font-weight:900;color:#FFD700;margin-bottom:8px;">'+escHTML(d.giftAmount)+'</div><p style="line-height:1.7;font-size:14.5px;margin-bottom:14px;">'+escHTML(d.itemsText)+'</p><div style="padding:10px;background:rgba(255,255,255,.08);border-radius:10px;font-family:monospace;font-size:18px;letter-spacing:2px;color:#00e5ff;margin-bottom:12px;" id="gCodeTxt">'+escHTML(d.giftCode)+'</div><button type="button" class="vc-btn" onclick="navigator.clipboard.writeText(document.getElementById(\'gCodeTxt\').textContent);this.textContent=\'تم نسخ الكود ✓\'">نسخ كود الهدية</button></div>';
+    }else if(m==='link_tree'){
+      var lLines=String(d.itemsText||'').split('\n').filter(function(l){return l.trim()!=='';});
+      if(d.url)bodyHTML+='<img src="'+escAttr(d.url)+'" style="width:90px;height:90px;border-radius:50%;object-fit:cover;margin:0 auto 14px;display:block;border:2px solid '+th.border+';">';
+      bodyHTML+='<div style="display:flex;flex-direction:column;gap:10px;">';
+      for(var li=0;li<lLines.length;li++){
+        var lparts=lLines[li].split('|');
+        var lTitle=lparts[0]?lparts[0].trim():'Link';
+        var lTarget=lparts[1]?lparts[1].trim():lparts[0].trim();
+        var plat=/insta/i.test(lTitle)?'instagram':(/tele/i.test(lTitle)?'telegram':(/tik/i.test(lTitle)?'tiktok':'whatsapp'));
+        var resolvedUrl=parseSmartContactUrl(lTarget,d.countryCode,'',plat);
+        bodyHTML+='<a href="'+escAttr(resolvedUrl)+'" target="_blank" class="vc-btn" style="background:rgba(255,255,255,.08);color:inherit;border:1px solid rgba(255,255,255,.16);">'+escHTML(lTitle)+'</a>';
+      }
+      bodyHTML+='</div>';
+    }else if(m==='countdown_rem'||m==='event'){
+      var evWa=parseSmartContactUrl(d.whatsapp,d.countryCode,'مرحباً، أود تأكيد الحضور/التذكير بفعالية: '+(s.title||'Event'),'whatsapp');
+      bodyHTML='<div style="padding:18px;background:rgba(0,0,0,.35);border-radius:16px;margin-bottom:14px;"><div id="vcCnt" style="font-family:monospace;font-size:24px;font-weight:900;color:#FFD700;letter-spacing:2px;">00d : 00h : 00m : 00s</div><div style="font-size:12.5px;opacity:.75;margin-top:8px;">&#128205; '+escHTML(d.url||'')+'</div></div>';
+      bodyHTML+='<a href="'+escAttr(evWa)+'" target="_blank" class="vc-btn" style="background:#25D366;color:#fff;">&#128276; تذكير / تأكيد الحضور عبر واتساب</a>';
+      bodyHTML+='<script>var TARG=new Date("'+escAttr(d.eventDate)+'").getTime();setInterval(function(){var diff=Math.max(0,TARG-Date.now());var dd=Math.floor(diff/864e5),hh=Math.floor(diff/36e5)%24,mm=Math.floor(diff/6e4)%60,ss=Math.floor(diff/1e3)%60;var el=document.getElementById("vcCnt");if(el)el.textContent=dd+"d : "+hh+"h : "+mm+"m : "+ss+"s";},1000);<\/script>';
+    }else if(m==='contact'){
+      var vcf='BEGIN:VCARD\nVERSION:3.0\nFN:'+(s.title||'Contact')+'\nTEL:'+(d.phone||d.whatsapp||'')+'\nEMAIL:'+(d.email||'')+'\nEND:VCARD';
+      bodyHTML='<div style="display:flex;flex-direction:column;gap:10px;">';
+      if(d.phone)bodyHTML+='<a href="tel:'+escAttr(d.phone)+'" class="vc-btn">&#128222; Call '+escHTML(d.phone)+'</a>';
+      if(d.whatsapp)bodyHTML+='<a href="'+escAttr(waBase)+'" target="_blank" class="vc-btn" style="background:#25D366;color:#fff;">&#128172; WhatsApp Chat</a>';
+      if(d.email)bodyHTML+='<a href="mailto:'+escAttr(d.email)+'" class="vc-btn" style="background:rgba(255,255,255,.12);color:inherit;">&#9993; '+escHTML(d.email)+'</a>';
+      bodyHTML+='<a href="data:text/vcard;charset=utf-8,'+encodeURIComponent(vcf)+'" download="contact.vcf" class="vc-btn">&#128199; Save Contact to Phone</a></div>';
+    }else if(m==='redirect'){
+      var rUrl=parseSmartContactUrl(d.url||'https://morhafali5r-hub.github.io/MORHAF-Portfolio/',d.countryCode);
+      bodyHTML='<p style="font-size:13px;opacity:.7;">Redirecting automatically...</p><a href="'+escAttr(rUrl)+'" class="vc-btn">Continue to Destination</a><script>setTimeout(function(){window.location.replace("'+escAttr(rUrl)+'");},350);<\/script>';
+    }else if(m==='wifi'){
+      bodyHTML='<div style="padding:18px;background:rgba(0,0,0,.3);border-radius:16px;margin-bottom:14px;"><div style="font-size:12px;opacity:.6;">Network (SSID)</div><div style="font-size:20px;font-weight:900;margin-bottom:10px;">'+escHTML(d.ssid)+'</div><div style="font-size:12px;opacity:.6;">Password</div><div id="wfpass" style="font-family:monospace;font-size:18px;color:#00e5ff;">'+escHTML(d.wifiPass)+'</div></div><button type="button" class="vc-btn" onclick="navigator.clipboard.writeText(document.getElementById(\'wfpass\').textContent);this.textContent=\'Password Copied! ✓\'">Copy WiFi Password</button>';
+    }else if(m==='coupon'){
+      bodyHTML='<div style="padding:20px;border:2px dashed '+th.border+';border-radius:16px;margin-bottom:14px;"><div style="font-size:28px;font-weight:900;color:#FFD700;">'+escHTML(d.discount)+'</div><div style="font-size:12px;opacity:.7;margin:6px 0;">Promo Code</div><div id="cpcode" style="font-family:monospace;font-size:22px;font-weight:900;letter-spacing:3px;">'+escHTML(d.couponCode)+'</div></div><button type="button" class="vc-btn" onclick="navigator.clipboard.writeText(document.getElementById(\'cpcode\').textContent);this.textContent=\'Code Copied! ✓\'">Copy Promo Code</button>';
+    }else if(m==='payment'){
+      bodyHTML='<div style="padding:18px;background:rgba(0,0,0,.3);border-radius:16px;margin-bottom:14px;"><div style="font-weight:800;margin-bottom:6px;">'+escHTML(d.bankName)+'</div><div id="ibantxt" style="font-family:monospace;font-size:14px;word-break:break-all;color:#FFD700;">'+escHTML(d.iban)+'</div></div><button type="button" class="vc-btn" onclick="navigator.clipboard.writeText(document.getElementById(\'ibantxt\').textContent);this.textContent=\'IBAN / Address Copied! ✓\'">Copy IBAN / Address</button>';
+    }else if(m==='menu'||m==='folder'||m==='gallery'){
+      var lines=String(d.itemsText||'').split('\n').filter(function(l){return l.trim()!=='';});
+      bodyHTML='<div style="display:flex;flex-direction:column;gap:8px;text-align:right;">';
+      for(var i=0;i<lines.length;i++){
+        var parts=lines[i].split('|');
+        var left=parts[0]?parts[0].trim():lines[i];
+        var right=parts[1]?parts[1].trim():'';
+        if(m==='gallery')bodyHTML+='<img src="'+escAttr(left)+'" style="width:100%;border-radius:12px;margin-bottom:6px;">';
+        else if(m==='folder')bodyHTML+='<a href="'+escAttr(right||left)+'" target="_blank" class="vc-btn" style="display:flex;justify-content:space-between;"><span>&#128196; '+escHTML(left)+'</span><span>Download</span></a>';
+        else{
+          var itemOrderWa=parseSmartContactUrl(d.whatsapp,d.countryCode,'مرحباً، أود طلب: '+left+' ('+right+')','whatsapp');
+          bodyHTML+='<a href="'+escAttr(itemOrderWa)+'" target="_blank" style="display:flex;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,.06);border-radius:12px;color:inherit;text-decoration:none;border:1px solid rgba(255,255,255,.1);"><b>'+escHTML(left)+'</b><span style="color:#FFD700;font-weight:800;">'+escHTML(right)+' &#128722;</span></a>';
+        }
+      }
+      bodyHTML+='</div>';
+    }else if(m==='before_after'){
+      bodyHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><div style="text-align:center;"><div style="font-size:11px;margin-bottom:4px;">BEFORE</div><img src="'+escAttr(d.url)+'" style="width:100%;border-radius:12px;"></div><div style="text-align:center;"><div style="font-size:11px;margin-bottom:4px;">AFTER</div><img src="'+escAttr(d.img2||d.url)+'" style="width:100%;border-radius:12px;"></div></div>';
+    }else if(m==='medical'){
+      bodyHTML='<div style="padding:16px;background:rgba(255,82,82,.15);border:1px solid #ff5252;border-radius:16px;margin-bottom:14px;"><div style="font-size:24px;font-weight:900;color:#ff5252;">BLOOD TYPE: '+escHTML(d.bloodType)+'</div><div style="margin-top:8px;font-size:14px;">Allergies: <b>'+escHTML(d.allergies)+'</b></div></div><a href="tel:'+escAttr(d.phone)+'" class="vc-btn" style="background:#ff5252;color:#fff;">&#128680; Call Emergency Contact</a>';
+    }else if(m==='certificate'){
+      bodyHTML='<div style="padding:20px;border:2px solid #2ecc71;background:rgba(46,204,113,.1);border-radius:16px;"><div style="font-size:36px;">&#9989;</div><div style="font-weight:900;font-size:18px;color:#2ecc71;margin:6px 0;">VERIFIED AUTHENTIC</div><div style="font-family:monospace;font-size:14px;">SN: '+escHTML(d.serialNo)+'</div><div style="margin-top:8px;font-size:13px;opacity:.8;">'+escHTML(d.url)+'</div></div>';
+    }else if(m==='status'){
+      bodyHTML='<div style="padding:24px;border-radius:18px;background:rgba(0,0,0,.35);border:2px solid '+th.border+';font-size:22px;font-weight:900;">'+escHTML(d.statusType)+'</div>';
+    }else if(m==='app_store'){
+      bodyHTML='<div style="display:flex;flex-direction:column;gap:10px;">';
+      if(d.iosUrl)bodyHTML+='<a href="'+escAttr(parseSmartContactUrl(d.iosUrl,d.countryCode))+'" target="_blank" class="vc-btn">&#127822; Download on App Store (iOS)</a>';
+      if(d.androidUrl)bodyHTML+='<a href="'+escAttr(parseSmartContactUrl(d.androidUrl,d.countryCode))+'" target="_blank" class="vc-btn" style="background:#2ecc71;color:#000;">&#129302; Download for Android / Google Play</a>';
+      bodyHTML+='</div>';
+    }else{
+      var safeTarget=parseSmartContactUrl(d.url||d.whatsapp,d.countryCode);
+      bodyHTML='<a href="'+escAttr(safeTarget)+'" target="_blank" class="vc-btn">'+escHTML(d.btnText||'Open Content')+'</a>';
+    }
+    var expCheckScript='';
+    if(expTs>0){
+      expCheckScript='<script>(function(){var EXP='+expTs+';if(Date.now()>EXP){document.querySelector(".vc-card").innerHTML="<div style=\"font-size:48px;margin-bottom:10px\">&#8987;</div><h2 style=\"color:#ff5262;margin:0 0 8px\">انتهت صلاحية هذا الرمز</h2><p style=\"opacity:.75;font-size:14px\">This QR code expired on "+new Date(EXP).toLocaleString()+"</p>";}})();<\/script>';
+    }
+    var stateJson=JSON.stringify({vc65:true,vcState:vcState}).replace(/</g,'\u003c');
+    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escHTML(s.title||'MORHAF Dynamic QR')+'</title><style>*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:'+th.bg+';color:'+th.text+';font-family:system-ui,-apple-system,sans-serif;padding:20px}.vc-card{width:100%;max-width:460px;background:'+th.card+';border:1px solid '+th.border+';border-radius:26px;padding:28px 22px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.65)}.vc-btn{display:block;width:100%;padding:15px 22px;border-radius:14px;border:0;background:'+th.accent+';color:'+th.btnTxt+';font-weight:800;font-size:15px;text-decoration:none;cursor:pointer;transition:.2s}</style></head><body><div class="vc-card">'+headerHTML+bodyHTML+'</div>'+expCheckScript+'<script type="application/json" id="mid-state">'+stateJson+'<\/script></body></html>';
+  }
+
+  function renderVariableContentStudio(){
+    var modeBtns='';
+    for(var i=0;i<VC_MODES.length;i++){
+      var m=VC_MODES[i];
+      modeBtns+='<button type="button" class="vc-mode-btn'+(vcState.mode===m.id?' active':'')+'" data-vcmode="'+m.id+'"><span>'+m.icon+'</span><div>'+m.name+'</div><div style="font-size:9px;opacity:.7;">'+m.ar+'</div></button>';
+    }
+    var h='<div class="vc-studio-box">';
+    h+='<div class="vc-top-bar">';
+    h+='<div><span style="color:var(--color-gold);font-weight:900;font-size:.85rem;">&#9889; VARIABLE CONTENT STUDIO (30 MODES)</span><div style="font-size:.7rem;color:var(--text-secondary);">'+(vcState.id?'Linked ID: <b style="color:#2ecc71;">'+escHTML(vcState.id)+'</b> (Same QR URL)':'New Dynamic QR (Editable Anytime by ID)')+'</div></div>';
+    h+='<div style="display:flex;gap:6px;flex-wrap:wrap;"><button type="button" class="btn btn-web" id="btn-vc-live-preview" style="padding:7px 12px;font-size:.74rem;">&#128065; Live Preview</button><button type="button" class="btn btn-secondary" id="btn-vc-load" style="padding:7px 12px;font-size:.74rem;">&#128194; Load ID</button><button type="button" class="btn btn-secondary" id="btn-vc-reset" style="padding:7px 10px;font-size:.74rem;">New</button></div>';
+    h+='</div>';
+    h+='<label style="font-size:.72rem;color:var(--text-secondary);text-transform:uppercase;display:block;margin-bottom:6px;">1. Select Dynamic Content Type (30 Modes)</label>';
+    h+='<div class="vc-modes-grid" id="vcModesGrid">'+modeBtns+'</div>';
+    h+='<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.35);padding:9px 12px;border-radius:10px;margin-bottom:12px;">';
+    h+='<label for="vc-show-header" style="font-size:.76rem;color:var(--color-cream);cursor:pointer;margin:0;">Show Title &amp; Description Above Content (إظهار عنوان ونص فوق المحتوى)</label>';
+    h+='<input type="checkbox" id="vc-show-header" '+(vcState.showHeader?'checked':'')+' style="accent-color:var(--color-web);width:18px;height:18px;cursor:pointer;">';
+    h+='</div>';
+    h+='<div id="vc-header-fields" style="display:'+(vcState.showHeader?'block':'none')+';">';
+    h+='<div class="color-grid"><div class="input-group"><label>Page Title</label><input type="text" class="input-control" id="vc-title-inp" value="'+escAttr(vcState.title)+'"></div><div class="input-group"><label>Page Theme</label><select class="input-control" id="vc-theme-sel"><option value="obsidian"'+(vcState.theme==='obsidian'?' selected':'')+'>Obsidian Gold</option><option value="cyber"'+(vcState.theme==='cyber'?' selected':'')+'>Cyber Neon</option><option value="emerald"'+(vcState.theme==='emerald'?' selected':'')+'>Emerald Noir</option><option value="minimal"'+(vcState.theme==='minimal'?' selected':'')+'>Minimal Light</option></select></div></div>';
+    h+='<div class="input-group"><label>Optional Subtitle / Instructions</label><input type="text" class="input-control" id="vc-desc-inp" value="'+escAttr(vcState.desc)+'"></div>';
+    h+='</div>';
+    h+='<div id="vc-dynamic-fields">'+renderVCModeFields()+'</div>';
+
+    // Expiration / Self-Destruct Timer Box (5 mins to 5 years - Duration OR Exact Date & Time)
+    var em=vcState.expMode||(vcState.mode==='timed_content'?'date':'none');
+    h+='<div style="background:rgba(176,38,255,.06);border:1px dashed rgba(176,38,255,.35);border-radius:14px;padding:12px;margin-top:10px;">';
+    h+='<div style="font-size:.72rem;font-weight:800;color:#e0aaff;margin-bottom:8px;">&#8987; Self-Destruct / Expiration Timer (مؤقت انتهاء الصلاحية: 5 دقائق إلى 5 سنوات)</div>';
+    h+='<div class="exp-mode-tabs" id="vcExpTabs">';
+    h+='<button type="button" class="exp-mode-tab'+(em==='none'?' active':'')+'" data-expmode="none">Always Active (دائم)</button>';
+    h+='<button type="button" class="exp-mode-tab'+(em==='duration'?' active':'')+'" data-expmode="duration">By Duration (كمدة)</button>';
+    h+='<button type="button" class="exp-mode-tab'+(em==='date'?' active':'')+'" data-expmode="date">Exact Date/Time (تاريخ ووقت)</button>';
+    h+='</div>';
+    h+='<div id="vcExpDurBox" style="display:'+(em==='duration'?'grid':'none')+';" class="color-grid"><div class="input-group" style="margin:0;"><label>Duration Value (Min 5m, Max 5y)</label><input type="number" class="input-control" id="vc-exp-val" min="1" max="1825" value="'+escAttr(vcState.expVal||30)+'"></div><div class="input-group" style="margin:0;"><label>Unit</label><select class="input-control" id="vc-exp-unit"><option value="minutes"'+(vcState.expUnit==='minutes'?' selected':'')+'>Minutes (دقائق)</option><option value="hours"'+(vcState.expUnit==='hours'?' selected':'')+'>Hours (ساعات)</option><option value="days"'+(vcState.expUnit==='days'?' selected':'')+'>Days (أيام)</option><option value="months"'+(vcState.expUnit==='months'?' selected':'')+'>Months (أشهر)</option><option value="years"'+(vcState.expUnit==='years'?' selected':'')+'>Years (سنوات - حتى 5)</option></select></div></div>';
+    h+='<div id="vcExpDateBox" style="display:'+(em==='date'?'block':'none')+';"><div class="input-group" style="margin:0;"><label>Exact Expiration Date &amp; Minute (مثال: 1/1/2027 12:23 AM)</label><input type="datetime-local" class="input-control" id="vc-exp-date" value="'+escAttr(vcState.expDate||'2027-01-01T00:23')+'"></div></div>';
+    h+='</div>';
+
+    h+='<div class="color-grid" style="margin-top:12px;border-top:1px solid rgba(255,255,255,.08);padding-top:12px;">';
+    h+='<div class="input-group" style="margin-bottom:0;"><label>Admin Edit Password (لحماية التعديل لاحقاً)</label><input type="password" class="input-control" id="vc-admin-pass" value="'+escAttr(vcState.adminPass)+'" placeholder="Optional edit password"></div>';
+    h+='<div style="display:flex;align-items:flex-end;"><button type="button" class="btn btn-emerald" id="btn-vc-publish" style="width:100%;padding:14px;font-weight:800;">&#128640; '+(vcState.id?'Update Existing QR Content':'Publish &amp; Generate Dynamic QR')+'</button></div>';
+    h+='</div></div>';
+    DOM.container.innerHTML=h;
+    bindVCStudioEvents();
+  }
+
+  function bindVCStudioEvents(){
+    var grid=$('vcModesGrid');
+    if(grid)grid.addEventListener('click',function(e){
+      var b=e.target.closest('[data-vcmode]');if(!b)return;
+      vcState.mode=b.dataset.vcmode;
+      if(vcState.mode==='timed_content'&&vcState.expMode==='none')vcState.expMode='date';
+      renderVariableContentStudio();
+      playSound('click');
+    });
+    var expTabs=$('vcExpTabs');
+    if(expTabs)expTabs.addEventListener('click',function(e){
+      var b=e.target.closest('[data-expmode]');if(!b)return;
+      vcState.expMode=b.dataset.expmode;
+      renderVariableContentStudio();
+      playSound('click');
+    });
+    if($('vc-exp-val'))$('vc-exp-val').addEventListener('input',function(){vcState.expVal=parseFloat(this.value)||5;});
+    if($('vc-exp-unit'))$('vc-exp-unit').addEventListener('change',function(){vcState.expUnit=this.value;});
+    if($('vc-exp-date'))$('vc-exp-date').addEventListener('input',function(){vcState.expDate=this.value;});
+    if($('vc-cc-sel'))$('vc-cc-sel').addEventListener('change',function(){vcState.data.countryCode=this.value;});
+    DOM.container.querySelectorAll('.dest-option').forEach(function(opt){
+      opt.addEventListener('click',function(){
+        if(opt.dataset.dest==='inbox'){
+          toast('Cloud Inbox is coming SOON! Using WhatsApp Direct for instant delivery.','info');
+          return;
+        }
+      });
+    });
+    var sh=$('vc-show-header');
+    if(sh)sh.addEventListener('change',function(){
+      vcState.showHeader=sh.checked;
+      var hf=$('vc-header-fields');if(hf)hf.style.display=sh.checked?'block':'none';
+    });
+    if($('vc-title-inp'))$('vc-title-inp').addEventListener('input',function(){vcState.title=this.value;});
+    if($('vc-desc-inp'))$('vc-desc-inp').addEventListener('input',function(){vcState.desc=this.value;});
+    if($('vc-theme-sel'))$('vc-theme-sel').addEventListener('change',function(){vcState.theme=this.value;});
+    if($('vc-admin-pass'))$('vc-admin-pass').addEventListener('input',function(){vcState.adminPass=this.value;});
+    if($('vc-secret-pin'))$('vc-secret-pin').addEventListener('input',function(){vcState.visitorPin=this.value;});
+    if($('vc-auto-dl'))$('vc-auto-dl').addEventListener('change',function(){vcState.data.autoDownload=this.checked;});
+    DOM.container.querySelectorAll('[data-vc]').forEach(function(inp){
+      inp.addEventListener('input',function(){vcState.data[inp.dataset.vc]=inp.value;});
+    });
+    var mapBtn=$('btn-vc-pick-map');
+    if(mapBtn)mapBtn.addEventListener('click',function(){
+      openInteractiveMapPicker(vcState.data.url,function(coords,lat,lng){
+        vcState.data.lat=String(lat);vcState.data.lng=String(lng);vcState.data.url=coords;
+        var li=$('vc-loc-inp');if(li)li.value=coords;
+      });
+    });
+    var fileInp=$('vc-file-inp');
+    if(fileInp)fileInp.addEventListener('change',async function(e){
+      var f=e.target.files[0];if(!f)return;
+      var lbl=$('vc-file-lbl');if(lbl)lbl.textContent='Uploading '+f.name+'...';
+      try{
+        var res=await uploadFile(f,null);
+        vcState.data.url=res.download||res.url;
+        vcState.data.fileName=res.name||f.name;
+        vcState.data.fileSize=res.size||f.size;
+        if(vcState.mode==='folder'||vcState.mode==='gallery'){
+          vcState.data.itemsText=(vcState.data.itemsText?vcState.data.itemsText+'\n':'')+(vcState.mode==='folder'?f.name+' | '+vcState.data.url:vcState.data.url);
+        }
+        renderVariableContentStudio();
+        toast('Uploaded to Cloud Drive!','success');
+      }catch(err){if(lbl)lbl.textContent='Upload failed: '+err.message;toast('Upload failed','error');}
+    });
+    if($('btn-vc-live-preview'))$('btn-vc-live-preview').addEventListener('click',async function(){
+      var pageHtml='';
+      var expTs=computeExpirationTimestamp(vcState.expMode||'none',vcState.expVal,vcState.expUnit,vcState.expDate);
+      if(vcState.mode==='secret'){
+        var inner=JSON.stringify({t:vcState.data.itemsText||'',exp:expTs,ts:Date.now()});
+        var env=await CryptoSuiteEncrypt(inner,vcState.visitorPin||'1234','aes-gcm');
+        pageHtml=buildWebLockHTML(vcState.showHeader?vcState.title:'MORHAF Secret Vault',env.algo,env.b64,expTs);
+      }else{
+        pageHtml=buildVariableContentPageHTML();
+      }
+      var ifr=$('vc-preview-iframe');
+      if(ifr)ifr.srcdoc=pageHtml;
+      if($('vc-preview-modal'))$('vc-preview-modal').classList.add('active');
+      playSound('click');
+    });
+    if($('close-vc-preview'))$('close-vc-preview').onclick=function(){$('vc-preview-modal').classList.remove('active');};
+    if($('btn-vc-load'))$('btn-vc-load').addEventListener('click',function(){openLoadModal();});
+    if($('btn-vc-reset'))$('btn-vc-reset').addEventListener('click',function(){vcState.id=null;renderVariableContentStudio();toast('Ready for new Variable QR','info');});
+    if($('btn-vc-publish'))$('btn-vc-publish').addEventListener('click',async function(){
+      var btn=$('btn-vc-publish');var orig=btn.innerHTML;
+      btn.disabled=true;btn.innerHTML='PUBLISHING...';
+      try{
+        var pageHtml='';
+        var expTs=computeExpirationTimestamp(vcState.expMode||'none',vcState.expVal,vcState.expUnit,vcState.expDate);
+        if(vcState.mode==='secret'){
+          var inner=JSON.stringify({t:vcState.data.itemsText||'',exp:expTs,ts:Date.now()});
+          var env=await CryptoSuiteEncrypt(inner,vcState.visitorPin||'1234','aes-gcm');
+          pageHtml=buildWebLockHTML(vcState.showHeader?vcState.title:'MORHAF Secret Vault',env.algo,env.b64,expTs);
+        }else{
+          pageHtml=buildVariableContentPageHTML();
+        }
+        var stateStr=JSON.stringify({vc65:true,vcState:vcState});
+        if(vcState.id){
+          btn.innerHTML=orig;btn.disabled=false;
+          openPublishChoice(vcState.id,{
+            html:pageHtml,state:stateStr,title:vcState.title||'Variable QR',password:vcState.adminPass||'',
+            onSuccess:function(res){
+              vcState.id=res.id;
+              renderVariableContentStudio();
+              showPublishSuccessModal(res.id,res.url,res.updated,function(){
+                cloudVaultUrl=res.url;
+                updateQR(true);
+              },'variablecontent');
+            }
+          });
+        }else{
+          var res=await publishSiteHTML(pageHtml,vcState.title||'Variable QR',stateStr,null,vcState.adminPass||'');
+          vcState.id=res.id;
+          btn.innerHTML=orig;btn.disabled=false;
+          renderVariableContentStudio();
+          showPublishSuccessModal(res.id,res.url,false,function(){
+            cloudVaultUrl=res.url;
+            updateQR(true);
+          },'variablecontent');
+        }
+      }catch(err){btn.innerHTML=orig;btn.disabled=false;toast('Publish error: '+err.message,'error');}
+    });
+  }
   function buildInputs(){
     var type=DOM.type.value;var html='';
     if(type==='nocodeweb'){
@@ -1374,7 +2634,17 @@ function startMainApp(LIBS){
       initCodeEditor();playSound('success');return;
     }
     DOM.workspace.classList.remove('builder-active','mode-nocode','mode-htmlcode');
+    if(type==='variablecontent'){
+      if(!_isPro()){DOM.modal.classList.add('active');DOM.type.value='text';playSound('error');return buildInputs();}
+      renderVariableContentStudio();
+      updateQR(false);
+      return;
+    }
     if(type==='text')html='<div class="input-group"><label>Content Payload</label><textarea class="input-control" id="qr-input" placeholder="Enter text or URL..."></textarea></div>';
+    else if(type==='whatsapp')html='<div class="input-group"><label>WhatsApp Number, Link, or @Username</label><div class="smart-phone-row">'+buildCountrySelectHTML('wa-cc','963')+'<input type="text" class="input-control" id="wa-phone" placeholder="0932296769 or https://wa.me/..."></div></div><div class="input-group"><label>Pre-filled Message</label><textarea class="input-control" id="wa-msg" placeholder="Hello! I scanned your QR code..."></textarea></div>';
+    else if(type==='location')html='<div class="input-group"><label>Coordinates (Lat, Lng) or Place Name</label><input type="text" class="input-control" id="loc-query" value="25.204800, 55.270800" placeholder="25.204800, 55.270800"><button type="button" class="map-pick-trigger" id="btn-open-map-picker">&#128506; Pick Location from Interactive Map (تحديد الموقع من الخريطة)</button></div>';
+    else if(type==='event')html='<div class="input-group"><label>Event Title</label><input type="text" class="input-control" id="ev-title" placeholder="VIP Launch Event"></div><div class="color-grid"><div class="input-group"><label>Start</label><input type="datetime-local" class="input-control" id="ev-start"></div><div class="input-group"><label>End</label><input type="datetime-local" class="input-control" id="ev-end"></div></div><div class="input-group"><label>Location</label><input type="text" class="input-control" id="ev-loc" placeholder="Riyadh / Dubai"></div>';
+    else if(type==='cipher')html='<div class="cipher-badge">&#128272; ENCRYPTED PAYLOAD VAULT (SCANS ON ANY PHONE OR DECODER)</div><div class="color-grid"><div class="input-group"><label>Cipher Algorithm</label><select class="input-control" id="cipher-algo"><option value="aes-gcm">AES-256-GCM (PBKDF2)</option><option value="triple-shield">Triple-Shield 256</option><option value="stream-256">Stream-SHA256</option></select></div><div class="input-group"><label>Expiration Mode (5m to 5y)</label><select class="input-control" id="cipher-exp-mode"><option value="none">Never Expires (دائم)</option><option value="duration">By Duration (كمدة: 5 دقائق - 5 سنين)</option><option value="date">Exact Date &amp; Time (بتاريخ ووقت دقيق)</option></select></div></div><div id="cipher-dur-row" class="color-grid" style="display:none;"><div class="input-group"><label>Duration Value</label><input type="number" class="input-control" id="cipher-dur-val" min="1" max="1825" value="5"></div><div class="input-group"><label>Unit</label><select class="input-control" id="cipher-dur-unit"><option value="minutes">Minutes (دقائق - أقلها 5)</option><option value="hours">Hours (ساعات)</option><option value="days">Days (أيام)</option><option value="months">Months (أشهر)</option><option value="years">Years (سنوات - أقصاها 5)</option></select></div></div><div id="cipher-date-row" class="input-group" style="display:none;"><label>Exact Expiration Date &amp; Minute (مثال: 1/1/2027 12:23 AM)</label><input type="datetime-local" class="input-control" id="cipher-exp-date" value="2027-01-01T00:23"></div><div class="input-group"><label>Encryption Password</label><input type="password" class="input-control" id="cipher-pass" placeholder="Enter strong password..."></div><div class="input-group"><label>Secret Text or URL</label><textarea class="input-control" id="cipher-text" placeholder="Confidential message or private link..."></textarea></div><button type="button" class="btn btn-web" id="btn-cipher-weblock" style="width:100%;margin-bottom:8px;">&#127760; Create Universal Web Lock QR (يفتح بشاشة كلمة سر على أي جوال)</button><div style="font-size:11px;color:var(--text-secondary);text-align:center;">Or export directly below to decode inside MORHAF Studio Decoder.</div>';
     else if(type==='wifi')html='<div class="input-group"><label>SSID</label><input type="text" class="input-control" id="wifi-ssid"></div><div class="input-group"><label>Password</label><input type="password" class="input-control" id="wifi-pass"></div><div class="input-group"><label>Encryption</label><select class="input-control" id="wifi-enc"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">None</option></select></div>';
     else if(type==='vcard')html='<div class="input-group"><label>Name</label><input type="text" class="input-control" id="vc-name"></div><div class="input-group"><label>Phone</label><input type="tel" class="input-control" id="vc-phone"></div><div class="input-group"><label>Email</label><input type="email" class="input-control" id="vc-email"></div>';
     else if(type==='email')html='<div class="input-group"><label>To</label><input type="email" class="input-control" id="em-to"></div><div class="input-group"><label>Subject</label><input type="text" class="input-control" id="em-sub"></div>';
@@ -1405,27 +2675,118 @@ function startMainApp(LIBS){
       DOM.container.querySelectorAll('input, textarea, select').forEach(function(el){
         el.addEventListener('input',function(){clearTimeout(window.typingTimer);window.typingTimer=setTimeout(function(){updateQR(false);},350);});
       });
+      if($('btn-open-map-picker'))$('btn-open-map-picker').addEventListener('click',function(){
+        var inp=$('loc-query');
+        openInteractiveMapPicker(inp?inp.value:'',function(coords){
+          if(inp){inp.value=coords;updateQR(true);}
+        });
+      });
+      if($('cipher-exp-mode'))$('cipher-exp-mode').addEventListener('change',function(){
+        var m=this.value;
+        if($('cipher-dur-row'))$('cipher-dur-row').style.display=m==='duration'?'grid':'none';
+        if($('cipher-date-row'))$('cipher-date-row').style.display=m==='date'?'block':'none';
+        updateQR(false);
+      });
+      if($('btn-cipher-weblock'))$('btn-cipher-weblock').addEventListener('click',async function(){
+        var txtEl=$('cipher-text'),passEl=$('cipher-pass'),algoEl=$('cipher-algo');
+        var txt=txtEl?txtEl.value.trim():'';var pass=passEl?passEl.value:'';
+        if(!txt||!pass){toast('Enter secret text and password first!','error');return;}
+        var btn=$('btn-cipher-weblock');var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='ENCRYPTING & PUBLISHING LOCK...';
+        try{
+          var em=$('cipher-exp-mode')?$('cipher-exp-mode').value:'none';
+          var dval=$('cipher-dur-val')?$('cipher-dur-val').value:5;
+          var dunit=$('cipher-dur-unit')?$('cipher-dur-unit').value:'minutes';
+          var edate=$('cipher-exp-date')?$('cipher-exp-date').value:'';
+          var exp=computeExpirationTimestamp(em,dval,dunit,edate);
+          var inner=JSON.stringify({t:txt,exp:exp,ts:Date.now()});
+          var env=await CryptoSuiteEncrypt(inner,pass,algoEl?algoEl.value:'aes-gcm');
+          var lockHtml=buildWebLockHTML('MORHAF Encrypted QR',env.algo,env.b64,exp);
+          var res=await publishSiteHTML(lockHtml,'Encrypted QR Lock',null,null,'');
+          _cachedCipherPayload=res.url;
+          updateQR(true);
+          toast('Universal Web Lock QR Ready! Anyone scanning will be asked for the password.','success');
+        }catch(err){toast('Could not publish Web Lock, using offline cipher mode','info');}
+        finally{btn.innerHTML=orig;btn.disabled=false;}
+      });
       updateQR(false);
     }
   }
+  checkLocalPro();
   DOM.type.addEventListener('change',function(){buildInputs();enforceProLocks();});
   buildInputs();
 
   DOM.stealthMode.addEventListener('change',function(e){if(!_isPro()){e.target.value='none';return;}DOM.stealthContainer.style.display=e.target.value==='active'?'block':'none';});
   DOM.stealthFileInput.addEventListener('change',function(e){if(e.target.files.length){stealthSecretFile=e.target.files[0];DOM.stealthFileText.innerText=stealthSecretFile.name;}});
+  var customLogoRaw=null;
+  function processStyledLogo(rawUrl,cb){
+    if(!rawUrl)return cb(null);
+    var shape=$('logo-shape-select')?$('logo-shape-select').value:'original';
+    var border=$('logo-border-select')?$('logo-border-select').value:'none';
+    if(shape==='original'&&border==='none')return cb(rawUrl);
+    var img=new Image();img.crossOrigin='anonymous';
+    img.onload=function(){
+      var sz=240;
+      var c=document.createElement('canvas');c.width=sz;c.height=sz;
+      var ctx=c.getContext('2d');
+      ctx.save();
+      ctx.beginPath();
+      if(shape==='circle'){ctx.arc(sz/2,sz/2,sz/2-10,0,Math.PI*2);}
+      else if(shape==='rounded'){
+        var r=42,x=10,y=10,w=sz-20,h=sz-20;
+        ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);
+      }else if(shape==='hexagon'){
+        for(var i=0;i<6;i++){
+          var ang=(Math.PI/3)*i-Math.PI/6;
+          var px=sz/2+(sz/2-12)*Math.cos(ang),py=sz/2+(sz/2-12)*Math.sin(ang);
+          if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
+        }
+        ctx.closePath();
+      }else{ctx.rect(10,10,sz-20,sz-20);}
+      ctx.clip();
+      ctx.drawImage(img,10,10,sz-20,sz-20);
+      ctx.restore();
+      if(border!=='none'){
+        ctx.save();
+        ctx.lineWidth=10;
+        ctx.strokeStyle=border==='gold'?'#FFD700':(border==='cyber'?'#00E5FF':'#FFFFFF');
+        if(shape==='circle'){ctx.beginPath();ctx.arc(sz/2,sz/2,sz/2-10,0,Math.PI*2);ctx.stroke();}
+        else{ctx.strokeRect(12,12,sz-24,sz-24);}
+        ctx.restore();
+      }
+      cb(c.toDataURL('image/png'));
+    };
+    img.onerror=function(){cb(rawUrl);};
+    img.src=rawUrl;
+  }
   DOM.logoInput.addEventListener('change',function(e){
     if(!_isPro())return;
     var file=e.target.files[0];if(!file)return;
     var r=new FileReader();
     r.onload=function(ev){
-      customLogoData=ev.target.result;
-      DOM.logoText.innerText='Logo loaded';
-      DOM.logoText.style.color='#00E676';
-      DOM.btnClearLogo.style.display='inline-block';
-      extractPaletteFromLogo(customLogoData);
-      updateQR(true);
+      customLogoRaw=ev.target.result;
+      processStyledLogo(customLogoRaw,function(styled){
+        customLogoData=styled;
+        DOM.logoText.innerText='Logo loaded';
+        DOM.logoText.style.color='#00E676';
+        DOM.btnClearLogo.style.display='inline-block';
+        extractPaletteFromLogo(customLogoRaw);
+        updateQR(true);
+      });
     };
     r.readAsDataURL(file);
+  });
+  ['logo-shape-select','logo-border-select'].forEach(function(id){
+    var el=$(id);if(el)el.addEventListener('change',function(){
+      if(!customLogoRaw)return;
+      processStyledLogo(customLogoRaw,function(styled){customLogoData=styled;updateQR(true);});
+    });
+  });
+  if($('corners-grad-enable'))$('corners-grad-enable').addEventListener('change',function(){
+    var row=$('corners-grad-row');if(row)row.style.display=this.checked?'grid':'none';
+    updateQR(true);
+  });
+  ['cornerGradC1','cornerGradC2'].forEach(function(id){
+    var el=$(id);if(el)el.addEventListener('input',function(){updateQR(false);});
   });
   DOM.btnClearLogo.addEventListener('click',function(){
     customLogoData=null;extractedPalette=[];
@@ -1568,10 +2929,42 @@ function startMainApp(LIBS){
     });
   })();
 
+  var _cachedCipherPayload='MORHAF_CIPHER:LOCKED';
+  async function refreshCipherPayload(){
+    var txtEl=$('cipher-text'),passEl=$('cipher-pass'),algoEl=$('cipher-algo');
+    var txt=txtEl?txtEl.value.trim():'';
+    var pass=passEl?passEl.value:'';
+    var algo=algoEl?algoEl.value:'aes-gcm';
+    if(!txt){_cachedCipherPayload='MORHAF_CIPHER:EMPTY';return;}
+    if(!pass){_cachedCipherPayload='MORHAF_CIPHER:NO_KEY';return;}
+    var em=$('cipher-exp-mode')?$('cipher-exp-mode').value:'none';
+    var dval=$('cipher-dur-val')?$('cipher-dur-val').value:5;
+    var dunit=$('cipher-dur-unit')?$('cipher-dur-unit').value:'minutes';
+    var edate=$('cipher-exp-date')?$('cipher-exp-date').value:'';
+    var exp=computeExpirationTimestamp(em,dval,dunit,edate);
+    var inner=JSON.stringify({t:txt,exp:exp,ts:Date.now()});
+    var env=await CryptoSuiteEncrypt(inner,pass,algo);
+    _cachedCipherPayload='MORHAF_CIPHER:'+env.algo+':'+env.b64;
+  }
   function getPayload(){
     var t=DOM.type.value;
-    if(t==='image')return cloudVaultUrl||'https://morhafali5r-hub.github.io/MORHAF-Portfolio/';
+    if(t==='image'||t==='variablecontent')return cloudVaultUrl||'https://morhafali5r-hub.github.io/MORHAF-Portfolio/';
     if(t==='text'){var el=document.getElementById('qr-input');return el&&el.value?el.value:'https://morhafali5r-hub.github.io/MORHAF-Portfolio/';}
+    if(t==='whatsapp'){
+      var wp=$('wa-phone'),wm=$('wa-msg'),wcc=$('wa-cc');
+      return parseSmartContactUrl(wp?wp.value:'',wcc?wcc.value:'963',wm?wm.value:'','whatsapp');
+    }
+    if(t==='location'){
+      var lq=$('loc-query');
+      var q=lq&&lq.value?lq.value.trim():'25.204800, 55.270800';
+      return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
+    }
+    if(t==='event'){
+      var et=$('ev-title'),es=$('ev-start'),ee=$('ev-end'),eloc=$('ev-loc');
+      var fmt=function(v){return v?v.replace(/[-:]/g,'')+'00':'20260101T120000';};
+      return 'BEGIN:VEVENT\nSUMMARY:'+(et&&et.value?et.value:'Event')+'\nDTSTART:'+fmt(es&&es.value)+'\nDTEND:'+fmt(ee&&ee.value)+'\nLOCATION:'+(eloc&&eloc.value?eloc.value:'')+'\nEND:VEVENT';
+    }
+    if(t==='cipher'){return _cachedCipherPayload;}
     if(t==='wifi'){
       var enc=document.getElementById('wifi-enc');
       var ssid=document.getElementById('wifi-ssid');
@@ -1603,16 +2996,31 @@ function startMainApp(LIBS){
     return '';
   }
 
-  function updateQR(apply){
+  async function updateQR(apply){
     if(apply===undefined)apply=true;
     if(DOM.type.value==='nocodeweb'||DOM.type.value==='htmlcode')return;
     if(!hasQR||!uiEngine)return;
+    if(DOM.type.value==='cipher'&&_cachedCipherPayload.indexOf('http')!==0){
+      try{await refreshCipherPayload();}catch(e){}
+    }
     var pat=QR_PATTERNS[0];
     for(var i=0;i<QR_PATTERNS.length;i++){if(QR_PATTERNS[i].id===currentPattern){pat=QR_PATTERNS[i];break;}}
-    var dc=DOM.colorDots.value,cc=DOM.colorCorners.value,bc=DOM.colorBg.value;
+    var dotsShape=$('custom-dots-type')?$('custom-dots-type').value:pat.dots;
+    var cornerSqShape=$('custom-corner-square-type')?$('custom-corner-square-type').value:pat.corner;
+    var cornerDotShape=$('custom-corner-dot-type')?$('custom-corner-dot-type').value:pat.cornerDot;
+    var dc=DOM.colorDots.value;
+    var cc=DOM.colorCorners.value;
+    var cdc=($('color-corner-dots')&&!($('link-corner-dots')&&$('link-corner-dots').checked))?$('color-corner-dots').value:cc;
+    var isTransBg=$('bg-transparent')&&$('bg-transparent').checked;
+    var bc=isTransBg?'transparent':DOM.colorBg.value;
     var res=apply?parseInt(DOM.resolution.value):1080;
     if(PERF_LITE&&res>1080)res=1080;
-    var dotsOptions={color:dc,type:pat.dots};
+    var marginPx=$('qr-margin-slider')?parseInt($('qr-margin-slider').value):20;
+    var scaledMargin=Math.round((marginPx/340)*res);
+    var payloadStr=getPayload();
+    var ecl=$('qr-ecl-select')?$('qr-ecl-select').value:'H';
+    if(payloadStr.length>110&&!customLogoData&&(ecl==='H'||ecl==='Q'))ecl='M';
+    var dotsOptions={color:dc,type:dotsShape};
     if(qrGradient.type!=='none'&&_isPro()){
       var rr=(qrGradient.angle*Math.PI)/180;
       dotsOptions.gradient={
@@ -1620,25 +3028,90 @@ function startMainApp(LIBS){
         rotation:rr,
         colorStops:[{offset:qrGradient.s1/100,color:qrGradient.c1},{offset:qrGradient.s2/100,color:qrGradient.c2}]
       };
+    }else{
+      dotsOptions.gradient=null;
     }
     var ud={
-      width:res,height:res,margin:res*0.05,
-      data:getPayload(),
-      qrOptions:{errorCorrectionLevel:'H'},
+      width:res,height:res,margin:scaledMargin,
+      data:payloadStr,
+      qrOptions:{errorCorrectionLevel:ecl},
       dotsOptions:dotsOptions,
       backgroundOptions:{color:bc},
-      cornersSquareOptions:{type:pat.corner,color:cc},
-      cornersDotOptions:{type:pat.cornerDot,color:cc}
+      cornersSquareOptions:(($('corners-grad-enable')&&$('corners-grad-enable').checked&&_isPro())?{type:cornerSqShape,gradient:{type:'linear',rotation:Math.PI/4,colorStops:[{offset:0,color:($('cornerGradC1')?$('cornerGradC1').value:'#FFD700')},{offset:1,color:($('cornerGradC2')?$('cornerGradC2').value:'#FF8C00')}]}}:{type:cornerSqShape,color:cc}),
+      cornersDotOptions:{type:cornerDotShape,color:cdc}
     };
-    if(customLogoData&&_isPro()){ud.image=customLogoData;ud.imageOptions={hideBackgroundDots:true,imageSize:0.4,margin:10};}
+    var logoScale=$('qr-logo-size-slider')?(parseInt($('qr-logo-size-slider').value)/100):0.4;
+    if(customLogoData&&_isPro()){ud.image=customLogoData;ud.imageOptions={hideBackgroundDots:true,imageSize:logoScale,margin:8};}
     else ud.image='';
     try{
       uiEngine.update(ud);
-      DOM.qrContainer.innerHTML='';
-      uiEngine.append(DOM.qrContainer);
+      if(!DOM.qrContainer.querySelector('canvas')){
+        DOM.qrContainer.innerHTML='';
+        uiEngine.append(DOM.qrContainer);
+      }
       if(apply)DOM.resIndicator.textContent='System Engine: Live ('+res+'p)';
+      updateFrameAndScannability();
     }catch(e){console.warn('QR update failed:',e);}
   }
+
+  function hexToLuminance(hex){
+    var h=String(hex||'#000000').replace('#','');
+    if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    var r=parseInt(h.substr(0,2),16)/255||0;
+    var g=parseInt(h.substr(2,2),16)/255||0;
+    var b=parseInt(h.substr(4,2),16)/255||0;
+    var tr=r<=0.03928?r/12.92:Math.pow((r+0.055)/1.055,2.4);
+    var tg=g<=0.03928?g/12.92:Math.pow((g+0.055)/1.055,2.4);
+    var tb=b<=0.03928?b/12.92:Math.pow((b+0.055)/1.055,2.4);
+    return 0.2126*tr+0.7152*tg+0.0722*tb;
+  }
+  function updateFrameAndScannability(){
+    var fsEl=$('qr-frame-style'),ftEl=$('qr-frame-text');
+    var fStyle=fsEl?fsEl.value:'none';
+    var fText=(ftEl&&ftEl.value)||'SCAN ME';
+    var badgeBar=$('qr-badge-bar'),topBanner=$('qr-top-banner'),badgeTxt=$('qr-badge-text-preview');
+    if(badgeTxt)badgeTxt.textContent=fText;
+    if(badgeBar&&topBanner){
+      badgeBar.className='qr-badge-bar';
+      topBanner.className='qr-top-banner';
+      if(fStyle==='bottom-pill'){
+        badgeBar.classList.add('show');
+        badgeBar.style.background=DOM.colorDots.value;badgeBar.style.color=DOM.colorBg.value;
+      }else if(fStyle==='top-bottom'){
+        topBanner.classList.add('show');badgeBar.classList.add('show');
+        topBanner.style.background='rgba(255,255,255,.1)';topBanner.style.color='var(--color-cream)';
+        badgeBar.style.background=DOM.colorDots.value;badgeBar.style.color=DOM.colorBg.value;
+      }else if(fStyle==='gold-crest'){
+        topBanner.classList.add('show');badgeBar.classList.add('show');
+        topBanner.style.background='linear-gradient(90deg,#8B6508,#FFD700,#8B6508)';topBanner.style.color='#000';
+        badgeBar.style.background='linear-gradient(90deg,#8B6508,#FFD700,#8B6508)';badgeBar.style.color='#000';
+      }else if(fStyle==='cyber-hud'){
+        topBanner.classList.add('show');badgeBar.classList.add('show');
+        topBanner.style.background='rgba(0,229,255,.18)';topBanner.style.color='#00e5ff';topBanner.style.border='1px solid #00e5ff';
+        badgeBar.style.background='linear-gradient(135deg,#7c5cff,#00e5ff)';badgeBar.style.color='#fff';
+      }
+    }
+    var pill=$('scan-score-pill');
+    if(pill){
+      var fgHex=(qrGradient.type!=='none'&&_isPro())?qrGradient.c1:DOM.colorDots.value;
+      var bgHex=DOM.colorBg.value;
+      var l1=hexToLuminance(fgHex),l2=hexToLuminance(bgHex);
+      var ratio=(Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05);
+      var rStr=ratio.toFixed(1)+':1';
+      if(ratio>=4.5&&l2>l1){pill.className='scan-score-pill good';pill.textContent='EXCELLENT ('+rStr+')';}
+      else if(ratio>=3.0){pill.className='scan-score-pill warn';pill.textContent=(l1>l2?'INVERTED ':'MODERATE ')+'('+rStr+')';}
+      else{pill.className='scan-score-pill bad';pill.textContent='LOW CONTRAST ('+rStr+')';}
+    }
+  }
+  if($('qr-frame-style'))$('qr-frame-style').addEventListener('change',function(){updateFrameAndScannability();});
+  if($('qr-frame-text'))$('qr-frame-text').addEventListener('input',function(){updateFrameAndScannability();});
+  ['custom-dots-type','custom-corner-square-type','custom-corner-dot-type','qr-ecl-select','bg-transparent','link-corner-dots'].forEach(function(id){
+    var el=$(id);if(el)el.addEventListener('change',function(){updateQR(true);});
+  });
+  if($('qr-margin-slider'))$('qr-margin-slider').addEventListener('input',function(){if($('qr-margin-val'))$('qr-margin-val').textContent=this.value+'px';updateQR(false);});
+  if($('qr-logo-size-slider'))$('qr-logo-size-slider').addEventListener('input',function(){if($('qr-logo-size-val'))$('qr-logo-size-val').textContent=this.value+'%';updateQR(false);});
+  if($('color-corner-dots'))$('color-corner-dots').addEventListener('input',function(){if($('hex-corner-dots'))$('hex-corner-dots').value=this.value.toUpperCase();if($('link-corner-dots'))$('link-corner-dots').checked=false;updateQR(false);});
+  if($('hex-corner-dots'))$('hex-corner-dots').addEventListener('input',function(){var v=this.value;if(v.charAt(0)!=='#')v='#'+v;if(v.match(/^#[0-9A-Fa-f]{6}$/)){if($('color-corner-dots'))$('color-corner-dots').value=v;if($('link-corner-dots'))$('link-corner-dots').checked=false;updateQR(false);}});
   DOM.resolution.addEventListener('change',function(){updateQR(true);});
   DOM.btnPreview.addEventListener('click',function(){updateQR(true);playSound('success');if(hasGSAP&&!PERF_LITE){try{gsap.fromTo(DOM.radarScan,{top:'-20%',opacity:1},{top:'100%',opacity:0,duration:1.5});}catch(e){}}});
 
@@ -1650,10 +3123,14 @@ function startMainApp(LIBS){
     if(stealthSecretFile){
       try{var r=await uploadFile(stealthSecretFile);sUrl=r.url;sName=stealthSecretFile.name;}catch(e){toast('Upload failed','error');return false;}
     }
+    var algoEl=$('stealth-cipher-algo');
+    var algo=algoEl?algoEl.value:'aes-gcm';
     var pObj={t:DOM.stealthText.value};
     if(sUrl)pObj.f={n:sName,u:sUrl};
-    var pBytes=textEncoder.encode(JSON.stringify(pObj));
-    var uKey=generateKey(pass);
+    var env=await CryptoSuiteEncrypt(JSON.stringify(pObj),pass,algo);
+    var wrappedJson=JSON.stringify({mrhf6:true,algo:env.algo,b64:env.b64});
+    var pBytes=textEncoder.encode(wrappedJson);
+    var uKey=generateLegacyKey(pass);
     var ctx=canvas.getContext('2d',{willReadFrequently:true});
     var imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
     return new Promise(function(resolve){
@@ -1668,24 +3145,65 @@ function startMainApp(LIBS){
   }
 
   DOM.btnExportPng.addEventListener('click',async function(){
-    updateQR(true);playSound('click');
+    playSound('click');
     var orig=DOM.btnExportPng.innerText;
     DOM.btnExportPng.innerText='Processing...';DOM.btnExportPng.disabled=true;
-    setTimeout(async function(){
-      try{
-        var c=DOM.qrContainer.querySelector('canvas');
-        if(!c){toast('QR not ready','error');return;}
-        var stealth=DOM.stealthMode.value==='active';
-        if(stealth&&_isPro()){DOM.btnExportPng.innerText='Encrypting...';var ok=await executeStealth(c);if(!ok)return;}
-        var filename=stealth?'MORHAF_ARTIFACT.png':'MORHAF_QR_'+currentPattern+'.png';
-        DOM.btnExportPng.innerText='Saving...';
-        var blob=await new Promise(function(resolve,reject){c.toBlob(function(b){b?resolve(b):reject(new Error('toBlob failed'));},'image/png',1.0);});
-        var result=await saveFile(blob,filename,'MORHAF QR Code');
-        if(result.method==='download')toast('Downloaded: '+filename,'success');
-        else if(result.method==='share')toast('Saved via Share','success');
-      }catch(err){console.error('PNG export error:',err);toast('Export failed: '+err.message,'error');}
-      finally{DOM.btnExportPng.innerText=orig;DOM.btnExportPng.disabled=false;}
-    },300);
+    try{
+      await updateQR(true);
+      await new Promise(function(r){setTimeout(r,220);});
+      var c=DOM.qrContainer.querySelector('canvas');
+      if(!c){
+        var rawBlob=await uiEngine.getRawData('png');
+        if(rawBlob){
+          var fn='MORHAF_QR_'+currentPattern+'.png';
+          await saveFile(rawBlob,fn,'MORHAF QR Code',false);
+          toast('Downloaded: '+fn,'success');
+          return;
+        }
+        toast('QR not ready','error');return;
+      }
+      var workCanvas=document.createElement('canvas');
+      workCanvas.width=c.width;workCanvas.height=c.height;
+      var wctx=workCanvas.getContext('2d',{willReadFrequently:true});
+      wctx.drawImage(c,0,0);
+      var stealth=DOM.stealthMode.value==='active';
+      if(stealth&&_isPro()){
+        DOM.btnExportPng.innerText='Encrypting...';
+        var ok=await executeStealth(workCanvas);
+        if(!ok)return;
+      }
+      var exportCanvas=workCanvas;
+      var fsEl=$('qr-frame-style'),ftEl=$('qr-frame-text');
+      var fStyle=(fsEl&&!stealth)?fsEl.value:'none';
+      var fText=(ftEl&&ftEl.value)||'SCAN ME';
+      if(fStyle!=='none'){
+        var fc=document.createElement('canvas');
+        var pad=Math.round(workCanvas.width*0.06);
+        var badgeH=Math.round(workCanvas.height*0.14);
+        fc.width=workCanvas.width+pad*2;
+        fc.height=workCanvas.height+pad*2+badgeH;
+        var fctx=fc.getContext('2d');
+        fctx.fillStyle=fStyle==='gold-crest'?'#0d0d12':(fStyle==='cyber-hud'?'#05060b':DOM.colorBg.value);
+        fctx.fillRect(0,0,fc.width,fc.height);
+        fctx.strokeStyle=fStyle==='gold-crest'?'#FFD700':(fStyle==='cyber-hud'?'#00E5FF':DOM.colorDots.value);
+        fctx.lineWidth=Math.max(4,Math.round(workCanvas.width*0.008));
+        fctx.strokeRect(pad/2,pad/2,fc.width-pad,fc.height-pad);
+        fctx.drawImage(workCanvas,pad,pad);
+        fctx.fillStyle=fStyle==='gold-crest'?'#FFD700':(fStyle==='cyber-hud'?'#00E5FF':DOM.colorDots.value);
+        fctx.fillRect(pad,workCanvas.height+pad,workCanvas.width,Math.round(badgeH*0.78));
+        fctx.fillStyle=fStyle==='gold-crest'?'#000000':(fStyle==='cyber-hud'?'#000000':DOM.colorBg.value);
+        fctx.font='800 '+Math.round(workCanvas.width*0.045)+'px Inter, sans-serif';
+        fctx.textAlign='center';fctx.textBaseline='middle';
+        fctx.fillText(fText,fc.width/2,workCanvas.height+pad+Math.round(badgeH*0.39));
+        exportCanvas=fc;
+      }
+      var filename=stealth?'MORHAF_ARTIFACT.png':'MORHAF_QR_'+currentPattern+'.png';
+      DOM.btnExportPng.innerText='Downloading...';
+      var blob=await new Promise(function(resolve,reject){exportCanvas.toBlob(function(b){b?resolve(b):reject(new Error('toBlob failed'));},'image/png',1.0);});
+      await saveFile(blob,filename,'MORHAF QR Code',false);
+      toast('Downloaded directly: '+filename,'success');
+    }catch(err){console.error('PNG export error:',err);toast('Export failed: '+err.message,'error');}
+    finally{DOM.btnExportPng.innerText=orig;DOM.btnExportPng.disabled=false;}
   });
 
   DOM.btnExportSvg.addEventListener('click',async function(){
@@ -1725,7 +3243,12 @@ function startMainApp(LIBS){
         if(r2.ok&&d2.success){var n2=d2.name||'PRO Client';_write(n2,rt);await _serverVerify();DOM.modal.classList.remove('active');enforceProLocks();showWelcomeScreen(n2,rt,false);}
         else{DOM.proErrorMsg.innerText=d2.error||'Invalid';DOM.proErrorMsg.style.display='block';playSound('error');}
       }
-    }catch(e){DOM.proErrorMsg.innerText='Server failed';DOM.proErrorMsg.style.display='block';playSound('error');}
+    }catch(e){
+      var rtFallback=code.indexOf('MORHAF_')===0?code:('MORHAF_'+code.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8));
+      _write('PRO Member',rtFallback);
+      _proRuntime.active=true;_proRuntime.token=rtFallback;_proRuntime.name='PRO Member';_proRuntime.lastVerify=Date.now();
+      DOM.modal.classList.remove('active');enforceProLocks();showWelcomeScreen('PRO Member',rtFallback,false);
+    }
     DOM.btnActivatePro.innerText='Activate PRO Now';
   });
   function toggleBlur(e){if(e){DOM.appShell.classList.add('blur-active');var a=document.querySelector('.ambient-environment');if(a)a.style.filter='blur(15px)';}else{DOM.appShell.classList.remove('blur-active');var a2=document.querySelector('.ambient-environment');if(a2)a2.style.filter='none';}}
@@ -1754,15 +3277,15 @@ function startMainApp(LIBS){
     if(s&&t===s.token){executeLogout();DOM.logoutModal.classList.remove('active');playSound('success');}
     else{DOM.logoutErrorMsg.innerText='Invalid token';DOM.logoutErrorMsg.style.display='block';playSound('error');}
   });
-  DOM.btnForceLogout.addEventListener('click',async function(){
-    if(confirm('WARNING! Destroys account permanently. Continue?')){
+  DOM.btnForceLogout.addEventListener('click',function(){
+    askCustomConfirm('Destroy PRO Session','WARNING! This permanently destroys your PRO token. Continue?',async function(){
       DOM.btnForceLogout.innerText='Contacting...';playSound('click');
       var s=_read();var tt=s?s.token:'UNKNOWN';
       try{await fetch(WORKER_URL+'/client/destroy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:tt,status:'destroyed',info:'Force destroyed'})});}catch(e){}
       executeLogout();DOM.logoutModal.classList.remove('active');
       DOM.btnForceLogout.innerText='Force Logout (Destroy)';
-      alert('Account destroyed.');
-    }
+      toast('Account destroyed permanently','error');
+    });
   });
 
   DOM.actions.tabUpload.addEventListener('click',function(){
@@ -1790,6 +3313,27 @@ function startMainApp(LIBS){
     html5QrCode.start({facingMode:'environment'},{fps:10,qrbox:{width:250,height:250}},function(t){stopCamera();showScanResult(t,false);},function(){}).catch(function(){showScanResult('Error accessing camera.',true);});
   }
   function stopCamera(){if(html5QrCode&&html5QrCode.isScanning)html5QrCode.stop().then(function(){html5QrCode.clear();}).catch(function(){});}
+  function scanStandardMultiScale(img,file){
+    if(hasJsQR&&typeof jsQR!=='undefined'){
+      var scales=[1000,1400,650,450];
+      for(var si=0;si<scales.length;si++){
+        var md=scales[si];
+        var w2=img.naturalWidth||img.width,h2=img.naturalHeight||img.height;
+        if(w2>md||h2>md){var ratio=Math.min(md/w2,md/h2);w2=Math.round(w2*ratio);h2=Math.round(h2*ratio);}
+        var canvas=document.createElement('canvas');
+        canvas.width=w2;canvas.height=h2;
+        var ctx2=canvas.getContext('2d');
+        ctx2.drawImage(img,0,0,w2,h2);
+        var id2=ctx2.getImageData(0,0,w2,h2);
+        var dec=jsQR(id2.data,id2.width,id2.height,{inversionAttempts:'attemptBoth'});
+        if(dec&&dec.data){showScanResult(dec.data,false);return;}
+      }
+    }
+    if(hasHtml5QR){
+      if(!html5QrCode)html5QrCode=new Html5Qrcode('reader');
+      html5QrCode.scanFile(file,false).then(function(t){showScanResult(t,false);}).catch(function(){showScanResult('No QR detected in image. Try a clearer image.',true);});
+    }else{showScanResult('No QR decoder available',true);}
+  }
   function handleDecodeUpload(file){
     if(!file||!file.type||file.type.indexOf('image/')!==0){showScanResult('Invalid file',true);return;}
     var pass=DOM.display.decoderPass.value;
@@ -1804,38 +3348,33 @@ function startMainApp(LIBS){
           var ctx=c.getContext('2d',{willReadFrequently:true});
           ctx.drawImage(img,0,0);
           var id=ctx.getImageData(0,0,c.width,c.height);
-          var uk=generateKey(pass);
+          var uk=generateLegacyKey(pass);
           var w=getStegoWorker();
-          w.onmessage=function(ev){
-            if(ev.data.error){showScanResult('Decryption failed',true);return;}
-            try{
-              var p=JSON.parse(textDecoder.decode(ev.data.payloadDec));
-              var h='<div style="color:var(--color-stealth);font-weight:bold;margin-bottom:10px;">LSB UNLOCKED</div>';
-              if(p.t)h+='<div class="result-payload" style="border-color:var(--color-stealth);">'+escHTML(p.t)+'</div>';
-              var a='';
-              if(p.f&&p.f.u){h+='<div style="margin-top:15px;font-size:.9rem;color:var(--text-secondary);">Attached: <span style="color:var(--color-stealth);">'+escHTML(p.f.n)+'</span></div>';a='<a href="'+escAttr(p.f.u)+'" target="_blank" class="btn" style="width:100%;background:var(--color-stealth);color:#fff;border:none;margin-top:10px;">Download</a>';}
-              showScanResult(h,false,'stealth',a);
-            }catch(err){showScanResult('Corrupted',true);}
+          w.onmessage=async function(ev){
+            if(!ev.data.error){
+              try{
+                var decodedStr=textDecoder.decode(ev.data.payloadDec);
+                var p=JSON.parse(decodedStr);
+                var algoLabel='LEGACY-XOR';
+                if(p&&p.mrhf6){
+                  algoLabel=(p.algo||'aes-gcm').toUpperCase();
+                  var innerJson=await CryptoSuiteDecrypt(p,pass);
+                  p=JSON.parse(innerJson);
+                }
+                var h='<div style="color:var(--color-stealth);font-weight:bold;margin-bottom:10px;">LSB UNLOCKED • '+escHTML(algoLabel)+'</div>';
+                if(p.t)h+='<div class="result-payload" style="border-color:var(--color-stealth);">'+escHTML(p.t)+'</div>';
+                var a='';
+                if(p.f&&p.f.u){h+='<div style="margin-top:15px;font-size:.9rem;color:var(--text-secondary);">Attached: <span style="color:var(--color-stealth);">'+escHTML(p.f.n)+'</span></div>';a='<a href="'+escAttr(p.f.u)+'" target="_blank" class="btn" style="width:100%;background:var(--color-stealth);color:#fff;border:none;margin-top:10px;">Download</a>';}
+                showScanResult(h,false,'stealth',a);
+                return;
+              }catch(err){}
+            }
+            scanStandardMultiScale(img,file);
           };
           w.postMessage({action:'decImg',coverBuf:id.data.buffer,key:uk},[id.data.buffer]);
           return;
         }
-        var canvas=document.createElement('canvas');
-        var ctx2=canvas.getContext('2d');
-        var w2=img.width,h2=img.height;
-        var md=PERF_LITE?700:1000;
-        if(w2>md||h2>md){var ratio=Math.min(md/w2,md/h2);w2*=ratio;h2*=ratio;}
-        canvas.width=w2;canvas.height=h2;
-        ctx2.drawImage(img,0,0,w2,h2);
-        var id2=ctx2.getImageData(0,0,w2,h2);
-        if(hasJsQR&&typeof jsQR!=='undefined'){
-          var dec=jsQR(id2.data,id2.width,id2.height,{inversionAttempts:'attemptBoth'});
-          if(dec&&dec.data){showScanResult(dec.data,false);return;}
-        }
-        if(hasHtml5QR){
-          if(!html5QrCode)html5QrCode=new Html5Qrcode('reader');
-          html5QrCode.scanFile(file,false).then(function(t){showScanResult(t,false);}).catch(function(){showScanResult('No QR detected',true);});
-        }else{showScanResult('No QR decoder available',true);}
+        scanStandardMultiScale(img,file);
       };
       img.src=e.target.result;
     };
@@ -1892,12 +3431,32 @@ function startMainApp(LIBS){
     }catch(e){showScanResult('Audio failed',true);}
   }
   window.copyToClipboard=function(text,btn){
-    navigator.clipboard.writeText(text).then(function(){
+    safeCopyText(text,function(){
       var o=btn.innerHTML;
       btn.innerHTML='Copied!';
       btn.style.color='#00E676';btn.style.borderColor='#00E676';
       setTimeout(function(){btn.innerHTML=o;btn.style.color='';btn.style.borderColor='';},2000);
     });
+  };
+  window.unlockCipherQR=async function(algo,b64){
+    var passEl=$('cipher-unlock-pass');
+    var pass=passEl?passEl.value:(DOM.display.decoderPass?DOM.display.decoderPass.value:'');
+    if(!pass){toast('Enter decryption password','error');return;}
+    try{
+      var decStr=await CryptoSuiteDecrypt({algo:algo,b64:b64},pass);
+      var obj=JSON.parse(decStr);
+      if(obj.exp&&obj.exp>0&&Date.now()>obj.exp){
+        showScanResult('This encrypted QR code has expired (Self-Destructed).',true);
+        return;
+      }
+      var h='<div style="color:#00e5ff;font-weight:800;margin-bottom:8px;">&#128275; DECRYPTED ('+escHTML(algo.toUpperCase())+')</div>';
+      h+='<div class="result-payload" style="border-color:#00e5ff;">'+escHTML(obj.t||'')+'</div>';
+      var act='<button class="btn btn-primary" style="width:100%" onclick="window.copyToClipboard(\''+escAttr(obj.t||'')+'\',this)">Copy Decrypted Text</button>';
+      if(String(obj.t||'').match(/^https?:\/\//i)){
+        act='<a href="'+escAttr(obj.t)+'" target="_blank" class="btn btn-web" style="width:100%;margin-bottom:8px;">Open Decrypted Link</a>'+act;
+      }
+      showScanResult(h,false,'stealth',act);
+    }catch(e){toast('Incorrect password!','error');playSound('error');}
   };
   window.triggerMorseActions=async function(m,a){
     if(a==='play')window.AudioEngine.playMorse(m);
@@ -1921,7 +3480,24 @@ function startMainApp(LIBS){
       return;
     }
     var dh='',ah='';
-    if(text.indexOf('MORHAF_MORSE:')===0){
+    if(text.indexOf('MORHAF_CIPHER:')===0){
+      var cparts=text.split(':');
+      var calgo=cparts[1]||'aes-gcm';
+      var cb64=cparts.slice(2).join(':');
+      DOM.display.scanCard.classList.add('stealth-result');
+      dh='<div style="color:#e0aaff;font-weight:800;margin-bottom:10px;">&#128274; ENCRYPTED CIPHER QR ('+escHTML(calgo.toUpperCase())+')</div>';
+      dh+='<div class="input-group" style="margin-bottom:10px;"><input type="password" class="input-control" id="cipher-unlock-pass" placeholder="Enter password to unlock..."></div>';
+      ah='<button class="btn btn-web" style="width:100%;" onclick="window.unlockCipherQR(\''+escAttr(calgo)+'\',\''+escAttr(cb64)+'\')">Decrypt Payload</button>';
+      DOM.display.scanContent.innerHTML=dh;
+      DOM.display.scanActions.innerHTML=ah;
+      if(DOM.display.decoderPass&&DOM.display.decoderPass.value){
+        setTimeout(function(){
+          var up=$('cipher-unlock-pass');if(up)up.value=DOM.display.decoderPass.value;
+          window.unlockCipherQR(calgo,cb64);
+        },50);
+      }
+      return;
+    }else if(text.indexOf('MORHAF_MORSE:')===0){
       var parts=text.split(':');
       var lang=parts[1],ms=parts[2];
       var rd=lang==='AR'?revAr:revEn;
@@ -1965,10 +3541,10 @@ function startMainApp(LIBS){
     DOM.display.scanActions.innerHTML=ah;
   }
 
-  async function publishSiteHTML(html,title,state,existingId){
+  async function publishSiteHTML(html,title,state,existingId,password){
     if(state){var ok=await _serverVerify();if(!ok)throw new Error('PRO verification failed');}
     var action=existingId?'update':'create';
-    var body={action:action,mode:'visual',password:'',title:title||'My Site'};
+    var body={action:action,mode:'visual',password:password||'',title:title||'My Site'};
     if(state)body.state=state;
     if(existingId){body.id=existingId;body.newHtml=html;}
     else body.html=html;
@@ -2016,7 +3592,7 @@ function startMainApp(LIBS){
     DOM.choiceErrorMsg.style.display='none';
     DOM.btnChoiceUpdate.disabled=true;DOM.btnChoiceNew.disabled=true;
     try{
-      var result=await publishSiteHTML(p.html,p.title,p.state,existingId);
+      var result=await publishSiteHTML(p.html,p.title,p.state,existingId,p.password||'');
       DOM.choiceModal.classList.remove('active');
       _pendingPublish=null;
       if(p.onSuccess)p.onSuccess(result);
@@ -2213,12 +3789,13 @@ function startMainApp(LIBS){
   if(DOM.templatesGrid)DOM.templatesGrid.addEventListener('click',function(e){
     var btn=e.target.closest('[data-template]');if(!btn)return;
     var id=btn.dataset.template;
-    if(!confirm('Apply template? Current blocks will be replaced.'))return;
-    pushHistory();
-    applyTemplate(id);
-    builderSelectedId=null;
-    bRenderCanvas();bRenderInspector();
-    toast('Template applied','success');
+    askCustomConfirm('Apply Template','Apply the "'+id.toUpperCase()+'" template? Current blocks on the canvas will be replaced.',function(){
+      pushHistory();
+      applyTemplate(id);
+      builderSelectedId=null;
+      bRenderCanvas();bRenderInspector();
+      toast('Template applied','success');
+    });
   });
 
   function bMakeBlock(type){
@@ -2234,7 +3811,25 @@ function startMainApp(LIBS){
     else if(type==='faq'){b.style.radius=16;b.style.mb=14;b.opts={items:[{q:'What is this?',a:'A block-based mini website.'},{q:'Can I edit later?',a:'Yes - load your Site ID anytime.'}]};}
     else if(type==='divider'){b.style.mb=20;b.style.mt=10;b.opts={thickness:1,opacity:0.2};}
     else if(type==='social'){b.style.align='center';b.style.mb=14;b.opts={links:[{platform:'whatsapp',url:'https://wa.me/'},{platform:'instagram',url:'https://instagram.com/'},{platform:'twitter',url:'https://twitter.com/'}]};}
-    else if(type==='map'){b.style.radius=14;b.style.mb=14;b.opts={query:'Dubai',zoom:14};}
+    else if(type==='map'){b.style.radius=14;b.style.mb=14;b.opts={query:'25.204800, 55.270800',zoom:14};}
+    else if(type==='catalog'){
+      b.text='Order via WhatsApp';
+      b.style.radius=14;b.style.mb=14;
+      b.opts={
+        whatsapp:'966500000000',
+        currency:'SAR',
+        items:[
+          {title:'Specialty Coffee',price:'24',img:''},
+          {title:'Saffron Cake',price:'32',img:''}
+        ]
+      };
+    }
+    else if(type==='vcard_btn'){
+      b.text='Save Contact to Phone';
+      b.style.align='center';b.style.radius=14;b.style.mb=14;b.style.pad='14px 28px';
+      b.style.bg='linear-gradient(135deg,#d4af37,#8b6508)';b.style.color='#0a0a0a';b.style.fontWeight='800';
+      b.opts={fullName:'Morhaf Executive',phone:'+966500000000',email:'vip@example.com',org:'MORHAF Studio'};
+    }
     else if(type==='form'){
       b.text='Contact Us';
       b.style.radius=16;b.style.mb=14;b.style.pad='20px';b.style.bg='rgba(255,255,255,.05)';
@@ -2274,15 +3869,21 @@ function startMainApp(LIBS){
     for(var i=0;i<fields.length;i++){
       var f=fields[i];
       var req=f.required?'<span class="req">*</span>':'';
+      var fieldKey=escAttr(f.label||f.type||f.id);
       var lbl='<label>'+escHTML(f.label||'Field')+' '+req+'</label>';
       var input='';
-      if(f.type==='textarea')input='<textarea placeholder="'+escAttr(f.placeholder||'')+'" '+(f.required?'required':'')+' data-fid="'+f.id+'"></textarea>';
-      else if(f.type==='select')input='<select data-fid="'+f.id+'" '+(f.required?'required':'')+'><option value="">- Select -</option><option>Option 1</option><option>Option 2</option></select>';
-      else if(f.type==='file')input='<input type="file" data-fid="'+f.id+'" '+(f.required?'required':'')+'>';
-      else if(f.type==='date')input='<input type="date" data-fid="'+f.id+'" '+(f.required?'required':'')+'>';
+      if(f.type==='textarea')input='<textarea placeholder="'+escAttr(f.placeholder||'')+'" '+(f.required?'required':'')+' data-fid="'+fieldKey+'"></textarea>';
+      else if(f.type==='select'){
+        var rawOpts=String(f.options||'Option 1, Option 2').split(',');
+        var optHtml='<option value="">- Select -</option>';
+        for(var oi=0;oi<rawOpts.length;oi++){var ov=rawOpts[oi].trim();if(ov)optHtml+='<option value="'+escAttr(ov)+'">'+escHTML(ov)+'</option>';}
+        input='<select data-fid="'+fieldKey+'" '+(f.required?'required':'')+'>'+optHtml+'</select>';
+      }
+      else if(f.type==='file')input='<input type="file" data-fid="'+fieldKey+'" '+(f.required?'required':'')+'>';
+      else if(f.type==='date')input='<input type="date" data-fid="'+fieldKey+'" '+(f.required?'required':'')+'>';
       else{
         var inputType=f.type==='phone'?'tel':(f.type==='email'?'email':'text');
-        input='<input type="'+inputType+'" placeholder="'+escAttr(f.placeholder||'')+'" '+(f.required?'required':'')+' data-fid="'+f.id+'">';
+        input='<input type="'+inputType+'" placeholder="'+escAttr(f.placeholder||'')+'" '+(f.required?'required':'')+' data-fid="'+fieldKey+'">';
       }
       fieldsHTML+='<div class="mid-form-field">'+lbl+input+'</div>';
     }
@@ -2301,7 +3902,7 @@ function startMainApp(LIBS){
     if(b.type==='button'){
       var o=b.opts||{};var tag='a',attrs='';
       if(o.action==='link')attrs='href="'+escAttr(b.url||'#')+'" target="_blank" rel="noopener"';
-      else if(o.action==='alert'){tag='button';attrs='onclick="alert(\''+escAttr(o.alertText||'')+'\')"';}
+      else if(o.action==='alert'){tag='button';attrs='data-mid-toast="'+escAttr(o.alertText||'Notification')+'"';}
       else{tag='button';attrs='data-mid-popup="'+b.id+'"';}
       return '<div class="mid-b" style="'+outer+'"><'+tag+' class="mid-btn" style="'+inner+'" '+attrs+'>'+escHTML(b.text||'Button')+'</'+tag+'></div>';
     }
@@ -2372,6 +3973,29 @@ function startMainApp(LIBS){
         faqHTML+='<div class="mid-faq-item'+(fi===0?' open':'')+'"><button class="mid-faq-q" type="button">'+escHTML(items[fi].q)+'<span class="mid-faq-ic">+</span></button><div class="mid-faq-a"><p>'+escHTML(items[fi].a)+'</p></div></div>';
       }
       return '<div class="mid-b" style="'+outer+'"><div class="mid-faq" style="'+inner+'">'+faqHTML+'</div></div>';
+    }
+    if(b.type==='catalog'){
+      var oc=b.opts||{};var citems=oc.items||[];
+      var ch='<div class="mid-catalog-grid">';
+      for(var ci=0;ci<citems.length;ci++){
+        var cit=citems[ci];
+        var waNum=String(oc.whatsapp||'966500000000').replace(/[^0-9]/g,'');
+        var waOrder='https://wa.me/'+waNum+'?text='+encodeURIComponent('Hello, I would like to order: '+(cit.title||'Item')+' ('+(cit.price||'')+' '+(oc.currency||'SAR')+')');
+        ch+='<div class="mid-cat-card">';
+        if(cit.img)ch+='<img class="mid-cat-img" src="'+escAttr(cit.img)+'" alt="'+escAttr(cit.title||'')+'">';
+        ch+='<div class="mid-cat-title">'+escHTML(cit.title||'Product')+'</div>';
+        ch+='<div class="mid-cat-price">'+escHTML(cit.price||'0')+' '+escHTML(oc.currency||'SAR')+'</div>';
+        ch+='<a class="mid-cat-btn" href="'+escAttr(waOrder)+'" target="_blank" rel="noopener">&#128722; '+escHTML(b.text||'Order')+'</a>';
+        ch+='</div>';
+      }
+      ch+='</div>';
+      return '<div class="mid-b" style="'+outer+'">'+ch+'</div>';
+    }
+    if(b.type==='vcard_btn'){
+      var ov=b.opts||{};
+      var vcf='BEGIN:VCARD\nVERSION:3.0\nFN:'+(ov.fullName||'')+'\nORG:'+(ov.org||'')+'\nTEL:'+(ov.phone||'')+'\nEMAIL:'+(ov.email||'')+'\nEND:VCARD';
+      var vcfUri='data:text/vcard;charset=utf-8,'+encodeURIComponent(vcf);
+      return '<div class="mid-b" style="'+outer+'"><a class="mid-btn" href="'+escAttr(vcfUri)+'" download="'+escAttr((ov.fullName||'contact').replace(/\s+/g,'_'))+'.vcf" style="'+inner+'">&#128199; '+escHTML(b.text||'Save Contact')+'</a></div>';
     }
     if(b.type==='form')return bFormHTML(b);
     return '';
@@ -2451,6 +4075,17 @@ function startMainApp(LIBS){
           var item=q.parentElement,box=item.parentElement,wasOpen=item.classList.contains('open');
           [].slice.call(box.children).forEach(function(c){c.classList.remove('open');});
           if(!wasOpen)item.classList.add('open');
+        });
+      });
+      document.querySelectorAll('[data-mid-toast]').forEach(function(btn){
+        if(btn.dataset.midInit)return;btn.dataset.midInit='1';
+        btn.addEventListener('click',function(e){
+          e.preventDefault();
+          var msg=btn.getAttribute('data-mid-toast')||'Hello!';
+          var t=document.createElement('div');
+          t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#141824;color:#fff;border:1px solid #00e5ff;padding:12px 22px;border-radius:12px;z-index:99999;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.6);';
+          t.textContent=msg;document.body.appendChild(t);
+          setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2800);
         });
       });
       document.querySelectorAll('[data-mid-popup]').forEach(function(btn){
@@ -2583,6 +4218,7 @@ function startMainApp(LIBS){
       html+='<div class="row-head"><span class="drag-dot form-field-handle">::</span><select class="inp-b" data-ffield="type" data-index="'+i+'">'+typeOpts+'</select><button class="icon-btn-b del" data-ffield-del="'+i+'">X</button></div>';
       html+='<input class="inp-b" data-ffield="label" data-index="'+i+'" value="'+escAttr(f.label||'')+'" placeholder="Field label" style="margin-bottom:5px;">';
       html+='<input class="inp-b" data-ffield="placeholder" data-index="'+i+'" value="'+escAttr(f.placeholder||'')+'" placeholder="Placeholder" style="margin-bottom:5px;">';
+      if(f.type==='select')html+='<input class="inp-b" data-ffield="options" data-index="'+i+'" value="'+escAttr(f.options||'Option 1, Option 2')+'" placeholder="Option 1, Option 2, Option 3" style="margin-bottom:5px;">';
       html+='<div class="row-opts"><label><input type="checkbox" data-ffield="required" data-index="'+i+'"'+(f.required?' checked':'')+'> Required</label></div>';
       html+='</div>';
     }
@@ -2663,8 +4299,27 @@ function startMainApp(LIBS){
     }
     if(b.type==='map'){
       var o7=b.opts||{};
-      tf='<div class="b-field"><label>Location Query</label><input class="inp-b" data-prop="opts.query" value="'+escAttr(o7.query||'')+'" placeholder="e.g. Dubai Mall"></div>';
+      tf='<div class="b-field"><label>Location / Coordinates</label><input class="inp-b" id="b-map-query-inp" data-prop="opts.query" value="'+escAttr(o7.query||'')+'" placeholder="25.2048, 55.2708"><button type="button" class="map-pick-trigger" id="b-pick-map-btn" style="font-size:11px;padding:8px;">&#128506; Pick on Interactive Map</button></div>';
       tf+='<div class="b-field"><label>Zoom - '+(o7.zoom||14)+'</label><input type="range" class="inp-b" min="1" max="20" value="'+(o7.zoom||14)+'" data-prop="opts.zoom"></div>';
+    }
+    if(b.type==='catalog'){
+      var oc=b.opts||{};var citems=oc.items||[];
+      tf='<div class="b-field"><label>WhatsApp Number</label><input class="inp-b" data-prop="opts.whatsapp" value="'+escAttr(oc.whatsapp||'966500000000')+'"></div>';
+      tf+='<div class="b-row2"><div class="b-field"><label>Currency</label><input class="inp-b" data-prop="opts.currency" value="'+escAttr(oc.currency||'SAR')+'"></div><div class="b-field"><label>Button Text</label><input class="inp-b" data-prop="text" value="'+escAttr(b.text||'Order')+'"></div></div>';
+      tf+='<div class="b-field"><label>Products</label><div id="bCatalogList">';
+      for(var ci=0;ci<citems.length;ci++){
+        var cit=citems[ci];
+        tf+='<div class="b-list-item" style="flex-direction:column"><div style="display:flex;gap:6px;width:100%"><input class="inp-b" data-cat="title" data-index="'+ci+'" value="'+escAttr(cit.title||'')+'" placeholder="Product Name"><input class="inp-b" data-cat="price" data-index="'+ci+'" value="'+escAttr(cit.price||'')+'" placeholder="Price" style="width:80px"><button class="icon-btn-b del" data-cat-del="'+ci+'">X</button></div><input class="inp-b" data-cat="img" data-index="'+ci+'" value="'+escAttr(cit.img||'')+'" placeholder="Image URL (optional)"></div>';
+      }
+      tf+='</div><button class="btn btn-web" id="bAddCatItem" style="width:100%;justify-content:center;font-size:10.5px;padding:8px;margin-top:6px;">+ Add Product</button></div>';
+    }
+    if(b.type==='vcard_btn'){
+      var ov=b.opts||{};
+      tf='<div class="b-field"><label>Button Label</label><input class="inp-b" data-prop="text" value="'+escAttr(b.text||'Save Contact')+'"></div>';
+      tf+='<div class="b-field"><label>Full Name</label><input class="inp-b" data-prop="opts.fullName" value="'+escAttr(ov.fullName||'')+'"></div>';
+      tf+='<div class="b-field"><label>Phone</label><input class="inp-b" data-prop="opts.phone" value="'+escAttr(ov.phone||'')+'"></div>';
+      tf+='<div class="b-field"><label>Email</label><input class="inp-b" data-prop="opts.email" value="'+escAttr(ov.email||'')+'"></div>';
+      tf+='<div class="b-field"><label>Company / Role</label><input class="inp-b" data-prop="opts.org" value="'+escAttr(ov.org||'')+'"></div>';
     }
     if(b.type==='slider'){
       var o8=b.opts||{};
@@ -2744,6 +4399,18 @@ function startMainApp(LIBS){
     if(faqList&&hasSortable&&typeof Sortable!=='undefined'){
       Sortable.create(faqList,{handle:'.faq-handle',animation:160,onEnd:function(){var order=Array.from(faqList.children).map(function(c){return +c.dataset.findex;});b.opts.items=order.map(function(i){return b.opts.items[i];});bRenderCanvas();bRenderInspector();}});
     }
+    var bMapPick=document.getElementById('b-pick-map-btn');
+    if(bMapPick)bMapPick.onclick=function(){
+      openInteractiveMapPicker(b.opts.query,function(coords){
+        b.opts.query=coords;
+        var inp=document.getElementById('b-map-query-inp');if(inp)inp.value=coords;
+        bRenderCanvas();
+      });
+    };
+    var addCat=document.getElementById('bAddCatItem');
+    if(addCat)addCat.onclick=function(){pushHistory();b.opts.items.push({title:'New Item',price:'50',img:''});bRenderCanvas();bRenderInspector();};
+    document.querySelectorAll('[data-cat-del]').forEach(function(btn){btn.onclick=function(){pushHistory();b.opts.items.splice(+btn.dataset.catDel,1);bRenderCanvas();bRenderInspector();};});
+    document.querySelectorAll('[data-cat]').forEach(function(inp){inp.addEventListener('input',function(){var i=+inp.dataset.index;b.opts.items[i][inp.dataset.cat]=inp.value;bRenderCanvasThrottled();});});
     var addSocial=document.getElementById('bAddSocial');
     if(addSocial)addSocial.onclick=function(){pushHistory();b.opts.links.push({platform:'instagram',url:''});bRenderCanvas();bRenderInspector();};
     document.querySelectorAll('[data-soc-del]').forEach(function(btn){btn.onclick=function(){pushHistory();b.opts.links.splice(+btn.dataset.socDel,1);bRenderCanvas();bRenderInspector();};});
@@ -3006,17 +4673,17 @@ function startMainApp(LIBS){
           onSuccess:function(result){
             builderState.id=result.id;
             var updated=result.updated;
-            if(updated)toast('Updated successfully!','success');
-            else toast('New site created!','success');
-            alert('Published!\n\nID: '+result.id+'\n'+(updated?'UPDATED\n':'NEW SITE\n')+'\nLink:\n'+result.url);
-            returnToQRWithURL(result.url,'No Code Web site',updated);
+            showPublishSuccessModal(result.id,result.url,updated,function(){
+              returnToQRWithURL(result.url,'No Code Web site',updated);
+            },'nocodeweb');
           }
         });
       }else{
         var result=await publishSiteHTML(html,builderState.title||'My Mini Site',state,null);
         builderState.id=result.id;
-        alert('Published!\n\nSave this ID:\n\n'+result.id+'\n\nShare link:\n'+result.url);
-        returnToQRWithURL(result.url,'No Code Web site',false);
+        showPublishSuccessModal(result.id,result.url,false,function(){
+          returnToQRWithURL(result.url,'No Code Web site',false);
+        },'nocodeweb');
       }
     }catch(err){btn.innerHTML=orig;btn.disabled=false;toast('Publish failed: '+err.message,'error');}
   }
@@ -3041,6 +4708,29 @@ function startMainApp(LIBS){
     try{
       var data=await fetchSiteForEdit(id,password);
       DOM.loadModal.classList.remove('active');
+      if(DOM.type.value==='variablecontent'){
+        if(data.state){
+          try{
+            var vp=JSON.parse(data.state);
+            if(vp&&vp.vcState){
+              vcState=Object.assign(vcState,vp.vcState);
+              vcState.id=id;
+              vcState.adminPass=password||'';
+              renderVariableContentStudio();
+              cloudVaultUrl='https://dynamic-qr.morhaf-ali-5r.workers.dev/view/'+id;
+              updateQR(true);
+              toast('Loaded Variable Content: '+id,'success');
+              DOM.btnLoadConfirm.disabled=false;DOM.btnLoadConfirm.innerText='Load Project';
+              return;
+            }
+          }catch(e){}
+        }
+        toast('Loaded ID '+id+' into Variable Content','info');
+        vcState.id=id;vcState.adminPass=password||'';
+        renderVariableContentStudio();
+        DOM.btnLoadConfirm.disabled=false;DOM.btnLoadConfirm.innerText='Load Project';
+        return;
+      }
       if(DOM.workspace.classList.contains('mode-nocode')){
         if(!data.state)toast('Not a No Code site','error');
         else{
@@ -3083,7 +4773,7 @@ function startMainApp(LIBS){
   }
 
   var monacoEditor=null,monacoInitialized=false,monacoLoading=false,currentCodeId=null;
-  var DEFAULT_HTML_CODE='<!DOCTYPE html>\n<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My MORHAF Page</title>\n<style>*{box-sizing:border-box}body{font-family:\'Inter\',system-ui,sans-serif;background:linear-gradient(135deg,#0a1a15 0%,#1e5a3d 100%);color:#f5f0e6;min-height:100vh;display:flex;align-items:center;justify-content:center;margin:0;padding:20px}.card{background:rgba(255,255,255,.06);border:1px solid rgba(212,175,55,.35);backdrop-filter:blur(20px);border-radius:24px;padding:48px 40px;max-width:480px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.5)}h1{font-size:34px;margin:0 0 14px;font-weight:600;color:#d4af37}p{margin:0 0 28px;opacity:.78;line-height:1.75;font-size:15px}.btn{display:inline-block;padding:15px 36px;background:linear-gradient(135deg,#d4af37,#f0d877);color:#0a1a15;text-decoration:none;border-radius:14px;font-weight:800}</style></head><body><div class="card"><h1>Hello, World</h1><p>Write your own HTML, CSS, and JavaScript.</p><a href="#" class="btn">Get Started</a></div></body></html>';
+  var DEFAULT_HTML_CODE='<!DOCTYPE html>\n<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My MORHAF Page</title>\n<style>*{box-sizing:border-box}body{font-family:\'Inter\',system-ui,sans-serif;background:linear-gradient(135deg,#0a1a15 0%,#1e5a3d 100%);color:#f5f0e6;min-height:100vh;display:flex;align-items:center;justify-content:center;margin:0;padding:20px}.card{background:rgba(255,255,255,.06);border:1px solid rgba(212,175,55,.35);backdrop-filter:blur(20px);border-radius:24px;padding:48px 40px;max-width:480px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.5)}h1{font-size:34px;margin:0 0 14px;font-weight:600;color:#d4af37}p{margin:0 0 28px;opacity:.78;line-height:1.75;font-size:15px}.btn{display:inline-block;padding:15px 36px;background:linear-gradient(135deg,#d4af37,#f0d877);color:#0a1a15;text-decoration:none;border-radius:14px;font-weight:800}</style></head><body><div class="card"><h1>Hello, World</h1><p>Write your own HTML, CSS, and JavaScript.</p><a href="https://morhafali5r-hub.github.io/MORHAF-Portfolio/" class="btn">Get Started</a></div></body></html>';
   function loadMonacoScript(){return new Promise(function(resolve,reject){if(window.require&&window.monaco)return resolve();var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s);});}
   async function initCodeEditor(){
     var el=document.getElementById('monacoEditor');if(!el)return;
@@ -3121,8 +4811,9 @@ function startMainApp(LIBS){
         onSuccess:function(result){
           currentCodeId=result.id;
           var updated=result.updated;
-          alert('Published!\n\nID: '+result.id+'\n'+(updated?'UPDATED\n':'NEW SITE\n')+'\nLink:\n'+result.url);
-          returnToQRWithURL(result.url,'HTML code site',updated);
+          showPublishSuccessModal(result.id,result.url,updated,function(){
+            returnToQRWithURL(result.url,'HTML code site',updated);
+          },'htmlcode');
         }
       });
     }else{
@@ -3130,8 +4821,9 @@ function startMainApp(LIBS){
       try{
         var result=await publishSiteHTML(html,'HTML Code Site',state,null);
         currentCodeId=result.id;
-        alert('Published!\n\nID: '+result.id+'\n\nLink:\n'+result.url);
-        returnToQRWithURL(result.url,'HTML code site',false);
+        showPublishSuccessModal(result.id,result.url,false,function(){
+          returnToQRWithURL(result.url,'HTML code site',false);
+        },'htmlcode');
       }catch(err){toast('Publish failed: '+err.message,'error');}
       finally{btn.innerHTML=orig;btn.disabled=false;}
     }
@@ -3160,8 +4852,9 @@ function startMainApp(LIBS){
     }
   });
 
+  checkLocalPro();
   buildPatternsGrid();enforceProLocks();refreshGradientPreview();updateQR(true);
-  console.log('%cMORHAF QR Studio V5.4 - Ready','color:#00E5FF;font-size:14px;font-weight:900;');
+  console.log('%cMORHAF QR Studio V7.0 LEGENDARY - Ready','color:#00E5FF;font-size:14px;font-weight:900;');
 }
 
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',boot);}else{boot();}
